@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.example.mywikidexapp.R
 import com.example.mywikidexapp.data.HistoryEntry
 import com.example.mywikidexapp.ui.theme.MyWikiDexAppTheme
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
