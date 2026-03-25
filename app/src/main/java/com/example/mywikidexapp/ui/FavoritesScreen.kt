@@ -8,7 +8,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.mywikidexapp.AppDestinations
 import com.example.mywikidexapp.data.Favorite
 import com.example.mywikidexapp.ui.components.FavoritesListItem
 import com.example.mywikidexapp.ui.theme.MyWikiDexAppTheme

@@ -23,9 +23,9 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.mywikidexapp.ui.FavoritesScreenComposable
 import com.example.mywikidexapp.ui.HistoryScreenComposable
-import com.example.mywikidexapp.ui.WikiDexURL
 import com.example.mywikidexapp.ui.WikiScreenComposable
 import com.example.mywikidexapp.ui.theme.MyWikiDexAppTheme
+import com.example.mywikidexapp.utils.WikiDexURL
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

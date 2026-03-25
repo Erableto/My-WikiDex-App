@@ -1,12 +1,9 @@
 package com.example.mywikidexapp.ui
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebResourceRequest
-import android.webkit.WebSettings
-import android.webkit.WebStorage
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
@@ -40,15 +37,12 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.example.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import androidx.core.net.toUri
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.webkit.WebSettingsCompat
 import com.example.mywikidexapp.R
 import com.example.mywikidexapp.ui.components.LabeledSmallFab
-
-val WikiDexURL: String = "https://www.wikidex.net/"
-val WikiDexPortadaURL: String = "https://www.wikidex.net/wiki/WikiDex"
-val WikiDexDomain: String = "wikidex.net"
-val MastodonDomain: String = "social.wikidex.net"
-val WikiDexLabel: String = " - WikiDex, la enciclopedia Pokémon"
+import com.example.mywikidexapp.utils.MastodonDomain
+import com.example.mywikidexapp.utils.WikiDexDomain
+import com.example.mywikidexapp.utils.WikiDexPortadaURL
+import com.example.mywikidexapp.utils.WikiDexURL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
