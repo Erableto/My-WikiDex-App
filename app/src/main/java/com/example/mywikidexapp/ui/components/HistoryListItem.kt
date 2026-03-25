@@ -75,7 +75,7 @@ fun HistoryListItem(
 @Preview(showBackground = true)
 @Composable
 fun HistoryListItemPreview() {
-    val historyEntry = HistoryEntry(0, 1774457631000L, "", "Hola mundo")
+    val historyEntry = HistoryEntry(0, "", "Hola mundo", 1774457631000L)
 
     MyWikiDexAppTheme() {
         HistoryListItem(

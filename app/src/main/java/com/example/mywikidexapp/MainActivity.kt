@@ -98,7 +98,12 @@ fun MyWikiDexAppApp() {
                             currentDestination = AppDestinations.WIKI
                         }
                     )
-                    AppDestinations.HISTORY -> HistoryScreenComposable()
+                    AppDestinations.HISTORY -> HistoryScreenComposable(
+                        onNavigateToWiki = { url ->
+                            currentWikiURL = url
+                            currentDestination = AppDestinations.WIKI
+                        }
+                    )
                 }
             }
         }
