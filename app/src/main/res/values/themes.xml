@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MyWikiDexApp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Tema para la Splash Screen -->
+    <style name="Theme.MyWikiDexApp.Splash" parent="Theme.SplashScreen">
+        <!-- Fondo de la splash -->
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
+
+        <!-- Icono centrado -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+
+        <!-- Duración de la splash -->
+        <item name="windowSplashScreenAnimationDuration">200</item>
+
+        <!-- Tema que se aplica después de la splash -->
+        <item name="postSplashScreenTheme">@style/Theme.MyWikiDexApp</item>
+    </style>
+
+</resources>

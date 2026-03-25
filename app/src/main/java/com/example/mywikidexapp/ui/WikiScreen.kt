@@ -1,0 +1,339 @@
+package com.example.mywikidexapp.ui
+
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
+import android.webkit.WebStorage
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.example.mywikidexapp.ui.theme.MyWikiDexAppTheme
+import androidx.core.net.toUri
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.webkit.WebSettingsCompat
+import com.example.mywikidexapp.R
+import com.example.mywikidexapp.ui.components.LabeledSmallFab
+
+val WikiDexURL: String = "https://www.wikidex.net/"
+val WikiDexPortadaURL: String = "https://www.wikidex.net/wiki/WikiDex"
+val WikiDexDomain: String = "wikidex.net"
+val MastodonDomain: String = "social.wikidex.net"
+val WikiDexLabel: String = " - WikiDex, la enciclopedia Pokémon"
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WikiScreenComposable(url: String, resetTrigger: Int) {
+    val context = LocalContext.current
+
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+    var isFavorite by remember {
+        mutableStateOf(false)
+    }
+    var blockedURL by remember {
+        mutableStateOf<String?>(null)
+    }
+    val webViewRef = remember {
+        mutableStateOf<WebView?>(null)
+    }
+    // Bundle que sobrevive a cambios de configuración (como la rotación)
+    val webViewState = rememberSaveable {
+        Bundle()
+    }
+    val lastResetTrigger = rememberSaveable {
+        mutableStateOf(resetTrigger)
+    }
+
+    // Cuando cambie resetTrigger, vamos a la portada de WikiDex.
+    LaunchedEffect(resetTrigger) {
+        // Solo hacemos algo si el valor cambió de verdad.
+        if (resetTrigger != lastResetTrigger.value) {
+            val url = webViewRef.value?.url
+
+            // Si estamos ya en la portada, no volvemos a la portada.
+            if (url != WikiDexPortadaURL) {
+                webViewRef.value?.loadUrl(WikiDexURL)
+            }
+
+            lastResetTrigger.value = resetTrigger
+        }
+    }
+
+    // Cuando este Composable salga de composición (por destrucción de la Activity),
+    // guardamos el estado del WebView en el Bundle.
+    DisposableEffect(Unit) {
+        onDispose {
+            webViewRef.value?.saveState(webViewState)
+        }
+    }
+
+    // Botón atrás para volver hacia atrás en la navegación.
+    BackHandler {
+        val webView = webViewRef.value
+        if (webView != null && webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            // Si no puede ir atrás, dejamos que Android cierre la pantalla.
+            (context as? Activity)?.finish()
+        }
+    }
+
+    // Mostramos un diálogo cuando una URL se sale de WikiDex.
+    if (blockedURL != null) {
+        AlertDialog(
+            onDismissRequest = {
+                blockedURL = null
+            },
+            title = {
+                Text("Enlace externo")
+            },
+            text = {
+                Text("¿Quieres abrir este enlace en el navegador?")
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val intent = Intent(Intent.ACTION_VIEW, blockedURL?.toUri())
+                        context.startActivity(intent)
+                        blockedURL = null
+                    }
+                ) {
+                    Text("SÍ")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        blockedURL = null
+                    }
+                ) {
+                    Text("NO")
+                }
+            }
+        )
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        val isDarkTheme = isSystemInDarkTheme()
+
+        AndroidView(
+            factory = { context ->
+                // Contenedor de pull-to-refresh
+                val swipeRefreshLayout = SwipeRefreshLayout(context)
+
+                val webView = WebView(context).apply {
+                    settings.javaScriptEnabled = true
+                    settings.domStorageEnabled = true
+
+                    webViewClient = object : WebViewClient() {
+                        override fun onPageFinished(view: WebView?, url: String?) {
+                            super.onPageFinished(view, url)
+                            swipeRefreshLayout.isRefreshing = false
+                        }
+
+                        override fun shouldOverrideUrlLoading(
+                            view: WebView?,
+                            request: WebResourceRequest?
+                        ): Boolean {
+                            val currentURL = request?.url ?: return true
+                            val currentHost = currentURL.host ?: return true
+
+                            val isAllowed = currentHost.endsWith(WikiDexDomain)
+                            val isMastodon = currentHost.endsWith(MastodonDomain)
+
+                            return if (isAllowed && !isMastodon) {
+                                false // Permitimos la navegación.
+                            } else {
+                                // Guardamos la URL bloqueada para mostrar el diálogo.
+                                blockedURL = currentURL.toString()
+                                true // Bloqueamos la navegación.
+                            }
+                        }
+                    }
+
+                    //loadUrl(url)
+
+                    // Restauramos el estado si existe.
+                    // Si no, cargamos la URL inicial.
+                    if (webViewState.isEmpty) {
+                        loadUrl(url)
+                    } else {
+                        restoreState(webViewState)
+                    }
+                }
+
+                webViewRef.value = webView
+
+                swipeRefreshLayout.apply {
+                    addView(webView)
+                    setOnRefreshListener {
+                        webView.reload()
+                    }
+                }
+            },
+            /*update = { webView ->
+                webView.loadUrl(WikiDexURL)
+            }*/
+            /*update = { webView ->
+                // Guardamos el estado para cuando el Composable se recomponga.
+                webViewRef.value?.saveState(webViewState)
+            }*/
+            update = {}
+        )
+
+        // FAB expandible
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.End
+        ) {
+            // Opciones del Speed Dial
+            AnimatedVisibility(visible = expanded) {
+                Column(horizontalAlignment = Alignment.End) {
+                    LabeledSmallFab(
+                        text = "Ir arriba",
+                        onClick = {
+                            webViewRef.value?.scrollTo(0, 0)
+
+                            expanded = false
+                        },
+                        icon = {
+                            Icon(
+                                painter = painterResource(R.drawable.rounded_arrow_upward_24),
+                                contentDescription = "Ir arriba"
+                            )
+                        }
+                    )
+
+                    LabeledSmallFab(
+                        text =
+                            if (isFavorite) "Quitar de favoritos"
+                            else "Añadir a favoritos",
+                        onClick = {
+                            val url = webViewRef.value?.url
+                            val title = webViewRef.value?.title
+
+                            if (url != null && title != null) {
+                                // TODO: Añadir a favoritos.
+
+                                isFavorite = !isFavorite
+                            }
+
+                            expanded = false
+                        },
+                        icon = {
+                            Icon(
+                                painter =
+                                    if (isFavorite) painterResource(R.drawable.rounded_heart_broken_24)
+                                    else painterResource(R.drawable.rounded_favorite_24),
+                                contentDescription =
+                                    if (isFavorite) "Quitar de favoritos"
+                                    else "Añadir a favoritos"
+                            )
+                        }
+                    )
+
+                    LabeledSmallFab(
+                        text = "Abrir en el navegador",
+                        onClick = {
+                            val url = webViewRef.value?.url
+
+                            if (url != null) {
+                                val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                                context.startActivity(intent)
+                            }
+
+                            expanded = false
+                        },
+                        icon = {
+                            Icon(
+                                painter = painterResource(R.drawable.rounded_open_in_browser_24),
+                                contentDescription = "Abrir en el navegador"
+                            )
+                        }
+                    )
+
+                    LabeledSmallFab(
+                        text = "Compartir",
+                        onClick = {
+                            val url = webViewRef.value?.url
+
+                            if (url != null) {
+                                val sendIntent = Intent().apply {
+                                    action = Intent.ACTION_SEND
+                                    putExtra(Intent.EXTRA_TEXT, url)
+                                    type = "text/plain"
+                                }
+
+                                val shareIntent = Intent.createChooser(sendIntent, "Compartir página")
+                                context.startActivity(shareIntent)
+                            }
+
+                            expanded = false
+                        },
+                        icon = {
+                            Icon(
+                                painter = painterResource(R.drawable.rounded_share_24),
+                                contentDescription = "Compartir"
+                            )
+                        }
+                    )
+                }
+            }
+
+            // FAB principal
+            FloatingActionButton(
+                onClick = {
+                    expanded = !expanded
+                }
+            ) {
+                Icon(
+                    painter =
+                        if (expanded) painterResource(R.drawable.rounded_close_24)
+                        else painterResource(R.drawable.rounded_menu_24),
+                    contentDescription = if (expanded) "Cerrar menú" else "Abrir menú"
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WikiScreenComposablePreview() {
+    MyWikiDexAppTheme() {
+        WikiScreenComposable(WikiDexURL, 0)
+    }
+}
