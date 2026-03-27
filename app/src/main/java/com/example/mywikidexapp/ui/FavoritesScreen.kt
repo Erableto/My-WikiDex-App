@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -64,9 +65,10 @@ fun FavoritesScreenComposable(onNavigateToWiki: (String) -> Unit) {
             ) {
                 Image(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        //.fillMaxWidth()
+                        .width(250.dp)
                         .aspectRatio(1f),
-                    painter = painterResource(R.drawable.rounded_heart_broken_24),
+                    painter = painterResource(R.drawable.rounded_heart_broken_250),
                     contentDescription = "No hay favoritos",
                     colorFilter = if (isSystemInDarkTheme()) {
                         ColorFilter.tint(Color.White)

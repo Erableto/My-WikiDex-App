@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
@@ -114,9 +115,10 @@ fun HistoryScreenComposable(onNavigateToWiki: (String) -> Unit) {
             ) {
                 Image(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        //.fillMaxWidth()
+                        .width(250.dp)
                         .aspectRatio(1f),
-                    painter = painterResource(R.drawable.rounded_history_toggle_off_24),
+                    painter = painterResource(R.drawable.rounded_history_toggle_off_250),
                     contentDescription = "No hay entradas en el historial",
                     colorFilter = if (isSystemInDarkTheme()) {
                         ColorFilter.tint(Color.White)
