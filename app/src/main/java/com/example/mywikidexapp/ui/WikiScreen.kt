@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -22,6 +23,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,8 +38,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mywikidexapp.R
+import com.example.mywikidexapp.data.FavoritesViewModel
+import com.example.mywikidexapp.data.FavoritesViewModelFactory
 import com.example.mywikidexapp.ui.components.LabeledSmallFab
 import com.example.mywikidexapp.utils.MastodonDomain
 import com.example.mywikidexapp.utils.WikiDexDomain
@@ -46,15 +51,24 @@ import com.example.mywikidexapp.utils.WikiDexURL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WikiScreenComposable(url: String, resetTrigger: Int) {
+fun WikiScreenComposable(
+    favoritesViewModel: FavoritesViewModel = ViewModelProvider(
+        LocalContext.current as ComponentActivity,
+        FavoritesViewModelFactory(LocalContext.current)
+    ).get(FavoritesViewModel::class.java),
+    url: String,
+    resetTrigger: Int
+) {
     val context = LocalContext.current
+
+    val favorites by favoritesViewModel.favorites.collectAsState()
 
     var expanded by remember {
         mutableStateOf(false)
     }
-    var isFavorite by remember {
+    /*var isFavorite by remember {
         mutableStateOf(false)
-    }
+    }*/
     var blockedURL by remember {
         mutableStateOf<String?>(null)
     }
@@ -67,6 +81,13 @@ fun WikiScreenComposable(url: String, resetTrigger: Int) {
     }
     val lastResetTrigger = rememberSaveable {
         mutableStateOf(resetTrigger)
+    }
+
+    val currentURL = webViewRef.value?.url
+    val currentTitle = webViewRef.value?.title
+
+    val isFavorite = favorites.any {
+        it.url == currentURL
     }
 
     // Cuando cambie resetTrigger, vamos a la portada de WikiDex.
@@ -236,13 +257,15 @@ fun WikiScreenComposable(url: String, resetTrigger: Int) {
                             if (isFavorite) "Quitar de favoritos"
                             else "Añadir a favoritos",
                         onClick = {
-                            val url = webViewRef.value?.url
-                            val title = webViewRef.value?.title
-
-                            if (url != null && title != null) {
-                                // TODO: Añadir a favoritos.
-
-                                isFavorite = !isFavorite
+                            if (currentURL != null && currentTitle != null) {
+                                if (isFavorite) {
+                                    val favorite = favorites.first {
+                                        it.url == currentURL
+                                    }
+                                    favoritesViewModel.delete(favorite)
+                                } else {
+                                    favoritesViewModel.insert(currentURL, currentTitle)
+                                }
                             }
 
                             expanded = false
@@ -328,6 +351,6 @@ fun WikiScreenComposable(url: String, resetTrigger: Int) {
 @Composable
 fun WikiScreenComposablePreview() {
     MyWikiDexAppTheme() {
-        WikiScreenComposable(WikiDexURL, 0)
+        WikiScreenComposable(url = WikiDexURL, resetTrigger = 0)
     }
 }

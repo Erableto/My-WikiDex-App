@@ -11,23 +11,23 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FavoritesDAO {
     @Query("SELECT * FROM favorites ORDER BY id DESC")
-    fun getFavorites(): Flow<List<Favorite>>
+    fun getAll(): Flow<List<Favorite>>
 
     @Query("SELECT * FROM favorites WHERE url = :url")
-    fun getFavoriteByURL(url: String): Flow<Favorite>
+    fun getByURL(url: String): Flow<Favorite>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(favorite: Favorite)
 
     @Delete
-    suspend fun deleteFavorite(favorite: Favorite)
+    suspend fun delete(favorite: Favorite)
 
     @Query("DELETE FROM favorites WHERE url = :url")
-    suspend fun deleteFavoriteByURL(url: String)
+    suspend fun deleteByURL(url: String)
 
     @Query("DELETE FROM favorites")
     suspend fun deleteAll()
 
     @Update
-    suspend fun updateFavorite(favorite: Favorite)
+    suspend fun update(favorite: Favorite)
 }

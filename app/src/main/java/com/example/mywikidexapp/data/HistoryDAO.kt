@@ -11,20 +11,20 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface HistoryDAO {
     @Query("SELECT * FROM history ORDER BY timeMillis DESC")
-    fun getEntries(): Flow<List<HistoryEntry>>
+    fun getAll(): Flow<List<HistoryEntry>>
 
     @Query("SELECT * FROM history WHERE url = :url")
-    fun getEntryByURL(url: String): Flow<HistoryEntry>
+    fun getByURL(url: String): Flow<HistoryEntry>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entry: HistoryEntry)
 
     @Delete
-    suspend fun deleteEntry(entry: HistoryEntry)
+    suspend fun delete(entry: HistoryEntry)
 
     @Query("DELETE FROM history")
     suspend fun deleteAll()
 
     @Update
-    suspend fun updateEntry(entry: HistoryEntry)
+    suspend fun update(entry: HistoryEntry)
 }
