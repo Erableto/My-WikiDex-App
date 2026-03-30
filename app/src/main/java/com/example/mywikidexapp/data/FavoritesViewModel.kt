@@ -20,13 +20,24 @@ class FavoritesViewModel(context: Context): ViewModel() {
 
     fun insert(url: String, title: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            dao.insert(Favorite(url = url, title = title)) // El ID se autogenera.
+            dao.insert(
+                Favorite(
+                    url = url,
+                    title = title
+                ) // El ID se autogenera.
+            )
         }
     }
 
     fun delete(favorite: Favorite) {
         viewModelScope.launch(Dispatchers.IO) {
             dao.delete(favorite)
+        }
+    }
+
+    fun update(favorite: Favorite) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.update(favorite)
         }
     }
 }
