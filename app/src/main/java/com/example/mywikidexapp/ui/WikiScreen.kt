@@ -57,6 +57,7 @@ import com.example.mywikidexapp.utils.WikiDexDomain
 import com.example.mywikidexapp.utils.WikiDexLabel
 import com.example.mywikidexapp.utils.WikiDexPortadaURL
 import com.example.mywikidexapp.utils.WikiDexURL
+import com.example.mywikidexapp.utils.extractReadableTitle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,7 +104,7 @@ fun WikiScreenComposable(
     }
 
     val currentURL = webViewRef.value?.url
-    val currentTitle = webViewRef.value?.title
+    val currentTitle = /*webViewRef.value?.title*/extractReadableTitle(webViewRef.value?.url)
 
     val isFavorite = favorites.any {
         it.url == currentURL || it.title == currentTitle
