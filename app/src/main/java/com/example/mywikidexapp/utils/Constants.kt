@@ -6,8 +6,9 @@ import java.nio.charset.StandardCharsets
 val WikiDexURL: String = "https://www.wikidex.net/"
 val WikiDexURLHeader: String = "https://www.wikidex.net/wiki/"
 val WikiDexPortadaURL: String = "https://www.wikidex.net/wiki/WikiDex"
-val WikiDexDomain: String = "wikidex.net"
-val MastodonDomain: String = "social.wikidex.net"
+val WikiDexMainDomain: String = "wikidex.net"
+val WikiDexMastodonDomain: String = "social.wikidex.net"
+val WikiDexACDomain: String = "animalcrossing.wikidex.net"
 val WikiDexLabel: String = " - WikiDex, la enciclopedia Pokémon"
 
 fun extractReadableTitleFromURL(url: String?): String? {

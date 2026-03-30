@@ -52,8 +52,9 @@ import com.example.mywikidexapp.data.FavoritesViewModelFactory
 import com.example.mywikidexapp.data.HistoryViewModel
 import com.example.mywikidexapp.data.HistoryViewModelFactory
 import com.example.mywikidexapp.ui.components.LabeledSmallFab
-import com.example.mywikidexapp.utils.MastodonDomain
-import com.example.mywikidexapp.utils.WikiDexDomain
+import com.example.mywikidexapp.utils.WikiDexACDomain
+import com.example.mywikidexapp.utils.WikiDexMastodonDomain
+import com.example.mywikidexapp.utils.WikiDexMainDomain
 import com.example.mywikidexapp.utils.WikiDexLabel
 import com.example.mywikidexapp.utils.WikiDexPortadaURL
 import com.example.mywikidexapp.utils.WikiDexURL
@@ -260,14 +261,15 @@ fun WikiScreenComposable(
                             val currentURL = request?.url ?: return true
                             val currentHost = currentURL.host ?: return true
 
-                            val isAllowed = currentHost.endsWith(WikiDexDomain)
-                            val isMastodon = currentHost.endsWith(MastodonDomain)
+                            val isAllowed = currentHost.endsWith(WikiDexMainDomain)
+                            val isMastodon = currentHost.endsWith(WikiDexMastodonDomain)
+                            val isAC = currentHost.endsWith(WikiDexACDomain)
                             toDesktopMode = currentURL.toString().contains("mobileaction=toggle_view_desktop")
                             toSkin = currentURL.toString().contains("useskin=")
 
                             expanded = false
 
-                            return if (isAllowed && !isMastodon && !toDesktopMode && !toSkin) {
+                            return if (isAllowed && !isMastodon && !isAC && !toDesktopMode && !toSkin) {
                                 false // Permitimos la navegación.
                             } else {
                                 /*
