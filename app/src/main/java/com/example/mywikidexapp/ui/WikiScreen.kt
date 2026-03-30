@@ -81,6 +81,9 @@ fun WikiScreenComposable(
     var toDesktopMode by remember {
         mutableStateOf(false)
     }
+    var toSkin by remember {
+        mutableStateOf(false)
+    }
     var blockedURL by remember {
         mutableStateOf<String?>(null)
     }
@@ -175,6 +178,10 @@ fun WikiScreenComposable(
         toDesktopMode = false
         Toast.makeText(context, "No compatible con el modo escritorio.", Toast.LENGTH_LONG).show()
     }
+    if (toSkin) {
+        toSkin = false
+        Toast.makeText(context, "No compatible con el cambio de skin.", Toast.LENGTH_LONG).show()
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         val isDarkTheme = isSystemInDarkTheme()
@@ -232,12 +239,13 @@ fun WikiScreenComposable(
                             val isAllowed = currentHost.endsWith(WikiDexDomain)
                             val isMastodon = currentHost.endsWith(MastodonDomain)
                             toDesktopMode = currentURL.toString().contains("mobileaction=toggle_view_desktop")
+                            toSkin = currentURL.toString().contains("useskin=")
 
                             return if (isAllowed && !isMastodon && !toDesktopMode) {
                                 false // Permitimos la navegación.
                             } else {
                                 // No dejamos que se muestre el diálogo si es lo de cambiar al modo escritorio.
-                                if (!toDesktopMode) {
+                                if (!toDesktopMode && !toSkin) {
                                     // Guardamos la URL bloqueada para mostrar el diálogo.
                                     blockedURL = currentURL.toString()
                                 }
