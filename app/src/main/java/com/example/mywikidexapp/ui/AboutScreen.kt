@@ -66,7 +66,7 @@ fun AboutScreenComposable() {
                     contentDescription = "Logo de la app"
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(16.dp))
 
                 Column() {
                     val appName = context.applicationInfo.loadLabel(context.packageManager).toString()
@@ -111,7 +111,7 @@ fun AboutScreenComposable() {
                     contentDescription = "Erableto"
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(16.dp))
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
