@@ -227,7 +227,9 @@ fun WikiScreenComposable(
                                 !url.contains(WikiDexPortadaURL) && // Para no incluir la página de la portada.
                                 !url.contains("?search") && // Para no incluir páginas de búsqueda.
                                 !url.contains("&search") && // Para no incluir páginas de búsqueda.
-                                !url.contains("/search") // Para no incluir páginas de búsqueda.
+                                !url.contains("/search") && // Para no incluir páginas de búsqueda.
+                                !url.contains("?redirect") && // Para no incluir páginas de redirección.
+                                !url.contains("&redirect") // Para no incluir páginas de redirección.
                             ) {
                                 // Hacemos cosas con el historial si la página actual no es la portada.
                                 /*val historyEntryAux = historyViewModel.getByURL(url).value
@@ -333,7 +335,9 @@ fun WikiScreenComposable(
                         currentTitle != null &&
                         !currentURL.contains("?search") && // Para no incluir páginas de búsqueda.
                         !currentURL.contains("&search") && // Para no incluir páginas de búsqueda.
-                        !currentURL.contains("/search") // Para no incluir páginas de búsqueda.
+                        !currentURL.contains("/search") && // Para no incluir páginas de búsqueda.
+                        !currentURL.contains("?redirect") && // Para no incluir páginas de redirección.
+                        !currentURL.contains("&redirect") // Para no incluir páginas de redirección.
                     ) {
                         LabeledSmallFab(
                             text =
