@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "history",
-    indices = [Index(value = ["url"], unique = true)]
+    indices = [Index(value = ["url"], unique = true), Index(value = ["title"], unique = true)]
 )
 data class HistoryEntry(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,

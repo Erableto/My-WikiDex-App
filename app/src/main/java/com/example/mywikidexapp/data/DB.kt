@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Favorite::class, HistoryEntry::class], version = 2)
+@Database(entities = [Favorite::class, HistoryEntry::class], version = 3)
 abstract class DB: RoomDatabase() {
     abstract fun favoritesDAO(): FavoritesDAO
     abstract fun historyDAO(): HistoryDAO
@@ -19,7 +19,29 @@ abstract class DB: RoomDatabase() {
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL(
+                    "DELETE FROM history"
+                )
+                db.execSQL(
                     "CREATE UNIQUE INDEX IF NOT EXISTS index_history_url ON history(url)"
+                )
+            }
+        }
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "DELETE FROM history"
+                )
+                db.execSQL(
+                    "DELETE FROM favorites"
+                )
+                db.execSQL(
+                    "CREATE UNIQUE INDEX IF NOT EXISTS index_history_title ON history(title)"
+                )
+                db.execSQL(
+                    "CREATE UNIQUE INDEX IF NOT EXISTS index_favorites_url ON favorites(url)"
+                )
+                db.execSQL(
+                    "CREATE UNIQUE INDEX IF NOT EXISTS index_favorites_title ON favorites(title)"
                 )
             }
         }
@@ -30,7 +52,7 @@ abstract class DB: RoomDatabase() {
                     context.applicationContext,
                     DB::class.java,
                     "wikidex_app_db"
-                ).addMigrations(MIGRATION_1_2).build().also {
+                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3).build().also {
                     INSTANCE = it
                 }
             }
