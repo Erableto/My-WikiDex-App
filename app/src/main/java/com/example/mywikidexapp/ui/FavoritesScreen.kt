@@ -1,6 +1,7 @@
 package com.example.mywikidexapp.ui
 
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -60,7 +61,7 @@ val favoritesList_empty = mutableStateListOf<Favorite>()
 @Composable
 fun FavoritesScreenComposable(
     viewModel: FavoritesViewModel = ViewModelProvider(
-        LocalContext.current as ComponentActivity,
+        LocalActivity.current as ComponentActivity,
         FavoritesViewModelFactory(LocalContext.current)
     )[FavoritesViewModel::class.java], // ).get(FavoritesViewModel::class.java),
     onNavigateToWiki: (String) -> Unit

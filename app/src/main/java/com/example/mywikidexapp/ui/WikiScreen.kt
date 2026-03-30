@@ -8,6 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -61,11 +62,11 @@ import com.example.mywikidexapp.utils.WikiDexURL
 @Composable
 fun WikiScreenComposable(
     favoritesViewModel: FavoritesViewModel = ViewModelProvider(
-        LocalContext.current as ComponentActivity,
+        LocalActivity.current as ComponentActivity,
         FavoritesViewModelFactory(LocalContext.current)
     )[FavoritesViewModel::class.java], // ).get(FavoritesViewModel::class.java),
     historyViewModel: HistoryViewModel = ViewModelProvider(
-        LocalContext.current as ComponentActivity,
+        LocalActivity.current as ComponentActivity,
         HistoryViewModelFactory(LocalContext.current)
     )[HistoryViewModel::class.java], // ).get(HistoryViewModel::class.java),
     url: String,

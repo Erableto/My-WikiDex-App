@@ -1,6 +1,7 @@
 package com.example.mywikidexapp.ui
 
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -70,7 +71,7 @@ val historyList_empty = mutableStateListOf<HistoryEntry>()
 @Composable
 fun HistoryScreenComposable(
     viewModel: HistoryViewModel = ViewModelProvider(
-        LocalContext.current as ComponentActivity,
+        LocalActivity.current as ComponentActivity,
         HistoryViewModelFactory(LocalContext.current)
     )[HistoryViewModel::class.java], // ).get(HistoryViewModel::class.java),
     onNavigateToWiki: (String) -> Unit
