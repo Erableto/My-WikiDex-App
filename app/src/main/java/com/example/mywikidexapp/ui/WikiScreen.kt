@@ -144,12 +144,18 @@ fun WikiScreenComposable(
         AlertDialog(
             onDismissRequest = {
                 blockedURL = null
+                toDesktopMode = false
+                toSkin = false
             },
             title = {
-                Text("Enlace externo")
+                if (toDesktopMode) Text("Modo escritorio")
+                else if (toSkin) Text("Cambio de skin")
+                else Text("Enlace externo")
             },
             text = {
-                Text("¿Quieres abrir este enlace en el navegador?")
+                if (toDesktopMode) Text("Para usar el modo escritorio debe abrirse el navegador. ¿Quieres hacerlo?")
+                else if (toSkin) Text("Para cambiar de skin debe abrirse el navegador. ¿Quieres hacerlo?")
+                else Text("¿Quieres abrir este enlace en el navegador?")
             },
             confirmButton = {
                 TextButton(
@@ -157,6 +163,8 @@ fun WikiScreenComposable(
                         val intent = Intent(Intent.ACTION_VIEW, blockedURL?.toUri())
                         context.startActivity(intent)
                         blockedURL = null
+                        toDesktopMode = false
+                        toSkin = false
                     }
                 ) {
                     Text("SÍ")
@@ -166,21 +174,14 @@ fun WikiScreenComposable(
                 TextButton(
                     onClick = {
                         blockedURL = null
+                        toDesktopMode = false
+                        toSkin = false
                     }
                 ) {
                     Text("NO")
                 }
             }
         )
-    }
-
-    if (toDesktopMode) {
-        toDesktopMode = false
-        Toast.makeText(context, "No compatible con el modo escritorio.", Toast.LENGTH_LONG).show()
-    }
-    if (toSkin) {
-        toSkin = false
-        Toast.makeText(context, "No compatible con el cambio de skin.", Toast.LENGTH_LONG).show()
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -241,14 +242,16 @@ fun WikiScreenComposable(
                             toDesktopMode = currentURL.toString().contains("mobileaction=toggle_view_desktop")
                             toSkin = currentURL.toString().contains("useskin=")
 
-                            return if (isAllowed && !isMastodon && !toDesktopMode) {
+                            return if (isAllowed && !isMastodon && !toDesktopMode && !toSkin) {
                                 false // Permitimos la navegación.
                             } else {
+                                /*
                                 // No dejamos que se muestre el diálogo si es lo de cambiar al modo escritorio.
                                 if (!toDesktopMode && !toSkin) {
+                                */
                                     // Guardamos la URL bloqueada para mostrar el diálogo.
                                     blockedURL = currentURL.toString()
-                                }
+                                //}
                                 true // Bloqueamos la navegación.
                             }
                         }
