@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.mywikidexapp.ui.AboutScreenComposable
 import com.example.mywikidexapp.ui.FavoritesScreenComposable
 import com.example.mywikidexapp.ui.HistoryScreenComposable
 import com.example.mywikidexapp.ui.WikiScreenComposable
@@ -104,6 +105,7 @@ fun MyWikiDexAppApp() {
                             currentDestination = AppDestinations.WIKI
                         }
                     )
+                    AppDestinations.ABOUT -> AboutScreenComposable()
                 }
             }
         }
@@ -129,6 +131,11 @@ enum class AppDestinations(
         "Historial",
         R.drawable.rounded_history_24,
         R.drawable.rounded_filled_history_24
+    ),
+    ABOUT(
+        "Acerca de",
+        R.drawable.rounded_info_24,
+        R.drawable.rounded_filled_info_24
     )
 }
 
