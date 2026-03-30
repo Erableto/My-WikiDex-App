@@ -108,7 +108,7 @@ fun WikiScreenComposable(
     val currentTitle = webViewRef.value?.title
 
     val isFavorite = favorites.any {
-        it.url == currentURL
+        it.url == currentURL || it.title == currentTitle
     }
 
     // Cuando cambie resetTrigger, vamos a la portada de WikiDex.
