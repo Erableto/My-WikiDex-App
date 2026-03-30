@@ -43,6 +43,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mywikidexapp.R
 import com.example.mywikidexapp.data.FavoritesViewModel
 import com.example.mywikidexapp.data.FavoritesViewModelFactory
+import com.example.mywikidexapp.data.HistoryViewModel
+import com.example.mywikidexapp.data.HistoryViewModelFactory
 import com.example.mywikidexapp.ui.components.LabeledSmallFab
 import com.example.mywikidexapp.utils.MastodonDomain
 import com.example.mywikidexapp.utils.WikiDexDomain
@@ -55,7 +57,11 @@ fun WikiScreenComposable(
     favoritesViewModel: FavoritesViewModel = ViewModelProvider(
         LocalContext.current as ComponentActivity,
         FavoritesViewModelFactory(LocalContext.current)
-    ).get(FavoritesViewModel::class.java),
+    )[FavoritesViewModel::class.java], // ).get(FavoritesViewModel::class.java),
+    historyViewModel: HistoryViewModel = ViewModelProvider(
+        LocalContext.current as ComponentActivity,
+        HistoryViewModelFactory(LocalContext.current)
+    )[HistoryViewModel::class.java], // ).get(HistoryViewModel::class.java),
     url: String,
     resetTrigger: Int
 ) {
@@ -224,7 +230,24 @@ fun WikiScreenComposable(
                 // Guardamos el estado para cuando el Composable se recomponga.
                 webViewRef.value?.saveState(webViewState)
             }*/
-            update = {}
+            update = {
+                if (
+                    currentURL != null &&
+                    currentTitle != null &&
+                    currentURL != WikiDexPortadaURL
+                ) {
+                    // Hacemos cosas con el historial si la página actual no es la portada.
+                    val historyEntryAux = historyViewModel.getByURL(currentURL).value
+
+                    if (historyEntryAux != null) {
+                        // Si existe la entrada en el historial, la actualizamos.
+                        historyViewModel.updateTimeMillis(historyEntryAux)
+                    } else {
+                        // Si no existe, la creamos.
+                        historyViewModel.insert(currentURL, currentTitle)
+                    }
+                }
+            }
         )
 
         // FAB expandible
