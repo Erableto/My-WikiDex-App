@@ -1,5 +1,6 @@
 package com.example.mywikidexapp.ui
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -28,17 +30,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
 import com.example.mywikidexapp.R
 import com.example.mywikidexapp.data.HistoryEntry
+import com.example.mywikidexapp.data.HistoryViewModel
+import com.example.mywikidexapp.data.HistoryViewModelFactory
 import com.example.mywikidexapp.ui.components.HistoryListItem
 import com.example.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
-val historyList = mutableStateListOf(
+val historyList_ = mutableStateListOf(
     HistoryEntry(
         0,
         "https://www.wikidex.net/wiki/Usuario:Erableto",
@@ -62,7 +68,15 @@ val historyList = mutableStateListOf(
 val historyList_empty = mutableStateListOf<HistoryEntry>()
 
 @Composable
-fun HistoryScreenComposable(onNavigateToWiki: (String) -> Unit) {
+fun HistoryScreenComposable(
+    viewModel: HistoryViewModel = ViewModelProvider(
+        LocalContext.current as ComponentActivity,
+        HistoryViewModelFactory(LocalContext.current)
+    )[HistoryViewModel::class.java], // ).get(HistoryViewModel::class.java),
+    onNavigateToWiki: (String) -> Unit
+) {
+    val historyList by viewModel.history.collectAsState()
+
     var showDialog by remember {
         mutableStateOf(false)
     }
@@ -82,7 +96,8 @@ fun HistoryScreenComposable(onNavigateToWiki: (String) -> Unit) {
                 TextButton(
                     onClick = {
                         // TODO
-                        historyList.clear()
+                        //historyList.clear()
+                        viewModel.deleteAll()
 
                         showDialog = false
                     }
@@ -153,7 +168,8 @@ fun HistoryScreenComposable(onNavigateToWiki: (String) -> Unit) {
                             onNavigateToWiki(historyEntry.url)
                         },
                         onClickDeleteEntry = {
-                            historyList.remove(historyEntry)
+                            //historyList.remove(historyEntry)
+                            viewModel.delete(historyEntry)
                         }
                     )
                 }

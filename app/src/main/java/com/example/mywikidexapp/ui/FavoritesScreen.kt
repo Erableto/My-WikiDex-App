@@ -62,7 +62,7 @@ fun FavoritesScreenComposable(
     viewModel: FavoritesViewModel = ViewModelProvider(
         LocalContext.current as ComponentActivity,
         FavoritesViewModelFactory(LocalContext.current)
-    ).get(FavoritesViewModel::class.java),
+    )[FavoritesViewModel::class.java], // ).get(FavoritesViewModel::class.java),
     onNavigateToWiki: (String) -> Unit
 ) {
     val favoritesList by viewModel.favorites.collectAsState()

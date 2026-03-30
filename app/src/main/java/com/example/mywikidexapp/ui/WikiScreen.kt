@@ -234,6 +234,7 @@ fun WikiScreenComposable(
                 if (
                     currentURL != null &&
                     currentTitle != null &&
+                    currentURL != WikiDexURL &&
                     currentURL != WikiDexPortadaURL
                 ) {
                     // Hacemos cosas con el historial si la página actual no es la portada.
