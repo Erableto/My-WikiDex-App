@@ -115,7 +115,7 @@ fun AboutScreenComposable() {
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "App desarrollada por Erableto",
+                    text = "Creada con ❤️ por Erableto",
                     fontSize = 32.sp
                 )
             }
