@@ -13,8 +13,8 @@ interface HistoryDAO {
     @Query("SELECT * FROM history ORDER BY timeMillis DESC")
     fun getAll(): Flow<List<HistoryEntry>>
 
-    @Query("SELECT * FROM history WHERE url = :url")
-    fun getByURL(url: String): Flow<HistoryEntry>
+    @Query("SELECT * FROM history WHERE url = :url LIMIT 1")
+    fun getByURL(url: String): Flow<HistoryEntry?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entry: HistoryEntry)

@@ -2,6 +2,7 @@ package com.example.mywikidexapp.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -181,6 +182,30 @@ fun WikiScreenComposable(
                         override fun onPageFinished(view: WebView?, url: String?) {
                             super.onPageFinished(view, url)
                             swipeRefreshLayout.isRefreshing = false
+
+                            val title = view?.title
+
+                            if (
+                                url != null &&
+                                title != null &&
+                                url != WikiDexURL &&
+                                url != WikiDexPortadaURL
+                            ) {
+                                // Hacemos cosas con el historial si la página actual no es la portada.
+                                /*val historyEntryAux = historyViewModel.getByURL(url).value
+
+                                if (historyEntryAux != null) {
+                                    // Si existe la entrada en el historial, la actualizamos.
+                                    historyViewModel.updateTimeMillis(historyEntryAux)
+                                } else {
+                                    // Si no existe, la creamos.
+                                    historyViewModel.insert(url, title)
+                                }*/
+
+                                // Hay una restricción de que no puede haber varias entradas con
+                                // la misma URL, así que se reemplazan al ser insertadas.
+                                historyViewModel.insert(url, title)
+                            }
                         }
 
                         override fun shouldOverrideUrlLoading(
@@ -230,25 +255,7 @@ fun WikiScreenComposable(
                 // Guardamos el estado para cuando el Composable se recomponga.
                 webViewRef.value?.saveState(webViewState)
             }*/
-            update = {
-                if (
-                    currentURL != null &&
-                    currentTitle != null &&
-                    currentURL != WikiDexURL &&
-                    currentURL != WikiDexPortadaURL
-                ) {
-                    // Hacemos cosas con el historial si la página actual no es la portada.
-                    val historyEntryAux = historyViewModel.getByURL(currentURL).value
-
-                    if (historyEntryAux != null) {
-                        // Si existe la entrada en el historial, la actualizamos.
-                        historyViewModel.updateTimeMillis(historyEntryAux)
-                    } else {
-                        // Si no existe, la creamos.
-                        historyViewModel.insert(currentURL, currentTitle)
-                    }
-                }
-            }
+            update = {}
         )
 
         // FAB expandible
