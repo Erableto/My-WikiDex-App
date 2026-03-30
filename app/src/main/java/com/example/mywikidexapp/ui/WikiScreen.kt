@@ -287,38 +287,45 @@ fun WikiScreenComposable(
                         }
                     )
 
-                    LabeledSmallFab(
-                        text =
-                            if (isFavorite) "Quitar de favoritos"
-                            else "Añadir a favoritos",
-                        onClick = {
-                            if (currentURL != null && currentTitle != null) {
-                                if (isFavorite) {
-                                    val favorite = favorites.first {
-                                        it.url == currentURL
+                    if (
+                        currentURL != null &&
+                        currentTitle != null &&
+                        !currentURL.contains("?search") && // Para no incluir páginas de búsqueda.
+                        !currentURL.contains("&search") // Para no incluir páginas de búsqueda.
+                    ) {
+                        LabeledSmallFab(
+                            text =
+                                if (isFavorite) "Quitar de favoritos"
+                                else "Añadir a favoritos",
+                            onClick = {
+                                if (currentURL != null && currentTitle != null) {
+                                    if (isFavorite) {
+                                        val favorite = favorites.first {
+                                            it.url == currentURL
+                                        }
+                                        favoritesViewModel.delete(favorite)
+                                    } else {
+                                        favoritesViewModel.insert(
+                                            currentURL,
+                                            currentTitle.removeSuffix(WikiDexLabel)
+                                        )
                                     }
-                                    favoritesViewModel.delete(favorite)
-                                } else {
-                                    favoritesViewModel.insert(
-                                        currentURL,
-                                        currentTitle.removeSuffix(WikiDexLabel)
-                                    )
                                 }
-                            }
 
-                            expanded = false
-                        },
-                        icon = {
-                            Icon(
-                                painter =
-                                    if (isFavorite) painterResource(R.drawable.rounded_heart_broken_24)
-                                    else painterResource(R.drawable.rounded_favorite_24),
-                                contentDescription =
-                                    if (isFavorite) "Quitar de favoritos"
-                                    else "Añadir a favoritos"
-                            )
-                        }
-                    )
+                                expanded = false
+                            },
+                            icon = {
+                                Icon(
+                                    painter =
+                                        if (isFavorite) painterResource(R.drawable.rounded_heart_broken_24)
+                                        else painterResource(R.drawable.rounded_favorite_24),
+                                    contentDescription =
+                                        if (isFavorite) "Quitar de favoritos"
+                                        else "Añadir a favoritos"
+                                )
+                            }
+                        )
+                    }
 
                     LabeledSmallFab(
                         text = "Abrir en el navegador",
