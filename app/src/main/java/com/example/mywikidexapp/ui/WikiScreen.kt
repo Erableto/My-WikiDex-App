@@ -49,6 +49,7 @@ import com.example.mywikidexapp.data.HistoryViewModelFactory
 import com.example.mywikidexapp.ui.components.LabeledSmallFab
 import com.example.mywikidexapp.utils.MastodonDomain
 import com.example.mywikidexapp.utils.WikiDexDomain
+import com.example.mywikidexapp.utils.WikiDexLabel
 import com.example.mywikidexapp.utils.WikiDexPortadaURL
 import com.example.mywikidexapp.utils.WikiDexURL
 
@@ -188,8 +189,11 @@ fun WikiScreenComposable(
                             if (
                                 url != null &&
                                 title != null &&
-                                url != WikiDexURL &&
-                                url != WikiDexPortadaURL
+                                url != WikiDexURL && // Para no incluir la página de la portada.
+                                url != WikiDexPortadaURL && // Para no incluir la página de la portada.
+                                !url.contains(WikiDexPortadaURL) && // Para no incluir la página de la portada.
+                                !url.contains("?search") && // Para no incluir páginas de búsqueda.
+                                !url.contains("&search") // Para no incluir páginas de búsqueda.
                             ) {
                                 // Hacemos cosas con el historial si la página actual no es la portada.
                                 /*val historyEntryAux = historyViewModel.getByURL(url).value
@@ -204,7 +208,7 @@ fun WikiScreenComposable(
 
                                 // Hay una restricción de que no puede haber varias entradas con
                                 // la misma URL, así que se reemplazan al ser insertadas.
-                                historyViewModel.insert(url, title)
+                                historyViewModel.insert(url, title.removeSuffix(WikiDexLabel))
                             }
                         }
 
@@ -295,7 +299,10 @@ fun WikiScreenComposable(
                                     }
                                     favoritesViewModel.delete(favorite)
                                 } else {
-                                    favoritesViewModel.insert(currentURL, currentTitle)
+                                    favoritesViewModel.insert(
+                                        currentURL,
+                                        currentTitle.removeSuffix(WikiDexLabel)
+                                    )
                                 }
                             }
 
