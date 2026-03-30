@@ -35,6 +35,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -155,7 +161,17 @@ fun WikiScreenComposable(
             text = {
                 if (toDesktopMode) Text("Para usar el modo escritorio debe abrirse el navegador. ¿Quieres hacerlo?")
                 else if (toSkin) Text("Para cambiar de skin debe abrirse el navegador. ¿Quieres hacerlo?")
-                else Text("¿Quieres abrir este enlace en el navegador?")
+                else Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(
+                            fontWeight = FontWeight.Bold,
+                            textDecoration = TextDecoration.Underline
+                        )) {
+                            append(blockedURL)
+                        }
+                        append("\n\n¿Quieres abrir este enlace en el navegador?")
+                    }
+                )
             },
             confirmButton = {
                 TextButton(
