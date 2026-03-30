@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -77,6 +78,9 @@ fun WikiScreenComposable(
     /*var isFavorite by remember {
         mutableStateOf(false)
     }*/
+    var toDesktopMode by remember {
+        mutableStateOf(false)
+    }
     var blockedURL by remember {
         mutableStateOf<String?>(null)
     }
@@ -167,6 +171,11 @@ fun WikiScreenComposable(
         )
     }
 
+    if (toDesktopMode) {
+        toDesktopMode = false
+        Toast.makeText(context, "No compatible con el modo escritorio.", Toast.LENGTH_LONG).show()
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         val isDarkTheme = isSystemInDarkTheme()
 
@@ -222,12 +231,16 @@ fun WikiScreenComposable(
 
                             val isAllowed = currentHost.endsWith(WikiDexDomain)
                             val isMastodon = currentHost.endsWith(MastodonDomain)
+                            toDesktopMode = currentURL.toString().contains("mobileaction=toggle_view_desktop")
 
-                            return if (isAllowed && !isMastodon) {
+                            return if (isAllowed && !isMastodon && !toDesktopMode) {
                                 false // Permitimos la navegación.
                             } else {
-                                // Guardamos la URL bloqueada para mostrar el diálogo.
-                                blockedURL = currentURL.toString()
+                                // No dejamos que se muestre el diálogo si es lo de cambiar al modo escritorio.
+                                if (!toDesktopMode) {
+                                    // Guardamos la URL bloqueada para mostrar el diálogo.
+                                    blockedURL = currentURL.toString()
+                                }
                                 true // Bloqueamos la navegación.
                             }
                         }
