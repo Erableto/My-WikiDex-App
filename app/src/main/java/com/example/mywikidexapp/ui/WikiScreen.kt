@@ -2,12 +2,10 @@ package com.example.mywikidexapp.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -37,7 +35,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
@@ -265,6 +262,8 @@ fun WikiScreenComposable(
                             toDesktopMode = currentURL.toString().contains("mobileaction=toggle_view_desktop")
                             toSkin = currentURL.toString().contains("useskin=")
 
+                            expanded = false
+
                             return if (isAllowed && !isMastodon && !toDesktopMode && !toSkin) {
                                 false // Permitimos la navegación.
                             } else {
@@ -289,6 +288,8 @@ fun WikiScreenComposable(
                     } else {
                         restoreState(webViewState)
                     }
+
+                    expanded = false
                 }
 
                 webViewRef.value = webView
@@ -297,6 +298,7 @@ fun WikiScreenComposable(
                     addView(webView)
                     setOnRefreshListener {
                         webView.reload()
+                        expanded = false
                     }
                 }
             },
