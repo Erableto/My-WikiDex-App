@@ -57,7 +57,7 @@ import com.example.mywikidexapp.utils.WikiDexDomain
 import com.example.mywikidexapp.utils.WikiDexLabel
 import com.example.mywikidexapp.utils.WikiDexPortadaURL
 import com.example.mywikidexapp.utils.WikiDexURL
-import com.example.mywikidexapp.utils.extractReadableTitle
+import com.example.mywikidexapp.utils.extractReadableTitleFromURL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -104,7 +104,7 @@ fun WikiScreenComposable(
     }
 
     val currentURL = webViewRef.value?.url
-    val currentTitle = /*webViewRef.value?.title*/extractReadableTitle(webViewRef.value?.url)
+    val currentTitle = /*webViewRef.value?.title*/extractReadableTitleFromURL(webViewRef.value?.url)
 
     val isFavorite = favorites.any {
         it.url == currentURL || it.title == currentTitle
@@ -217,7 +217,7 @@ fun WikiScreenComposable(
                             swipeRefreshLayout.isRefreshing = false
 
                             //// HISTORIAL ////
-                            val title = view?.title
+                            val title = /*view?.title*/extractReadableTitleFromURL(url)
 
                             if (
                                 url != null &&
@@ -247,7 +247,7 @@ fun WikiScreenComposable(
 
                                 // Hay una restricción de que no puede haber varias entradas con
                                 // la misma URL, así que se reemplazan al ser insertadas.
-                                historyViewModel.insert(url, title.removeSuffix(WikiDexLabel))
+                                historyViewModel.insert(url, title/*.removeSuffix(WikiDexLabel)*/)
                             }
                             //// ////
                         }
