@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mywikidexapp"
+    namespace = "com.erableto.mywikidexapp"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -15,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.mywikidexapp"
+        applicationId = "com.erableto.mywikidexapp"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
