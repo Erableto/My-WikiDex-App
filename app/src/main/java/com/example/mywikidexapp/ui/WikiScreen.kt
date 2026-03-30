@@ -217,6 +217,7 @@ fun WikiScreenComposable(
                             super.onPageFinished(view, url)
                             swipeRefreshLayout.isRefreshing = false
 
+                            //// HISTORIAL ////
                             val title = view?.title
 
                             if (
@@ -224,7 +225,10 @@ fun WikiScreenComposable(
                                 title != null &&
                                 url != WikiDexURL && // Para no incluir la página de la portada.
                                 url != WikiDexPortadaURL && // Para no incluir la página de la portada.
-                                !url.contains(WikiDexPortadaURL) && // Para no incluir la página de la portada.
+                                (
+                                        url.contains("$WikiDexPortadaURL:") || // Para permitir páginas del espacio de nombres WikiDex.
+                                        !url.contains(WikiDexPortadaURL) // Para no incluir la página de la portada.
+                                ) &&
                                 !url.contains("?search") && // Para no incluir páginas de búsqueda.
                                 !url.contains("&search") && // Para no incluir páginas de búsqueda.
                                 !url.contains("/search") && // Para no incluir páginas de búsqueda.
@@ -246,6 +250,7 @@ fun WikiScreenComposable(
                                 // la misma URL, así que se reemplazan al ser insertadas.
                                 historyViewModel.insert(url, title.removeSuffix(WikiDexLabel))
                             }
+                            //// ////
                         }
 
                         override fun shouldOverrideUrlLoading(
@@ -330,6 +335,7 @@ fun WikiScreenComposable(
                         }
                     )
 
+                    //// FAVORITOS ////
                     if (
                         currentURL != null &&
                         currentTitle != null &&
@@ -372,6 +378,7 @@ fun WikiScreenComposable(
                             }
                         )
                     }
+                    //// ////
 
                     LabeledSmallFab(
                         text = "Abrir en el navegador",
