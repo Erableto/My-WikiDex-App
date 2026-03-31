@@ -234,7 +234,11 @@ fun WikiScreenComposable(
                                 !url.contains("/search") && // Para no incluir páginas de búsqueda.
                                 !url.contains("?redirect") && // Para no incluir páginas de redirección.
                                 !url.contains("&redirect") && // Para no incluir páginas de redirección.
-                                !url.endsWith("#") // Para no incluir páginas que terminan en "#".
+                                !url.endsWith("#") && // Para no incluir páginas que terminan en "#".
+                                !url.contains("/index.php") && // Para no incluir páginas con "/index.php".
+                                !url.contains("/editor") && // Para no incluir páginas de edición.
+                                !url.contains("action=") && // Para no incluir páginas de edición.
+                                !url.contains("/media") // Para no incluir vistas de imágenes dentro de páginas.
                             ) {
                                 // Hacemos cosas con el historial si la página actual no es la portada.
                                 /*val historyEntryAux = historyViewModel.getByURL(url).value
@@ -351,7 +355,11 @@ fun WikiScreenComposable(
                         !currentURL.contains("/search") && // Para no incluir páginas de búsqueda.
                         !currentURL.contains("?redirect") && // Para no incluir páginas de redirección.
                         !currentURL.contains("&redirect") && // Para no incluir páginas de redirección.
-                        !currentURL.endsWith("#") // Para no incluir páginas que terminan en "#".
+                        !currentURL.endsWith("#") && // Para no incluir páginas que terminan en "#".
+                        !currentURL.contains("/index.php") && // Para no incluir páginas con "/index.php".
+                        !currentURL.contains("/editor") && // Para no incluir páginas de edición.
+                        !currentURL.contains("action=") && // Para no incluir páginas de edición.
+                        !currentURL.contains("/media") // Para no incluir vistas de imágenes dentro de páginas.
                     ) {
                         LabeledSmallFab(
                             text =
