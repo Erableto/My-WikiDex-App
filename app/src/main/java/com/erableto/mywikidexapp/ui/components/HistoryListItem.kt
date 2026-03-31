@@ -53,19 +53,19 @@ fun HistoryListItem(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(8.dp)
             ) {
-                Text(
-                    historyEntry.title,
-                    modifier = Modifier.weight(1f)
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
                 FloatingActionButton(onClick = onClickDeleteEntry) {
                     Icon(
                         painter = painterResource(R.drawable.rounded_delete_24),
                         contentDescription = "Borrar entrada del historial"
                     )
                 }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    historyEntry.title,
+                    modifier = Modifier.weight(1f)
+                )
             }
         }
     }

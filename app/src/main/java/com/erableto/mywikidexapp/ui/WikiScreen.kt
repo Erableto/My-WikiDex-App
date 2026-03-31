@@ -2,6 +2,7 @@ package com.erableto.mywikidexapp.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -10,12 +11,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -32,6 +38,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -59,6 +66,7 @@ import com.erableto.mywikidexapp.utils.WikiDexLabel
 import com.erableto.mywikidexapp.utils.WikiDexPortadaURL
 import com.erableto.mywikidexapp.utils.WikiDexURL
 import com.erableto.mywikidexapp.utils.extractReadableTitleFromURL
+import com.spr.jetpack_loading.components.indicators.PacmanIndicator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,6 +86,9 @@ fun WikiScreenComposable(
 
     val favorites by favoritesViewModel.favorites.collectAsState()
 
+    var isLoading by remember {
+        mutableStateOf(true)
+    }
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -201,9 +212,8 @@ fun WikiScreenComposable(
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        val isDarkTheme = isSystemInDarkTheme()
-
         AndroidView(
+            modifier = Modifier.fillMaxSize(),
             factory = { context ->
                 // Contenedor de pull-to-refresh
                 val swipeRefreshLayout = SwipeRefreshLayout(context)
@@ -211,8 +221,16 @@ fun WikiScreenComposable(
                 val webView = WebView(context).apply {
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
+                    settings.setSupportZoom(true)
+                    settings.builtInZoomControls = true
+                    settings.displayZoomControls = false
 
                     webViewClient = object : WebViewClient() {
+                        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                            super.onPageStarted(view, url, favicon)
+
+                            isLoading = true
+                        }
                         override fun onPageFinished(view: WebView?, url: String?) {
                             super.onPageFinished(view, url)
                             swipeRefreshLayout.isRefreshing = false
@@ -256,6 +274,8 @@ fun WikiScreenComposable(
                                 historyViewModel.insert(url, title/*.removeSuffix(WikiDexLabel)*/)
                             }
                             //// ////
+
+                            isLoading = false
                         }
 
                         override fun shouldOverrideUrlLoading(
@@ -321,141 +341,167 @@ fun WikiScreenComposable(
             update = {}
         )
 
-        // FAB expandible
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.End
+        AnimatedVisibility(
+            visible = !isLoading,
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
-            // Opciones del Speed Dial
-            AnimatedVisibility(visible = expanded) {
-                Column(horizontalAlignment = Alignment.End) {
-                    LabeledSmallFab(
-                        text = "Ir arriba",
-                        onClick = {
-                            webViewRef.value?.scrollTo(0, 0)
+            Box(modifier = Modifier.fillMaxSize()) {
+                // FAB expandible
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    // Opciones del Speed Dial
+                    AnimatedVisibility(visible = expanded) {
+                        Column(horizontalAlignment = Alignment.End) {
+                            LabeledSmallFab(
+                                text = "Ir arriba",
+                                onClick = {
+                                    webViewRef.value?.scrollTo(0, 0)
 
-                            expanded = false
-                        },
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.rounded_arrow_upward_24),
-                                contentDescription = "Ir arriba"
+                                    expanded = false
+                                },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.rounded_arrow_upward_24),
+                                        contentDescription = "Ir arriba"
+                                    )
+                                }
                             )
-                        }
-                    )
 
-                    //// FAVORITOS ////
-                    if (
-                        currentURL != null &&
-                        currentTitle != null &&
-                        !currentURL.contains("?search") && // Para no incluir páginas de búsqueda.
-                        !currentURL.contains("&search") && // Para no incluir páginas de búsqueda.
-                        !currentURL.contains("/search") && // Para no incluir páginas de búsqueda.
-                        !currentURL.contains("?redirect") && // Para no incluir páginas de redirección.
-                        !currentURL.contains("&redirect") && // Para no incluir páginas de redirección.
-                        !currentURL.endsWith("#") && // Para no incluir páginas que terminan en "#".
-                        !currentURL.contains("/index.php") && // Para no incluir páginas con "/index.php".
-                        !currentURL.contains("/editor") && // Para no incluir páginas de edición.
-                        !currentURL.contains("action=") && // Para no incluir páginas de edición.
-                        !currentURL.contains("/media") // Para no incluir vistas de imágenes dentro de páginas.
-                    ) {
-                        LabeledSmallFab(
-                            text =
-                                if (isFavorite) "Quitar de favoritos"
-                                else "Añadir a favoritos",
-                            onClick = {
-                                if (currentURL != null && currentTitle != null) {
-                                    if (isFavorite) {
-                                        val favorite = favorites.first {
-                                            it.url == currentURL
+                            //// FAVORITOS ////
+                            if (
+                                currentURL != null &&
+                                currentTitle != null &&
+                                !currentURL.contains("?search") && // Para no incluir páginas de búsqueda.
+                                !currentURL.contains("&search") && // Para no incluir páginas de búsqueda.
+                                !currentURL.contains("/search") && // Para no incluir páginas de búsqueda.
+                                !currentURL.contains("?redirect") && // Para no incluir páginas de redirección.
+                                !currentURL.contains("&redirect") && // Para no incluir páginas de redirección.
+                                !currentURL.endsWith("#") && // Para no incluir páginas que terminan en "#".
+                                !currentURL.contains("/index.php") && // Para no incluir páginas con "/index.php".
+                                !currentURL.contains("/editor") && // Para no incluir páginas de edición.
+                                !currentURL.contains("action=") && // Para no incluir páginas de edición.
+                                !currentURL.contains("/media") // Para no incluir vistas de imágenes dentro de páginas.
+                            ) {
+                                LabeledSmallFab(
+                                    text =
+                                        if (isFavorite) "Quitar de favoritos"
+                                        else "Añadir a favoritos",
+                                    onClick = {
+                                        if (currentURL != null && currentTitle != null) {
+                                            if (isFavorite) {
+                                                val favorite = favorites.first {
+                                                    it.url == currentURL
+                                                }
+                                                favoritesViewModel.delete(favorite)
+                                            } else {
+                                                favoritesViewModel.insert(
+                                                    currentURL,
+                                                    currentTitle.removeSuffix(WikiDexLabel)
+                                                )
+                                            }
                                         }
-                                        favoritesViewModel.delete(favorite)
-                                    } else {
-                                        favoritesViewModel.insert(
-                                            currentURL,
-                                            currentTitle.removeSuffix(WikiDexLabel)
+
+                                        expanded = false
+                                    },
+                                    icon = {
+                                        Icon(
+                                            painter =
+                                                if (isFavorite) painterResource(R.drawable.rounded_heart_broken_24)
+                                                else painterResource(R.drawable.rounded_favorite_24),
+                                            contentDescription =
+                                                if (isFavorite) "Quitar de favoritos"
+                                                else "Añadir a favoritos"
                                         )
                                     }
-                                }
-
-                                expanded = false
-                            },
-                            icon = {
-                                Icon(
-                                    painter =
-                                        if (isFavorite) painterResource(R.drawable.rounded_heart_broken_24)
-                                        else painterResource(R.drawable.rounded_favorite_24),
-                                    contentDescription =
-                                        if (isFavorite) "Quitar de favoritos"
-                                        else "Añadir a favoritos"
                                 )
                             }
+                            //// ////
+
+                            LabeledSmallFab(
+                                text = "Abrir en el navegador",
+                                onClick = {
+                                    val url = webViewRef.value?.url
+
+                                    if (url != null) {
+                                        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                                        context.startActivity(intent)
+                                    }
+
+                                    expanded = false
+                                },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.rounded_open_in_browser_24),
+                                        contentDescription = "Abrir en el navegador"
+                                    )
+                                }
+                            )
+
+                            LabeledSmallFab(
+                                text = "Compartir",
+                                onClick = {
+                                    val url = webViewRef.value?.url
+
+                                    if (url != null) {
+                                        val sendIntent = Intent().apply {
+                                            action = Intent.ACTION_SEND
+                                            putExtra(Intent.EXTRA_TEXT, url)
+                                            type = "text/plain"
+                                        }
+
+                                        val shareIntent =
+                                            Intent.createChooser(sendIntent, "Compartir página")
+                                        context.startActivity(shareIntent)
+                                    }
+
+                                    expanded = false
+                                },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.rounded_share_24),
+                                        contentDescription = "Compartir"
+                                    )
+                                }
+                            )
+                        }
+                    }
+
+                    // FAB principal
+                    FloatingActionButton(
+                        onClick = {
+                            expanded = !expanded
+                        }
+                    ) {
+                        Icon(
+                            painter =
+                                if (expanded) painterResource(R.drawable.rounded_close_24)
+                                else painterResource(R.drawable.rounded_menu_24),
+                            contentDescription = if (expanded) "Cerrar menú" else "Abrir menú"
                         )
                     }
-                    //// ////
-
-                    LabeledSmallFab(
-                        text = "Abrir en el navegador",
-                        onClick = {
-                            val url = webViewRef.value?.url
-
-                            if (url != null) {
-                                val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-                                context.startActivity(intent)
-                            }
-
-                            expanded = false
-                        },
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.rounded_open_in_browser_24),
-                                contentDescription = "Abrir en el navegador"
-                            )
-                        }
-                    )
-
-                    LabeledSmallFab(
-                        text = "Compartir",
-                        onClick = {
-                            val url = webViewRef.value?.url
-
-                            if (url != null) {
-                                val sendIntent = Intent().apply {
-                                    action = Intent.ACTION_SEND
-                                    putExtra(Intent.EXTRA_TEXT, url)
-                                    type = "text/plain"
-                                }
-
-                                val shareIntent = Intent.createChooser(sendIntent, "Compartir página")
-                                context.startActivity(shareIntent)
-                            }
-
-                            expanded = false
-                        },
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.rounded_share_24),
-                                contentDescription = "Compartir"
-                            )
-                        }
-                    )
                 }
             }
+        }
 
-            // FAB principal
-            FloatingActionButton(
-                onClick = {
-                    expanded = !expanded
-                }
+        AnimatedVisibility(
+            visible = isLoading,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(if (isSystemInDarkTheme()) Color.Black else Color.White),
+                contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    painter =
-                        if (expanded) painterResource(R.drawable.rounded_close_24)
-                        else painterResource(R.drawable.rounded_menu_24),
-                    contentDescription = if (expanded) "Cerrar menú" else "Abrir menú"
-                )
+                CircularProgressIndicator()
+                //PacmanIndicator()
             }
         }
     }

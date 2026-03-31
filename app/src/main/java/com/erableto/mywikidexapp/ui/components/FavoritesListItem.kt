@@ -38,19 +38,19 @@ fun FavoritesListItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(8.dp)
         ) {
-            Text(
-                favorite.title,
-                modifier = Modifier.weight(1f)
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
             FloatingActionButton(onClick = onClickDeleteFav) {
                 Icon(
                     painter = painterResource(R.drawable.rounded_heart_broken_24),
                     contentDescription = "Quitar de favoritos"
                 )
             }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                favorite.title,
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }
