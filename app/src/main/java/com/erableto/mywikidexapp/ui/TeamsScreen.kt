@@ -35,10 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import com.erableto.mywikidexapp.R
-import com.erableto.mywikidexapp.data.Favorite
-import com.erableto.mywikidexapp.data.FavoritesViewModel
-import com.erableto.mywikidexapp.data.FavoritesViewModelFactory
-import com.erableto.mywikidexapp.ui.components.FavoritesListItem
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
 /*
