@@ -24,6 +24,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.erableto.mywikidexapp.ui.AboutScreenComposable
 import com.erableto.mywikidexapp.ui.FavoritesScreenComposable
 import com.erableto.mywikidexapp.ui.HistoryScreenComposable
+import com.erableto.mywikidexapp.ui.TeamsScreenComposable
 import com.erableto.mywikidexapp.ui.WikiScreenComposable
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import com.erableto.mywikidexapp.utils.WikiDexURL
@@ -105,6 +106,7 @@ fun MyWikiDexAppApp() {
                             currentDestination = AppDestinations.WIKI
                         }
                     )
+                    AppDestinations.TEAMS -> TeamsScreenComposable()
                     AppDestinations.ABOUT -> AboutScreenComposable()
                 }
             }
@@ -131,6 +133,11 @@ enum class AppDestinations(
         "Historial",
         R.drawable.rounded_history_24,
         R.drawable.rounded_filled_history_24
+    ),
+    TEAMS(
+        "Mis equipos",
+        R.drawable.rounded_catching_pokemon_24,
+        R.drawable.rounded_filled_catching_pokemon_24
     ),
     ABOUT(
         "Acerca de",

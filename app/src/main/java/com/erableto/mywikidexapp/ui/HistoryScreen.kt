@@ -118,14 +118,10 @@ fun HistoryScreenComposable(
         )
     }
 
-    if (historyList.isEmpty()) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
-        ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (historyList.isEmpty()) {
             Column(
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.padding(8.dp).align(Alignment.Center),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -152,9 +148,7 @@ fun HistoryScreenComposable(
                     fontSize = 32.sp
                 )
             }
-        }
-    } else {
-        Box(modifier = Modifier.fillMaxSize()) {
+        } else {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()

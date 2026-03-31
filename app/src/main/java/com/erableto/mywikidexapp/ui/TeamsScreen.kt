@@ -1,5 +1,6 @@
 package com.erableto.mywikidexapp.ui
 
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,6 +41,7 @@ import com.erableto.mywikidexapp.data.FavoritesViewModelFactory
 import com.erableto.mywikidexapp.ui.components.FavoritesListItem
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
+/*
 val favoritesList_ = mutableStateListOf(
     Favorite(
         0,
@@ -57,19 +61,24 @@ val favoritesList_ = mutableStateListOf(
 )
 
 val favoritesList_empty = mutableStateListOf<Favorite>()
+*/
 
 @Composable
-fun FavoritesScreenComposable(
+fun TeamsScreenComposable(
+    /*
     viewModel: FavoritesViewModel = ViewModelProvider(
         LocalActivity.current as ComponentActivity,
         FavoritesViewModelFactory(LocalContext.current)
     )[FavoritesViewModel::class.java], // ).get(FavoritesViewModel::class.java),
     onNavigateToWiki: (String) -> Unit
+    */
 ) {
-    val favoritesList by viewModel.favorites.collectAsState()
+    val context = LocalContext.current
+
+    //val favoritesList by viewModel.favorites.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (favoritesList.isEmpty()) {
+        //if (favoritesList.isEmpty()) {
             Column(
                 modifier = Modifier.padding(8.dp).align(Alignment.Center),
                 verticalArrangement = Arrangement.Center,
@@ -80,8 +89,8 @@ fun FavoritesScreenComposable(
                         //.fillMaxWidth()
                         .width(250.dp)
                         .aspectRatio(1f),
-                    painter = painterResource(R.drawable.rounded_heart_broken_250),
-                    contentDescription = "No hay favoritos",
+                    painter = painterResource(R.drawable.rounded_catching_pokemon_250),
+                    contentDescription = "No hay equipos",
                     colorFilter = if (isSystemInDarkTheme()) {
                         ColorFilter.tint(Color.White)
                     } else {
@@ -93,12 +102,12 @@ fun FavoritesScreenComposable(
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "No hay favoritos",
+                    text = "No hay equipos",
                     textAlign = TextAlign.Center,
                     fontSize = 32.sp
                 )
             }
-        } else {
+        /*} else {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -119,18 +128,33 @@ fun FavoritesScreenComposable(
                     )
                 }
             }
+        }*/
+
+        FloatingActionButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            onClick = {
+                // TODO
+                Toast.makeText(context, "Soon™", Toast.LENGTH_SHORT).show()
+            }
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.rounded_add_24),
+                contentDescription = "Crear equipo"
+            )
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun FavoritesScreenComposablePreview() {
-    var DUMMY: String
+fun TeamsScreenComposablePreview() {
+    //var DUMMY: String
 
     MyWikiDexAppTheme() {
-        FavoritesScreenComposable(onNavigateToWiki = { url ->
+        TeamsScreenComposable(/*onNavigateToWiki = { url ->
             DUMMY = url
-        })
+        }*/)
     }
 }
