@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.dotlottie.android)
     implementation(libs.lottie)
     implementation(libs.lottie.compose)
+    implementation(libs.arsceneview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

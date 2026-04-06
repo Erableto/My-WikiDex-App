@@ -1,5 +1,6 @@
 [versions]
 agp = "9.1.0"
+arsceneview = "3.6.1"
 coreKtx = "1.18.0"
 coreSplashscreen = "1.2.0"
 dotlottieAndroid = "0.13.4"
@@ -27,6 +28,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
+arsceneview = { module = "io.github.sceneview:arsceneview", version.ref = "arsceneview" }
 dotlottie-android = { module = "com.github.LottieFiles:dotlottie-android", version.ref = "dotlottieAndroid" }
 jetpack-loading = { module = "com.github.MahboubehSeyedpour:jetpack-loading", version.ref = "jetpackLoading" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
