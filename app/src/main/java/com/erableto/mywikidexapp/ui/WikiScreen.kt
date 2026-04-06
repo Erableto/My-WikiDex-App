@@ -17,16 +17,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -38,7 +43,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -65,6 +73,7 @@ import com.erableto.mywikidexapp.utils.WikiDexLabel
 import com.erableto.mywikidexapp.utils.WikiDexPortadaURL
 import com.erableto.mywikidexapp.utils.WikiDexURL
 import com.erableto.mywikidexapp.utils.getReadableTitleFromURL
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,6 +93,15 @@ fun WikiScreen(
 
     val favorites by favoritesViewModel.favorites.collectAsState()
 
+    var focusRequester = remember {
+        FocusRequester()
+    }
+    var searchQuery by remember {
+        mutableStateOf<String?>(null)
+    }
+    var isSearching by remember {
+        mutableStateOf(false)
+    }
     var isLoading by remember {
         mutableStateOf(true)
     }
@@ -210,54 +228,123 @@ fun WikiScreen(
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        AndroidView(
-            modifier = Modifier.fillMaxSize(),
-            factory = { context ->
-                // Contenedor de pull-to-refresh
-                val swipeRefreshLayout = SwipeRefreshLayout(context)
+        Column {
+            // Barra de búsqueda (solo visible cuando isSearching es true)
+            AnimatedVisibility(visible = isSearching) {
+                LaunchedEffect(Unit) {
+                    focusRequester.requestFocus()
+                }
 
-                val webView = WebView(context).apply {
-                    settings.javaScriptEnabled = true
-                    settings.domStorageEnabled = true
-                    settings.setSupportZoom(true)
-                    settings.builtInZoomControls = true
-                    settings.displayZoomControls = false
-
-                    webViewClient = object : WebViewClient() {
-                        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                            super.onPageStarted(view, url, favicon)
-
-                            isLoading = true
-                        }
-                        override fun onPageFinished(view: WebView?, url: String?) {
-                            super.onPageFinished(view, url)
-                            swipeRefreshLayout.isRefreshing = false
-
-                            //// HISTORIAL ////
-                            val title = /*view?.title*/getReadableTitleFromURL(url)
-
-                            if (
-                                url != null &&
-                                title != null &&
-                                url != WikiDexURL && // Para no incluir la página de la portada.
-                                url != WikiDexPortadaURL && // Para no incluir la página de la portada.
-                                (
-                                        url.contains("$WikiDexPortadaURL:") || // Para permitir páginas del espacio de nombres WikiDex.
-                                        !url.contains(WikiDexPortadaURL) // Para no incluir la página de la portada.
-                                ) &&
-                                !url.contains("?search") && // Para no incluir páginas de búsqueda.
-                                !url.contains("&search") && // Para no incluir páginas de búsqueda.
-                                !url.contains("/search") && // Para no incluir páginas de búsqueda.
-                                !url.contains("?redirect") && // Para no incluir páginas de redirección.
-                                !url.contains("&redirect") && // Para no incluir páginas de redirección.
-                                !url.endsWith("#") && // Para no incluir páginas que terminan en "#".
-                                !url.contains("/index.php") && // Para no incluir páginas con "/index.php".
-                                !url.contains("/editor") && // Para no incluir páginas de edición.
-                                !url.contains("action=") && // Para no incluir páginas de edición.
-                                !url.contains("/media") // Para no incluir vistas de imágenes dentro de páginas.
+                TextField(
+                    value = searchQuery ?: "",
+                    onValueChange = {
+                        searchQuery = it
+                        webViewRef.value?.findAllAsync(it) // Permite buscar mientras se escribe.
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .focusRequester(focusRequester),
+                    placeholder = {
+                        Text("Buscar en la página")
+                    },
+                    trailingIcon = {
+                        Row {
+                            IconButton(
+                                onClick = {
+                                    webViewRef.value?.findNext(false)
+                                }
                             ) {
-                                // Hacemos cosas con el historial si la página actual no es la portada.
-                                /*val historyEntryAux = historyViewModel.getByURL(url).value
+                                Icon(
+                                    painterResource(id = R.drawable.rounded_arrow_upward_24),
+                                    contentDescription = "Anterior"
+                                )
+                            }
+
+                            IconButton(
+                                onClick = {
+                                    webViewRef.value?.findNext(true)
+                                }
+                            ) {
+                                Icon(
+                                    painterResource(id = R.drawable.rounded_arrow_downward_24),
+                                    contentDescription = "Siguiente"
+                                )
+                            }
+
+                            val keyboardController = LocalSoftwareKeyboardController.current
+                            IconButton(
+                                onClick = {
+                                    isSearching = false
+                                    searchQuery = ""
+                                    webViewRef.value?.clearMatches() // Limpiamos los resaltados.
+                                    keyboardController?.hide() // Ocultamos el teclado manualmente.
+                                }
+                            ) {
+                                Icon(
+                                    painterResource(id = R.drawable.rounded_close_24),
+                                    contentDescription = "Cerrar"
+                                )
+                            }
+                        }
+                    },
+                    singleLine = true
+                )
+            }
+
+            AndroidView(
+                modifier = Modifier.fillMaxSize(),
+                factory = { context ->
+                    // Contenedor de pull-to-refresh
+                    val swipeRefreshLayout = SwipeRefreshLayout(context)
+
+                    val webView = WebView(context).apply {
+                        settings.javaScriptEnabled = true
+                        settings.domStorageEnabled = true
+                        settings.setSupportZoom(true)
+                        settings.builtInZoomControls = true
+                        settings.displayZoomControls = false
+
+                        webViewClient = object : WebViewClient() {
+                            override fun onPageStarted(
+                                view: WebView?,
+                                url: String?,
+                                favicon: Bitmap?
+                            ) {
+                                super.onPageStarted(view, url, favicon)
+
+                                isLoading = true
+                            }
+
+                            override fun onPageFinished(view: WebView?, url: String?) {
+                                super.onPageFinished(view, url)
+                                swipeRefreshLayout.isRefreshing = false
+
+                                //// HISTORIAL ////
+                                val title = /*view?.title*/getReadableTitleFromURL(url)
+
+                                if (
+                                    url != null &&
+                                    title != null &&
+                                    url != WikiDexURL && // Para no incluir la página de la portada.
+                                    url != WikiDexPortadaURL && // Para no incluir la página de la portada.
+                                    (
+                                            url.contains("$WikiDexPortadaURL:") || // Para permitir páginas del espacio de nombres WikiDex.
+                                                    !url.contains(WikiDexPortadaURL) // Para no incluir la página de la portada.
+                                            ) &&
+                                    !url.contains("?search") && // Para no incluir páginas de búsqueda.
+                                    !url.contains("&search") && // Para no incluir páginas de búsqueda.
+                                    !url.contains("/search") && // Para no incluir páginas de búsqueda.
+                                    !url.contains("?redirect") && // Para no incluir páginas de redirección.
+                                    !url.contains("&redirect") && // Para no incluir páginas de redirección.
+                                    !url.endsWith("#") && // Para no incluir páginas que terminan en "#".
+                                    !url.contains("/index.php") && // Para no incluir páginas con "/index.php".
+                                    !url.contains("/editor") && // Para no incluir páginas de edición.
+                                    !url.contains("action=") && // Para no incluir páginas de edición.
+                                    !url.contains("/media") // Para no incluir vistas de imágenes dentro de páginas.
+                                ) {
+                                    // Hacemos cosas con el historial si la página actual no es la portada.
+                                    /*val historyEntryAux = historyViewModel.getByURL(url).value
 
                                 if (historyEntryAux != null) {
                                     // Si existe la entrada en el historial, la actualizamos.
@@ -267,77 +354,85 @@ fun WikiScreen(
                                     historyViewModel.insert(url, title)
                                 }*/
 
-                                // Hay una restricción de que no puede haber varias entradas con
-                                // la misma URL, así que se reemplazan al ser insertadas.
-                                historyViewModel.insert(url, title/*.removeSuffix(WikiDexLabel)*/)
+                                    // Hay una restricción de que no puede haber varias entradas con
+                                    // la misma URL, así que se reemplazan al ser insertadas.
+                                    historyViewModel.insert(
+                                        url,
+                                        title/*.removeSuffix(WikiDexLabel)*/
+                                    )
+                                }
+                                //// ////
+
+                                isLoading = false
                             }
-                            //// ////
 
-                            isLoading = false
-                        }
+                            override fun shouldOverrideUrlLoading(
+                                view: WebView?,
+                                request: WebResourceRequest?
+                            ): Boolean {
+                                val currentURL = request?.url ?: return true
+                                val currentHost = currentURL.host ?: return true
 
-                        override fun shouldOverrideUrlLoading(
-                            view: WebView?,
-                            request: WebResourceRequest?
-                        ): Boolean {
-                            val currentURL = request?.url ?: return true
-                            val currentHost = currentURL.host ?: return true
+                                val isAllowed = currentHost.endsWith(WikiDexMainDomain)
+                                val isMastodon = currentHost.endsWith(WikiDexMastodonDomain)
+                                val isAC = currentHost.endsWith(WikiDexACDomain)
+                                toDesktopMode = currentURL.toString()
+                                    .contains("mobileaction=toggle_view_desktop")
+                                toSkin = currentURL.toString().contains("useskin=")
 
-                            val isAllowed = currentHost.endsWith(WikiDexMainDomain)
-                            val isMastodon = currentHost.endsWith(WikiDexMastodonDomain)
-                            val isAC = currentHost.endsWith(WikiDexACDomain)
-                            toDesktopMode = currentURL.toString().contains("mobileaction=toggle_view_desktop")
-                            toSkin = currentURL.toString().contains("useskin=")
+                                expanded = false
+                                //isSearching = false
 
-                            expanded = false
-
-                            return if (isAllowed && !isMastodon && !isAC && !toDesktopMode && !toSkin) {
-                                false // Permitimos la navegación.
-                            } else {
-                                /*
+                                return if (isAllowed && !isMastodon && !isAC && !toDesktopMode && !toSkin) {
+                                    false // Permitimos la navegación.
+                                } else {
+                                    /*
                                 // No dejamos que se muestre el diálogo si es lo de cambiar al modo escritorio.
                                 if (!toDesktopMode && !toSkin) {
                                 */
                                     // Guardamos la URL bloqueada para mostrar el diálogo.
                                     blockedURL = currentURL.toString()
-                                //}
-                                true // Bloqueamos la navegación.
+                                    //}
+                                    true // Bloqueamos la navegación.
+                                }
                             }
                         }
-                    }
 
-                    //loadUrl(url)
+                        //loadUrl(url)
 
-                    // Restauramos el estado si existe.
-                    // Si no, cargamos la URL inicial.
-                    if (webViewState.isEmpty) {
-                        loadUrl(url)
-                    } else {
-                        restoreState(webViewState)
-                    }
+                        // Restauramos el estado si existe.
+                        // Si no, cargamos la URL inicial.
+                        if (webViewState.isEmpty) {
+                            loadUrl(url)
+                        } else {
+                            restoreState(webViewState)
+                        }
 
-                    expanded = false
-                }
-
-                webViewRef.value = webView
-
-                swipeRefreshLayout.apply {
-                    addView(webView)
-                    setOnRefreshListener {
-                        webView.reload()
                         expanded = false
                     }
-                }
-            },
-            /*update = { webView ->
+
+                    //webView.setFindListener { activeMatchOrdinal, numberOfMatches, isDoneCounting ->  }
+
+                    webViewRef.value = webView
+
+                    swipeRefreshLayout.apply {
+                        addView(webView)
+                        setOnRefreshListener {
+                            webView.reload()
+                            expanded = false
+                        }
+                    }
+                },
+                /*update = { webView ->
                 webView.loadUrl(WikiDexURL)
             }*/
-            /*update = { webView ->
+                /*update = { webView ->
                 // Guardamos el estado para cuando el Composable se recomponga.
                 webViewRef.value?.saveState(webViewState)
             }*/
-            update = {}
-        )
+                update = {}
+            )
+        }
 
         AnimatedVisibility(
             visible = !isLoading,
@@ -355,133 +450,134 @@ fun WikiScreen(
                 ) {
                     // Opciones del Speed Dial
                     AnimatedVisibility(visible = expanded) {
-                        Column(horizontalAlignment = Alignment.End) {
-                            LabeledSmallFab(
-                                text = "Ir arriba",
-                                onClick = {
-                                    webViewRef.value?.scrollTo(0, 0)
-
-                                    expanded = false
-                                },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(R.drawable.rounded_arrow_upward_24),
-                                        contentDescription = "Ir arriba"
-                                    )
-                                }
-                            )
-
-                            LabeledSmallFab(
-                                text = "Buscar en la página",
-                                onClick = {
-                                    // TODO
-
-                                    expanded = false
-                                },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(R.drawable.rounded_find_in_page_24),
-                                        contentDescription = "Buscar en la página"
-                                    )
-                                }
-                            )
-
-                            //// FAVORITOS ////
-                            if (
-                                currentURL != null &&
-                                currentTitle != null &&
-                                !currentURL.contains("?search") && // Para no incluir páginas de búsqueda.
-                                !currentURL.contains("&search") && // Para no incluir páginas de búsqueda.
-                                !currentURL.contains("/search") && // Para no incluir páginas de búsqueda.
-                                !currentURL.contains("?redirect") && // Para no incluir páginas de redirección.
-                                !currentURL.contains("&redirect") && // Para no incluir páginas de redirección.
-                                !currentURL.endsWith("#") && // Para no incluir páginas que terminan en "#".
-                                !currentURL.contains("/index.php") && // Para no incluir páginas con "/index.php".
-                                !currentURL.contains("/editor") && // Para no incluir páginas de edición.
-                                !currentURL.contains("action=") && // Para no incluir páginas de edición.
-                                !currentURL.contains("/media") // Para no incluir vistas de imágenes dentro de páginas.
-                            ) {
+                        LazyColumn(horizontalAlignment = Alignment.End) {
+                            item {
                                 LabeledSmallFab(
-                                    text =
-                                        if (isFavorite) "Quitar de favoritos"
-                                        else "Añadir a favoritos",
+                                    text = "Ir arriba",
                                     onClick = {
-                                        if (currentURL != null && currentTitle != null) {
-                                            if (isFavorite) {
-                                                val favorite = favorites.first {
-                                                    it.url == currentURL
+                                        webViewRef.value?.scrollTo(0, 0)
+
+                                        expanded = false
+                                    },
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(R.drawable.rounded_arrow_upward_24),
+                                            contentDescription = "Ir arriba"
+                                        )
+                                    }
+                                )
+
+                                LabeledSmallFab(
+                                    text = "Buscar en la página",
+                                    onClick = {
+                                        expanded = false
+                                        isSearching = true
+                                    },
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(R.drawable.rounded_find_in_page_24),
+                                            contentDescription = "Buscar en la página"
+                                        )
+                                    }
+                                )
+
+                                //// FAVORITOS ////
+                                if (
+                                    currentURL != null &&
+                                    currentTitle != null &&
+                                    !currentURL.contains("?search") && // Para no incluir páginas de búsqueda.
+                                    !currentURL.contains("&search") && // Para no incluir páginas de búsqueda.
+                                    !currentURL.contains("/search") && // Para no incluir páginas de búsqueda.
+                                    !currentURL.contains("?redirect") && // Para no incluir páginas de redirección.
+                                    !currentURL.contains("&redirect") && // Para no incluir páginas de redirección.
+                                    !currentURL.endsWith("#") && // Para no incluir páginas que terminan en "#".
+                                    !currentURL.contains("/index.php") && // Para no incluir páginas con "/index.php".
+                                    !currentURL.contains("/editor") && // Para no incluir páginas de edición.
+                                    !currentURL.contains("action=") && // Para no incluir páginas de edición.
+                                    !currentURL.contains("/media") // Para no incluir vistas de imágenes dentro de páginas.
+                                ) {
+                                    LabeledSmallFab(
+                                        text =
+                                            if (isFavorite) "Quitar de favoritos"
+                                            else "Añadir a favoritos",
+                                        onClick = {
+                                            if (currentURL != null && currentTitle != null) {
+                                                if (isFavorite) {
+                                                    val favorite = favorites.first {
+                                                        it.url == currentURL
+                                                    }
+                                                    favoritesViewModel.delete(favorite)
+                                                } else {
+                                                    favoritesViewModel.insert(
+                                                        currentURL,
+                                                        currentTitle.removeSuffix(WikiDexLabel)
+                                                    )
                                                 }
-                                                favoritesViewModel.delete(favorite)
-                                            } else {
-                                                favoritesViewModel.insert(
-                                                    currentURL,
-                                                    currentTitle.removeSuffix(WikiDexLabel)
-                                                )
                                             }
+
+                                            expanded = false
+                                        },
+                                        icon = {
+                                            Icon(
+                                                painter =
+                                                    if (isFavorite) painterResource(R.drawable.rounded_heart_broken_24)
+                                                    else painterResource(R.drawable.rounded_favorite_24),
+                                                contentDescription =
+                                                    if (isFavorite) "Quitar de favoritos"
+                                                    else "Añadir a favoritos"
+                                            )
+                                        }
+                                    )
+                                }
+                                //// ////
+
+                                LabeledSmallFab(
+                                    text = "Abrir en el navegador",
+                                    onClick = {
+                                        val url = webViewRef.value?.url
+
+                                        if (url != null) {
+                                            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                                            context.startActivity(intent)
                                         }
 
                                         expanded = false
                                     },
                                     icon = {
                                         Icon(
-                                            painter =
-                                                if (isFavorite) painterResource(R.drawable.rounded_heart_broken_24)
-                                                else painterResource(R.drawable.rounded_favorite_24),
-                                            contentDescription =
-                                                if (isFavorite) "Quitar de favoritos"
-                                                else "Añadir a favoritos"
+                                            painter = painterResource(R.drawable.rounded_open_in_browser_24),
+                                            contentDescription = "Abrir en el navegador"
+                                        )
+                                    }
+                                )
+
+                                LabeledSmallFab(
+                                    text = "Compartir",
+                                    onClick = {
+                                        val url = webViewRef.value?.url
+
+                                        if (url != null) {
+                                            val sendIntent = Intent().apply {
+                                                action = Intent.ACTION_SEND
+                                                putExtra(Intent.EXTRA_TEXT, url)
+                                                type = "text/plain"
+                                            }
+
+                                            val shareIntent =
+                                                Intent.createChooser(sendIntent, "Compartir página")
+                                            context.startActivity(shareIntent)
+                                        }
+
+                                        expanded = false
+                                    },
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(R.drawable.rounded_share_24),
+                                            contentDescription = "Compartir"
                                         )
                                     }
                                 )
                             }
-                            //// ////
-
-                            LabeledSmallFab(
-                                text = "Abrir en el navegador",
-                                onClick = {
-                                    val url = webViewRef.value?.url
-
-                                    if (url != null) {
-                                        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-                                        context.startActivity(intent)
-                                    }
-
-                                    expanded = false
-                                },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(R.drawable.rounded_open_in_browser_24),
-                                        contentDescription = "Abrir en el navegador"
-                                    )
-                                }
-                            )
-
-                            LabeledSmallFab(
-                                text = "Compartir",
-                                onClick = {
-                                    val url = webViewRef.value?.url
-
-                                    if (url != null) {
-                                        val sendIntent = Intent().apply {
-                                            action = Intent.ACTION_SEND
-                                            putExtra(Intent.EXTRA_TEXT, url)
-                                            type = "text/plain"
-                                        }
-
-                                        val shareIntent =
-                                            Intent.createChooser(sendIntent, "Compartir página")
-                                        context.startActivity(shareIntent)
-                                    }
-
-                                    expanded = false
-                                },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(R.drawable.rounded_share_24),
-                                        contentDescription = "Compartir"
-                                    )
-                                }
-                            )
                         }
                     }
 
