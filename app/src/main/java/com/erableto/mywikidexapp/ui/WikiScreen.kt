@@ -64,7 +64,7 @@ import com.erableto.mywikidexapp.utils.WikiDexMainDomain
 import com.erableto.mywikidexapp.utils.WikiDexLabel
 import com.erableto.mywikidexapp.utils.WikiDexPortadaURL
 import com.erableto.mywikidexapp.utils.WikiDexURL
-import com.erableto.mywikidexapp.utils.extractReadableTitleFromURL
+import com.erableto.mywikidexapp.utils.getReadableTitleFromURL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,7 +114,7 @@ fun WikiScreen(
     }
 
     val currentURL = webViewRef.value?.url
-    val currentTitle = /*webViewRef.value?.title*/extractReadableTitleFromURL(webViewRef.value?.url)
+    val currentTitle = /*webViewRef.value?.title*/getReadableTitleFromURL(webViewRef.value?.url)
 
     val isFavorite = favorites.any {
         it.url == currentURL || it.title == currentTitle
@@ -234,7 +234,7 @@ fun WikiScreen(
                             swipeRefreshLayout.isRefreshing = false
 
                             //// HISTORIAL ////
-                            val title = /*view?.title*/extractReadableTitleFromURL(url)
+                            val title = /*view?.title*/getReadableTitleFromURL(url)
 
                             if (
                                 url != null &&
@@ -367,6 +367,21 @@ fun WikiScreen(
                                     Icon(
                                         painter = painterResource(R.drawable.rounded_arrow_upward_24),
                                         contentDescription = "Ir arriba"
+                                    )
+                                }
+                            )
+
+                            LabeledSmallFab(
+                                text = "Buscar en la página",
+                                onClick = {
+                                    // TODO
+
+                                    expanded = false
+                                },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.rounded_find_in_page_24),
+                                        contentDescription = "Buscar en la página"
                                     )
                                 }
                             )
