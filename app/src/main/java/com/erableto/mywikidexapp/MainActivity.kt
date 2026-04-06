@@ -21,11 +21,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.erableto.mywikidexapp.ui.AboutScreenComposable
-import com.erableto.mywikidexapp.ui.FavoritesScreenComposable
-import com.erableto.mywikidexapp.ui.HistoryScreenComposable
-import com.erableto.mywikidexapp.ui.TeamsScreenComposable
-import com.erableto.mywikidexapp.ui.WikiScreenComposable
+import com.erableto.mywikidexapp.ui.AboutScreen
+import com.erableto.mywikidexapp.ui.FavoritesScreen
+import com.erableto.mywikidexapp.ui.HistoryScreen
+import com.erableto.mywikidexapp.ui.TeamsScreen
+import com.erableto.mywikidexapp.ui.WikiScreen
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import com.erableto.mywikidexapp.utils.WikiDexURL
 
@@ -90,24 +90,24 @@ fun MyWikiDexAppApp() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
                 when (currentDestination) {
-                    AppDestinations.WIKI -> WikiScreenComposable(
+                    AppDestinations.WIKI -> WikiScreen(
                         url = currentWikiURL,
                         resetTrigger = wikiResetTrigger
                     )
-                    AppDestinations.FAVORITES -> FavoritesScreenComposable(
+                    AppDestinations.FAVORITES -> FavoritesScreen(
                         onNavigateToWiki = { url ->
                             currentWikiURL = url
                             currentDestination = AppDestinations.WIKI
                         }
                     )
-                    AppDestinations.HISTORY -> HistoryScreenComposable(
+                    AppDestinations.HISTORY -> HistoryScreen(
                         onNavigateToWiki = { url ->
                             currentWikiURL = url
                             currentDestination = AppDestinations.WIKI
                         }
                     )
-                    AppDestinations.TEAMS -> TeamsScreenComposable()
-                    AppDestinations.ABOUT -> AboutScreenComposable()
+                    AppDestinations.TEAMS -> TeamsScreen()
+                    AppDestinations.ABOUT -> AboutScreen()
                 }
             }
         }

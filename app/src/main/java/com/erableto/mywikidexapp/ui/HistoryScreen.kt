@@ -69,7 +69,7 @@ val historyList_ = mutableStateListOf(
 val historyList_empty = mutableStateListOf<HistoryEntry>()
 
 @Composable
-fun HistoryScreenComposable(
+fun HistoryScreen(
     viewModel: HistoryViewModel = ViewModelProvider(
         LocalActivity.current as ComponentActivity,
         HistoryViewModelFactory(LocalContext.current)
@@ -189,11 +189,11 @@ fun HistoryScreenComposable(
 
 @Preview(showBackground = true)
 @Composable
-fun HistoryScreenComposablePreview() {
+fun HistoryScreenPreview() {
     var DUMMY: String
 
     MyWikiDexAppTheme() {
-        HistoryScreenComposable(onNavigateToWiki = { url ->
+        HistoryScreen(onNavigateToWiki = { url ->
             DUMMY = url
         })
     }

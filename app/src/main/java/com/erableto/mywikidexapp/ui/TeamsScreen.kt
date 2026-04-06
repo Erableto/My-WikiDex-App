@@ -1,8 +1,6 @@
 package com.erableto.mywikidexapp.ui
 
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -15,14 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModelProvider
 import com.erableto.mywikidexapp.R
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
@@ -60,7 +53,7 @@ val favoritesList_empty = mutableStateListOf<Favorite>()
 */
 
 @Composable
-fun TeamsScreenComposable(
+fun TeamsScreen(
     /*
     viewModel: FavoritesViewModel = ViewModelProvider(
         LocalActivity.current as ComponentActivity,
@@ -145,11 +138,11 @@ fun TeamsScreenComposable(
 
 @Preview(showBackground = true)
 @Composable
-fun TeamsScreenComposablePreview() {
+fun TeamsScreenPreview() {
     //var DUMMY: String
 
     MyWikiDexAppTheme() {
-        TeamsScreenComposable(/*onNavigateToWiki = { url ->
+        TeamsScreen(/*onNavigateToWiki = { url ->
             DUMMY = url
         }*/)
     }

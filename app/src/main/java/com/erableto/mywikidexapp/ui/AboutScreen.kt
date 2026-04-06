@@ -33,7 +33,7 @@ import com.erableto.mywikidexapp.R
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
 @Composable
-fun AboutScreenComposable() {
+fun AboutScreen() {
     val context = LocalContext.current
 
     Box(
@@ -125,8 +125,8 @@ fun AboutScreenComposable() {
 
 @Preview(showBackground = true)
 @Composable
-fun AboutScreenComposablePreview() {
+fun AboutScreenPreview() {
     MyWikiDexAppTheme() {
-        AboutScreenComposable()
+        AboutScreen()
     }
 }

@@ -65,11 +65,10 @@ import com.erableto.mywikidexapp.utils.WikiDexLabel
 import com.erableto.mywikidexapp.utils.WikiDexPortadaURL
 import com.erableto.mywikidexapp.utils.WikiDexURL
 import com.erableto.mywikidexapp.utils.extractReadableTitleFromURL
-import com.spr.jetpack_loading.components.indicators.PacmanIndicator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WikiScreenComposable(
+fun WikiScreen(
     favoritesViewModel: FavoritesViewModel = ViewModelProvider(
         LocalActivity.current as ComponentActivity,
         FavoritesViewModelFactory(LocalContext.current)
@@ -508,8 +507,8 @@ fun WikiScreenComposable(
 
 @Preview(showBackground = true)
 @Composable
-fun WikiScreenComposablePreview() {
+fun WikiScreenPreview() {
     MyWikiDexAppTheme() {
-        WikiScreenComposable(url = WikiDexURL, resetTrigger = 0)
+        WikiScreen(url = WikiDexURL, resetTrigger = 0)
     }
 }

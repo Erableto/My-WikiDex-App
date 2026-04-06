@@ -59,7 +59,7 @@ val favoritesList_ = mutableStateListOf(
 val favoritesList_empty = mutableStateListOf<Favorite>()
 
 @Composable
-fun FavoritesScreenComposable(
+fun FavoritesScreen(
     viewModel: FavoritesViewModel = ViewModelProvider(
         LocalActivity.current as ComponentActivity,
         FavoritesViewModelFactory(LocalContext.current)
@@ -125,11 +125,11 @@ fun FavoritesScreenComposable(
 
 @Preview(showBackground = true)
 @Composable
-fun FavoritesScreenComposablePreview() {
+fun FavoritesScreenPreview() {
     var DUMMY: String
 
     MyWikiDexAppTheme() {
-        FavoritesScreenComposable(onNavigateToWiki = { url ->
+        FavoritesScreen(onNavigateToWiki = { url ->
             DUMMY = url
         })
     }

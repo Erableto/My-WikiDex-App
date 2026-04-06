@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
@@ -26,33 +27,13 @@ fun FavoritesListItem(
     onClickFav: () -> Unit,
     onClickDeleteFav: () -> Unit
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
-            .clickable {
-                onClickFav()
-            }
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(8.dp)
-        ) {
-            FloatingActionButton(onClick = onClickDeleteFav) {
-                Icon(
-                    painter = painterResource(R.drawable.rounded_heart_broken_24),
-                    contentDescription = "Quitar de favoritos"
-                )
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Text(
-                favorite.title,
-                modifier = Modifier.weight(1f)
-            )
-        }
-    }
+    CardFABItem(
+        favorite.title,
+        painterResource(R.drawable.rounded_heart_broken_24),
+        "Quitar de favoritos",
+        onClickFav,
+        onClickDeleteFav
+    )
 }
 
 @Preview(showBackground = true)

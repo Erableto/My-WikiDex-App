@@ -35,39 +35,18 @@ fun HistoryListItem(
     val dateFormat = SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy - HH:mm:ss")
     val dateString = dateFormat.format(date)
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
-    ) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Text(dateString)
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Card(
-            modifier = Modifier.clickable {
-                onClickEntry()
-            }
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(8.dp)
-            ) {
-                FloatingActionButton(onClick = onClickDeleteEntry) {
-                    Icon(
-                        painter = painterResource(R.drawable.rounded_delete_24),
-                        contentDescription = "Borrar entrada del historial"
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Text(
-                    historyEntry.title,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-        }
+        CardFABItem(
+            historyEntry.title,
+            painterResource(R.drawable.rounded_delete_24),
+            "Borrar entrada del historial",
+            onClickEntry,
+            onClickDeleteEntry
+        )
     }
 }
 
