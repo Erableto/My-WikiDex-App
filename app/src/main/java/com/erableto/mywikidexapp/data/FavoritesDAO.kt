@@ -23,10 +23,10 @@ interface FavoritesDAO {
     @Query("SELECT * FROM favorites WHERE url = :url")
     fun getByURL(url: String): Flow<Favorite>
 
-    @Query("SELECT * FROM favorites WHERE title LIKE :query ORDER BY title DESC")
+    @Query("SELECT * FROM favorites WHERE title LIKE :query ORDER BY id DESC")
     fun searchFavorites(query: String): Flow<List<Favorite>>
 
-    @Query("SELECT * FROM favorites WHERE title LIKE :query ORDER BY title DESC")
+    @Query("SELECT * FROM favorites WHERE title LIKE :query ORDER BY id DESC")
     fun searchFavoritesPaged(query: String): PagingSource<Int, Favorite>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
