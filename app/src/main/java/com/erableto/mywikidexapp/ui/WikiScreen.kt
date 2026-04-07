@@ -3,6 +3,7 @@ package com.erableto.mywikidexapp.ui
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -49,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -79,7 +81,6 @@ import com.erableto.mywikidexapp.utils.WikiDexPortadaURL
 import com.erableto.mywikidexapp.utils.WikiDexURL
 import com.erableto.mywikidexapp.utils.getReadableTitleFromURL
 import com.erableto.mywikidexapp.utils.vibrateError
-import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -150,6 +151,9 @@ fun WikiScreen(
     val isFavorite = favorites.any {
         it.url == currentURL || it.title == currentTitle
     }
+
+    val backgroundColor = MaterialTheme.colorScheme.background.toArgb()
+    val primaryColor = MaterialTheme.colorScheme.primary.toArgb()
 
     fun closeSearch() {
         isSearching = false
@@ -483,6 +487,7 @@ fun WikiScreen(
                             webView.reload()
                             expanded = false
                         }
+                        setColorSchemeColors(primaryColor)
                     }
                 },
                 /*update = { webView ->
