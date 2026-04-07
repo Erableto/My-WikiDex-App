@@ -18,9 +18,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
@@ -100,6 +102,12 @@ fun WikiScreen(
     var searchQuery by remember {
         mutableStateOf<String?>(null)
     }
+    var currentResultNumber by remember {
+        mutableStateOf(0)
+    }
+    var numberOfResults by remember {
+        mutableStateOf(0)
+    }
     var isSearching by remember {
         mutableStateOf(false)
     }
@@ -139,6 +147,15 @@ fun WikiScreen(
         it.url == currentURL || it.title == currentTitle
     }
 
+    fun closeSearch() {
+        isSearching = false
+        searchQuery = ""
+        currentResultNumber = 0
+        numberOfResults = 0
+        webViewRef.value?.clearMatches() // Limpiamos los resaltados.
+        keyboardController?.hide() // Ocultamos el teclado manualmente.
+    }
+
     // Cuando cambie resetTrigger, vamos a la portada de WikiDex.
     LaunchedEffect(resetTrigger) {
         // Solo hacemos algo si el valor cambió de verdad.
@@ -165,10 +182,7 @@ fun WikiScreen(
     // Botón atrás para volver hacia atrás en la navegación.
     BackHandler {
         if (isSearching) {
-            isSearching = false
-            searchQuery = ""
-            webViewRef.value?.clearMatches() // Limpiamos los resaltados.
-            keyboardController?.hide() // Ocultamos el teclado manualmente.
+            closeSearch()
         } else {
             val webView = webViewRef.value
             if (webView != null && webView.canGoBack()) {
@@ -257,35 +271,38 @@ fun WikiScreen(
                         Text("Buscar en la página")
                     },
                     trailingIcon = {
-                        Row {
-                            IconButton(
-                                onClick = {
-                                    webViewRef.value?.findNext(false)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            if (numberOfResults > 0) {
+                                Text(text = "${currentResultNumber + 1} / $numberOfResults")
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                IconButton(
+                                    onClick = {
+                                        webViewRef.value?.findNext(false)
+                                    }
+                                ) {
+                                    Icon(
+                                        painterResource(id = R.drawable.rounded_arrow_upward_24),
+                                        contentDescription = "Anterior"
+                                    )
                                 }
-                            ) {
-                                Icon(
-                                    painterResource(id = R.drawable.rounded_arrow_upward_24),
-                                    contentDescription = "Anterior"
-                                )
+
+                                IconButton(
+                                    onClick = {
+                                        webViewRef.value?.findNext(true)
+                                    }
+                                ) {
+                                    Icon(
+                                        painterResource(id = R.drawable.rounded_arrow_downward_24),
+                                        contentDescription = "Siguiente"
+                                    )
+                                }
                             }
 
                             IconButton(
                                 onClick = {
-                                    webViewRef.value?.findNext(true)
-                                }
-                            ) {
-                                Icon(
-                                    painterResource(id = R.drawable.rounded_arrow_downward_24),
-                                    contentDescription = "Siguiente"
-                                )
-                            }
-
-                            IconButton(
-                                onClick = {
-                                    isSearching = false
-                                    searchQuery = ""
-                                    webViewRef.value?.clearMatches() // Limpiamos los resaltados.
-                                    keyboardController?.hide() // Ocultamos el teclado manualmente.
+                                    closeSearch()
                                 }
                             ) {
                                 Icon(
@@ -337,8 +354,8 @@ fun WikiScreen(
                                     url != WikiDexPortadaURL && // Para no incluir la página de la portada.
                                     (
                                             url.contains("$WikiDexPortadaURL:") || // Para permitir páginas del espacio de nombres WikiDex.
-                                                    !url.contains(WikiDexPortadaURL) // Para no incluir la página de la portada.
-                                            ) &&
+                                            !url.contains(WikiDexPortadaURL) // Para no incluir la página de la portada.
+                                    ) &&
                                     !url.contains("?search") && // Para no incluir páginas de búsqueda.
                                     !url.contains("&search") && // Para no incluir páginas de búsqueda.
                                     !url.contains("/search") && // Para no incluir páginas de búsqueda.
@@ -394,11 +411,11 @@ fun WikiScreen(
                                     false // Permitimos la navegación.
                                 } else {
                                     /*
-                                // No dejamos que se muestre el diálogo si es lo de cambiar al modo escritorio.
-                                if (!toDesktopMode && !toSkin) {
-                                */
-                                    // Guardamos la URL bloqueada para mostrar el diálogo.
-                                    blockedURL = currentURL.toString()
+                                    // No dejamos que se muestre el diálogo si es lo de cambiar al modo escritorio.
+                                    if (!toDesktopMode && !toSkin) {
+                                    */
+                                        // Guardamos la URL bloqueada para mostrar el diálogo.
+                                        blockedURL = currentURL.toString()
                                     //}
                                     true // Bloqueamos la navegación.
                                 }
@@ -418,7 +435,10 @@ fun WikiScreen(
                         expanded = false
                     }
 
-                    //webView.setFindListener { activeMatchOrdinal, numberOfMatches, isDoneCounting ->  }
+                    webView.setFindListener { activeMatchOrdinal, numberOfMatches, isDoneCounting ->
+                        currentResultNumber = activeMatchOrdinal
+                        numberOfResults = numberOfMatches
+                    }
 
                     webViewRef.value = webView
 
