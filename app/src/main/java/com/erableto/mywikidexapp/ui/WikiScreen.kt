@@ -93,6 +93,7 @@ fun WikiScreen(
 
     val favorites by favoritesViewModel.favorites.collectAsState()
 
+    val keyboardController = LocalSoftwareKeyboardController.current
     var focusRequester = remember {
         FocusRequester()
     }
@@ -163,12 +164,19 @@ fun WikiScreen(
 
     // Botón atrás para volver hacia atrás en la navegación.
     BackHandler {
-        val webView = webViewRef.value
-        if (webView != null && webView.canGoBack()) {
-            webView.goBack()
+        if (isSearching) {
+            isSearching = false
+            searchQuery = ""
+            webViewRef.value?.clearMatches() // Limpiamos los resaltados.
+            keyboardController?.hide() // Ocultamos el teclado manualmente.
         } else {
-            // Si no puede ir atrás, dejamos que Android cierre la pantalla.
-            (context as? Activity)?.finish()
+            val webView = webViewRef.value
+            if (webView != null && webView.canGoBack()) {
+                webView.goBack()
+            } else {
+                // Si no puede ir atrás, dejamos que Android cierre la pantalla.
+                (context as? Activity)?.finish()
+            }
         }
     }
 
@@ -272,7 +280,6 @@ fun WikiScreen(
                                 )
                             }
 
-                            val keyboardController = LocalSoftwareKeyboardController.current
                             IconButton(
                                 onClick = {
                                     isSearching = false

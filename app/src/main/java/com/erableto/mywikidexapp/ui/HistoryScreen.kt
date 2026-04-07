@@ -18,8 +18,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -78,6 +80,9 @@ fun HistoryScreen(
 ) {
     val historyList by viewModel.history.collectAsState()
 
+    var searchQuery by remember {
+        mutableStateOf<String?>(null)
+    }
     var showDialog by remember {
         mutableStateOf(false)
     }
@@ -149,24 +154,60 @@ fun HistoryScreen(
                 )
             }
         } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-            ) {
-                items(historyList.size) { index: Int ->
-                    val historyEntry = historyList[index]
-
-                    HistoryListItem(
-                        historyEntry = historyEntry,
-                        onClickEntry = {
-                            onNavigateToWiki(historyEntry.url)
-                        },
-                        onClickDeleteEntry = {
-                            //historyList.remove(historyEntry)
-                            viewModel.delete(historyEntry)
+            Column {
+                TextField(
+                    value = searchQuery ?: "",
+                    onValueChange = {
+                        searchQuery = it
+                        // TODO
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    placeholder = {
+                        Text("Buscar en el historial")
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painterResource(id = R.drawable.rounded_search_24),
+                            contentDescription = "Buscar"
+                        )
+                    },
+                    trailingIcon = {
+                        if (!searchQuery.isNullOrEmpty()) {
+                            IconButton(
+                                onClick = {
+                                    searchQuery = ""
+                                }
+                            ) {
+                                Icon(
+                                    painterResource(id = R.drawable.rounded_close_24),
+                                    contentDescription = "Cerrar"
+                                )
+                            }
                         }
-                    )
+                    }
+                )
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                ) {
+                    items(historyList.size) { index: Int ->
+                        val historyEntry = historyList[index]
+
+                        HistoryListItem(
+                            historyEntry = historyEntry,
+                            onClickEntry = {
+                                onNavigateToWiki(historyEntry.url)
+                            },
+                            onClickDeleteEntry = {
+                                //historyList.remove(historyEntry)
+                                viewModel.delete(historyEntry)
+                            }
+                        )
+                    }
                 }
             }
 

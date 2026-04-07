@@ -17,6 +17,10 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -66,6 +70,10 @@ fun TeamsScreen(
 
     //val favoritesList by viewModel.favorites.collectAsState()
 
+    var searchQuery by remember {
+        mutableStateOf<String?>(null)
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         //if (favoritesList.isEmpty()) {
             Column(
@@ -97,24 +105,60 @@ fun TeamsScreen(
                 )
             }
         /*} else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-            ) {
-                items(favoritesList.size) { index: Int ->
-                    val favorite = favoritesList[index]
-
-                    FavoritesListItem(
-                        favorite = favorite,
-                        onClickFav = {
-                            onNavigateToWiki(favorite.url)
-                        },
-                        onClickDeleteFav = {
-                            //favoritesList.remove(favorite)
-                            viewModel.delete(favorite)
+            Column {
+                TextField(
+                    value = searchQuery ?: "",
+                    onValueChange = {
+                        searchQuery = it
+                        // TODO
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    placeholder = {
+                        Text("Buscar equipos")
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painterResource(id = R.drawable.rounded_search_24),
+                            contentDescription = "Buscar"
+                        )
+                    },
+                    trailingIcon = {
+                        if (!searchQuery.isNullOrEmpty()) {
+                            IconButton(
+                                onClick = {
+                                    searchQuery = ""
+                                }
+                            ) {
+                                Icon(
+                                    painterResource(id = R.drawable.rounded_close_24),
+                                    contentDescription = "Cerrar"
+                                )
+                            }
                         }
-                    )
+                    }
+                )
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                ) {
+                    items(favoritesList.size) { index: Int ->
+                        val favorite = favoritesList[index]
+
+                        FavoritesListItem(
+                            favorite = favorite,
+                            onClickFav = {
+                                onNavigateToWiki(favorite.url)
+                            },
+                            onClickDeleteFav = {
+                                //favoritesList.remove(favorite)
+                                viewModel.delete(favorite)
+                            }
+                        )
+                    }
                 }
             }
         }*/
