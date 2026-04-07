@@ -187,7 +187,7 @@ fun FavoritesScreen(
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                            .padding(start = 8.dp, end = 8.dp)
                     ) {
                         items(
                             count = favoritesListPaged.itemCount,
