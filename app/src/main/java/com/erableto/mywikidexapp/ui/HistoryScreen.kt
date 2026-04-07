@@ -9,6 +9,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -183,45 +184,63 @@ fun HistoryScreen(
             }
         } else {
             Column {
-                TextField(
-                    value = searchQuery ?: "",
-                    onValueChange = {
-                        viewModel.onSearchQueryChanged(it)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    isError = historyListPaged.itemCount == 0 && searchQuery.isNotEmpty(),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                    keyboardActions = KeyboardActions(
-                        onSearch = {
-                            keyboardController?.hide() // Ocultamos el teclado manualmente.
-                        }
-                    ),
-                    placeholder = {
-                        Text("Buscar en el historial")
-                    },
-                    leadingIcon = {
-                        Icon(
-                            painterResource(id = R.drawable.rounded_search_24),
-                            contentDescription = "Buscar"
-                        )
-                    },
-                    trailingIcon = {
-                        if (searchQuery.isNotEmpty()) {
-                            IconButton(
-                                onClick = {
-                                    cancelSearch()
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextField(
+                        value = searchQuery ?: "",
+                        onValueChange = {
+                            viewModel.onSearchQueryChanged(it)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .weight(1f),
+                        isError = historyListPaged.itemCount == 0 && searchQuery.isNotEmpty(),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                        keyboardActions = KeyboardActions(
+                            onSearch = {
+                                keyboardController?.hide() // Ocultamos el teclado manualmente.
+                            }
+                        ),
+                        placeholder = {
+                            Text("Buscar en el historial")
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painterResource(id = R.drawable.rounded_search_24),
+                                contentDescription = "Buscar"
+                            )
+                        },
+                        trailingIcon = {
+                            if (searchQuery.isNotEmpty()) {
+                                IconButton(
+                                    onClick = {
+                                        cancelSearch()
+                                    }
+                                ) {
+                                    Icon(
+                                        painterResource(id = R.drawable.rounded_close_24),
+                                        contentDescription = "Cerrar"
+                                    )
                                 }
-                            ) {
-                                Icon(
-                                    painterResource(id = R.drawable.rounded_close_24),
-                                    contentDescription = "Cerrar"
-                                )
                             }
                         }
+                    )
+
+                    FloatingActionButton(
+                        modifier = Modifier.padding(end = 8.dp),
+                        onClick = {
+                            showDialog = true
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.rounded_delete_history_24),
+                            contentDescription = "Borrar historial"
+                        )
                     }
-                )
+                }
 
                 if (historyListPaged.itemCount == 0 && searchQuery.isNotEmpty()) {
                     Text(
@@ -264,20 +283,6 @@ fun HistoryScreen(
                         }
                     }
                 }
-            }
-
-            FloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                onClick = {
-                    showDialog = true
-                }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.rounded_delete_history_24),
-                    contentDescription = "Borrar historial"
-                )
             }
         }
     }

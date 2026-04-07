@@ -38,19 +38,19 @@ fun CardFABItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(8.dp)
         ) {
+            Text(
+                title,
+                modifier = Modifier.weight(1f)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
             FloatingActionButton(onClick = onClickFAB) {
                 Icon(
                     painter = icon,
                     contentDescription = iconContentDescription
                 )
             }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Text(
-                title,
-                modifier = Modifier.weight(1f)
-            )
         }
     }
 }
