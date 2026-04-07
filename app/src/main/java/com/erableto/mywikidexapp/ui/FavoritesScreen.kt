@@ -162,7 +162,7 @@ fun FavoritesScreen(
                         )
                     },
                     trailingIcon = {
-                        if (!searchQuery.isNotEmpty()) {
+                        if (searchQuery.isNotEmpty()) {
                             IconButton(
                                 onClick = {
                                     cancelSearch()
