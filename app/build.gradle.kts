@@ -63,6 +63,8 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.lottie.compose)
     implementation(libs.arsceneview)
+    implementation(libs.androidx.paging.common)
+    implementation(libs.androidx.paging.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -76,4 +78,5 @@ dependencies {
     //kapt("androidx.room:room-compiler:2.8.4")
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
 }

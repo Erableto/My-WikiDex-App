@@ -1,6 +1,8 @@
 package com.erableto.mywikidexapp.ui
 
+import android.app.Activity
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,7 +17,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,12 +39,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.erableto.mywikidexapp.R
 import com.erableto.mywikidexapp.data.HistoryEntry
 import com.erableto.mywikidexapp.data.HistoryViewModel
@@ -78,11 +87,15 @@ fun HistoryScreen(
     )[HistoryViewModel::class.java], // ).get(HistoryViewModel::class.java),
     onNavigateToWiki: (String) -> Unit
 ) {
-    val historyList by viewModel.history.collectAsState()
+    val context = LocalContext.current
 
-    var searchQuery by remember {
-        mutableStateOf<String?>(null)
-    }
+    //val historyList by viewModel.history.collectAsState()
+    val historyCount by viewModel.count.collectAsState()
+    val historyListPaged = viewModel.historyPaged.collectAsLazyPagingItems()
+    val searchQuery by viewModel.searchQuery.collectAsState()
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     var showDialog by remember {
         mutableStateOf(false)
     }
@@ -123,8 +136,23 @@ fun HistoryScreen(
         )
     }
 
+    fun cancelSearch() {
+        viewModel.onSearchQueryChanged("")
+        keyboardController?.hide() // Ocultamos el teclado manualmente.
+    }
+
+    // Botón atrás para cancelar la búsqueda.
+    BackHandler {
+        if (searchQuery.isNotEmpty()) {
+            cancelSearch()
+        } else {
+            // Si no puede ir atrás, dejamos que Android cierre la pantalla.
+            (context as? Activity)?.finish()
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
-        if (historyList.isEmpty()) {
+        if (historyCount == 0) {
             Column(
                 modifier = Modifier.padding(8.dp).align(Alignment.Center),
                 verticalArrangement = Arrangement.Center,
@@ -158,12 +186,18 @@ fun HistoryScreen(
                 TextField(
                     value = searchQuery ?: "",
                     onValueChange = {
-                        searchQuery = it
-                        // TODO
+                        viewModel.onSearchQueryChanged(it)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
+                    isError = historyListPaged.itemCount == 0 && searchQuery.isNotEmpty(),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(
+                        onSearch = {
+                            keyboardController?.hide() // Ocultamos el teclado manualmente.
+                        }
+                    ),
                     placeholder = {
                         Text("Buscar en el historial")
                     },
@@ -174,10 +208,10 @@ fun HistoryScreen(
                         )
                     },
                     trailingIcon = {
-                        if (!searchQuery.isNullOrEmpty()) {
+                        if (searchQuery.isNotEmpty()) {
                             IconButton(
                                 onClick = {
-                                    searchQuery = ""
+                                    cancelSearch()
                                 }
                             ) {
                                 Icon(
@@ -189,24 +223,45 @@ fun HistoryScreen(
                     }
                 )
 
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp)
-                ) {
-                    items(historyList.size) { index: Int ->
-                        val historyEntry = historyList[index]
-
-                        HistoryListItem(
-                            historyEntry = historyEntry,
-                            onClickEntry = {
-                                onNavigateToWiki(historyEntry.url)
-                            },
-                            onClickDeleteEntry = {
-                                //historyList.remove(historyEntry)
-                                viewModel.delete(historyEntry)
+                if (historyListPaged.itemCount == 0 && searchQuery.isNotEmpty()) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        text = "No se han encontrado resultados para \"$searchQuery\".",
+                        textAlign = TextAlign.Center,
+                    )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 8.dp, end = 8.dp)
+                    ) {
+                        items(
+                            count = historyListPaged.itemCount,
+                            key = { index ->
+                                val item = historyListPaged[index]
+                                item?.id ?: index
                             }
-                        )
+                        ) { index ->
+                            val historyEntry = historyListPaged[index]
+                            if (historyEntry != null) {
+                                HistoryListItem(
+                                    historyEntry = historyEntry,
+                                    onClickEntry = {
+                                        onNavigateToWiki(historyEntry.url)
+                                    },
+                                    onClickDeleteEntry = {
+                                        //historyList.remove(historyEntry)
+                                        viewModel.delete(historyEntry)
+                                    }
+                                )
+                            }
+                        }
+
+                        if (historyListPaged.loadState.append is LoadState.Loading) {
+                            item {
+                                CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                            }
+                        }
                     }
                 }
             }

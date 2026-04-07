@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -53,6 +55,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -75,6 +78,7 @@ import com.erableto.mywikidexapp.utils.WikiDexLabel
 import com.erableto.mywikidexapp.utils.WikiDexPortadaURL
 import com.erableto.mywikidexapp.utils.WikiDexURL
 import com.erableto.mywikidexapp.utils.getReadableTitleFromURL
+import com.erableto.mywikidexapp.utils.vibrateError
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -267,20 +271,45 @@ fun WikiScreen(
                         .fillMaxWidth()
                         .padding(8.dp)
                         .focusRequester(focusRequester),
+                    isError = !searchQuery.isNullOrEmpty() && numberOfResults <= 0,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(
+                        onSearch = {
+                            keyboardController?.hide() // Ocultamos el teclado manualmente.
+                        }
+                    ),
                     placeholder = {
                         Text("Buscar en la página")
                     },
+                    leadingIcon = {
+                        Icon(
+                            painterResource(id = R.drawable.rounded_search_24),
+                            contentDescription = "Buscar"
+                        )
+                    },
                     trailingIcon = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            if (numberOfResults > 0) {
-                                Text(text = "${currentResultNumber + 1} / $numberOfResults")
+                            if (!searchQuery.isNullOrEmpty()) {
+                                val text = buildAnnotatedString {
+                                    if (numberOfResults > 0) {
+                                        append("${currentResultNumber + 1} / $numberOfResults")
+                                    } else {
+                                        withStyle(
+                                            style = SpanStyle(color = MaterialTheme.colorScheme.error)
+                                        ) {
+                                            append("${currentResultNumber} / $numberOfResults")
+                                        }
+                                    }
+                                }
+                                Text(text)
 
                                 Spacer(modifier = Modifier.width(8.dp))
 
                                 IconButton(
                                     onClick = {
                                         webViewRef.value?.findNext(false)
-                                    }
+                                    },
+                                    enabled = numberOfResults > 0 // Para que se desactive y se ponga gris el botón.
                                 ) {
                                     Icon(
                                         painterResource(id = R.drawable.rounded_arrow_upward_24),
@@ -291,7 +320,8 @@ fun WikiScreen(
                                 IconButton(
                                     onClick = {
                                         webViewRef.value?.findNext(true)
-                                    }
+                                    },
+                                    enabled = numberOfResults > 0 // Para que se desactive y se ponga gris el botón.
                                 ) {
                                     Icon(
                                         painterResource(id = R.drawable.rounded_arrow_downward_24),
@@ -438,6 +468,11 @@ fun WikiScreen(
                     webView.setFindListener { activeMatchOrdinal, numberOfMatches, isDoneCounting ->
                         currentResultNumber = activeMatchOrdinal
                         numberOfResults = numberOfMatches
+
+                        // Hacemos que vibre cuando la búsqueda no devuelva ningún resultado.
+                        if (!searchQuery.isNullOrEmpty() && isDoneCounting && numberOfResults <= 0) {
+                            context.vibrateError()
+                        }
                     }
 
                     webViewRef.value = webView

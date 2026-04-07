@@ -1,5 +1,6 @@
 package com.erableto.mywikidexapp.data
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -13,8 +14,20 @@ interface FavoritesDAO {
     @Query("SELECT * FROM favorites ORDER BY id DESC")
     fun getAll(): Flow<List<Favorite>>
 
+    @Query("SELECT * FROM favorites ORDER BY id DESC")
+    fun getAllPaged(): PagingSource<Int, Favorite>
+
+    @Query("SELECT COUNT(*) FROM favorites")
+    fun getCount(): Flow<Int>
+
     @Query("SELECT * FROM favorites WHERE url = :url")
     fun getByURL(url: String): Flow<Favorite>
+
+    @Query("SELECT * FROM favorites WHERE title LIKE :query ORDER BY title DESC")
+    fun searchFavorites(query: String): Flow<List<Favorite>>
+
+    @Query("SELECT * FROM favorites WHERE title LIKE :query ORDER BY title DESC")
+    fun searchFavoritesPaged(query: String): PagingSource<Int, Favorite>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(favorite: Favorite)

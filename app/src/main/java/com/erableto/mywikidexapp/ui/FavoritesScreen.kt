@@ -1,6 +1,8 @@
 package com.erableto.mywikidexapp.ui
 
+import android.app.Activity
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,6 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -31,12 +36,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.erableto.mywikidexapp.R
 import com.erableto.mywikidexapp.data.Favorite
 import com.erableto.mywikidexapp.data.FavoritesViewModel
@@ -72,14 +81,32 @@ fun FavoritesScreen(
     )[FavoritesViewModel::class.java], // ).get(FavoritesViewModel::class.java),
     onNavigateToWiki: (String) -> Unit
 ) {
-    val favoritesList by viewModel.favorites.collectAsState()
+    val context = LocalContext.current
 
-    var searchQuery by remember {
-        mutableStateOf<String?>(null)
+    //val favoritesList by viewModel.favorites.collectAsState()
+    val favoritesCount by viewModel.count.collectAsState()
+    val favoritesListPaged = viewModel.favoritesPaged.collectAsLazyPagingItems()
+    val searchQuery by viewModel.searchQuery.collectAsState()
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    fun cancelSearch() {
+        viewModel.onSearchQueryChanged("")
+        keyboardController?.hide() // Ocultamos el teclado manualmente.
+    }
+
+    // Botón atrás para cancelar la búsqueda.
+    BackHandler {
+        if (searchQuery.isNotEmpty()) {
+            cancelSearch()
+        } else {
+            // Si no puede ir atrás, dejamos que Android cierre la pantalla.
+            (context as? Activity)?.finish()
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (favoritesList.isEmpty()) {
+        if (favoritesCount == 0) {
             Column(
                 modifier = Modifier.padding(8.dp).align(Alignment.Center),
                 verticalArrangement = Arrangement.Center,
@@ -113,12 +140,18 @@ fun FavoritesScreen(
                 TextField(
                     value = searchQuery ?: "",
                     onValueChange = {
-                        searchQuery = it
-                        // TODO
+                        viewModel.onSearchQueryChanged(it)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
+                    isError = favoritesListPaged.itemCount == 0 && searchQuery.isNotEmpty(),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(
+                        onSearch = {
+                            keyboardController?.hide() // Ocultamos el teclado manualmente.
+                        }
+                    ),
                     placeholder = {
                         Text("Buscar favoritos")
                     },
@@ -129,10 +162,10 @@ fun FavoritesScreen(
                         )
                     },
                     trailingIcon = {
-                        if (!searchQuery.isNullOrEmpty()) {
+                        if (!searchQuery.isNotEmpty()) {
                             IconButton(
                                 onClick = {
-                                    searchQuery = ""
+                                    cancelSearch()
                                 }
                             ) {
                                 Icon(
@@ -144,24 +177,45 @@ fun FavoritesScreen(
                     }
                 )
 
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp)
-                ) {
-                    items(favoritesList.size) { index: Int ->
-                        val favorite = favoritesList[index]
-
-                        FavoritesListItem(
-                            favorite = favorite,
-                            onClickFav = {
-                                onNavigateToWiki(favorite.url)
-                            },
-                            onClickDeleteFav = {
-                                //favoritesList.remove(favorite)
-                                viewModel.delete(favorite)
+                if (favoritesListPaged.itemCount == 0 && searchQuery.isNotEmpty()) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        text = "No se han encontrado resultados para \"$searchQuery\".",
+                        textAlign = TextAlign.Center,
+                    )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 8.dp, end = 8.dp)
+                    ) {
+                        items(
+                            count = favoritesListPaged.itemCount,
+                            key = { index ->
+                                val item = favoritesListPaged[index]
+                                item?.id ?: index
                             }
-                        )
+                        ) { index ->
+                            val favorite = favoritesListPaged[index]
+                            if (favorite != null) {
+                                FavoritesListItem(
+                                    favorite = favorite,
+                                    onClickFav = {
+                                        onNavigateToWiki(favorite.url)
+                                    },
+                                    onClickDeleteFav = {
+                                        //favoritesList.remove(favorite)
+                                        viewModel.delete(favorite)
+                                    }
+                                )
+                            }
+                        }
+
+                        if (favoritesListPaged.loadState.append is LoadState.Loading) {
+                            item {
+                                CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                            }
+                        }
                     }
                 }
             }
