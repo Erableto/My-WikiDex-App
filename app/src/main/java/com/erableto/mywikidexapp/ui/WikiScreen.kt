@@ -154,6 +154,7 @@ fun WikiScreen(
 
     val backgroundColor = MaterialTheme.colorScheme.background.toArgb()
     val primaryColor = MaterialTheme.colorScheme.primary.toArgb()
+    val surfaceColor = MaterialTheme.colorScheme.surface.toArgb()
 
     fun closeSearch() {
         isSearching = false
@@ -488,6 +489,7 @@ fun WikiScreen(
                             expanded = false
                         }
                         setColorSchemeColors(primaryColor)
+                        setProgressBackgroundColorSchemeColor(surfaceColor)
                     }
                 },
                 /*update = { webView ->
