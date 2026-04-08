@@ -1,6 +1,6 @@
 [versions]
 agp = "9.1.0"
-arsceneview = "3.6.0"
+arsceneview = "3.6.2"
 coreKtx = "1.18.0"
 coreSplashscreen = "1.2.0"
 dotlottieAndroid = "0.13.4"
