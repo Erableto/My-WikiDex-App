@@ -107,8 +107,8 @@ fun MyWikiDexAppApp() {
                             currentDestination = AppDestinations.WIKI
                         }
                     )
-                    AppDestinations.TEAMS -> TeamsScreen()
-                    AppDestinations.ABOUT -> ARScreen()
+                    AppDestinations.TEAMS -> /*TeamsScreen()*/ARScreen()
+                    AppDestinations.ABOUT -> AboutScreen()
                 }
             }
         }
