@@ -2,6 +2,7 @@ package com.erableto.mywikidexapp.ui
 
 import android.os.Build
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,7 +62,10 @@ fun AboutScreen() {
                 Image(
                     modifier = Modifier
                         .size(125.dp)
-                        .aspectRatio(1f),
+                        .aspectRatio(1f)
+                        .clickable {
+                            //
+                        },
                     painter = BitmapPainter(iconBitmap.asImageBitmap()),
                     contentDescription = "Logo de la app"
                 )
@@ -106,7 +110,10 @@ fun AboutScreen() {
                     modifier = Modifier
                         .size(125.dp)
                         .clip(CircleShape)
-                        .aspectRatio(1f),
+                        .aspectRatio(1f)
+                        .clickable {
+                            //
+                        },
                     painter = painterResource(images.random()),
                     contentDescription = "Erableto"
                 )

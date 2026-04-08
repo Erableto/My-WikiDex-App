@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.erableto.mywikidexapp.ui.ARScreen
 import com.erableto.mywikidexapp.ui.AboutScreen
+import com.erableto.mywikidexapp.ui.ExploreScreen
 import com.erableto.mywikidexapp.ui.FavoritesScreen
 import com.erableto.mywikidexapp.ui.HistoryScreen
 import com.erableto.mywikidexapp.ui.TeamsScreen
@@ -107,8 +108,10 @@ fun MyWikiDexAppApp() {
                             currentDestination = AppDestinations.WIKI
                         }
                     )
-                    AppDestinations.TEAMS -> /*TeamsScreen()*/ARScreen()
+                    AppDestinations.TEAMS -> TeamsScreen()
                     AppDestinations.ABOUT -> AboutScreen()
+                    AppDestinations.AR -> ARScreen()
+                    AppDestinations.EXPLORE -> ExploreScreen()
                 }
             }
         }
@@ -142,6 +145,16 @@ enum class AppDestinations(
     ),
     ABOUT(
         "Acerca de",
+        R.drawable.rounded_info_24,
+        R.drawable.rounded_filled_info_24
+    ),
+    AR(
+        "-",
+        R.drawable.rounded_info_24,
+        R.drawable.rounded_filled_info_24
+    ),
+    EXPLORE(
+        "-",
         R.drawable.rounded_info_24,
         R.drawable.rounded_filled_info_24
     )
