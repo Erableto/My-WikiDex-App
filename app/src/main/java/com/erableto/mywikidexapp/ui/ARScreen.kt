@@ -92,21 +92,10 @@ private data class ARModel(
     val scaleRange: ClosedFloatingPointRange<Float>
 )
 
-private const val CDN = "https://github.com/sceneview/sceneview/releases/download/assets-v1"
-private const val KHRONOS = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models"
-
-/*
-private val arModels = listOf(
-    ARModel("Damaged Helmet", "$KHRONOS/DamagedHelmet/glTF-Binary/DamagedHelmet.glb", 0.3f, 0.1f..0.6f),
-    ARModel("Avocado", "$KHRONOS/Avocado/glTF-Binary/Avocado.glb", 0.4f, 0.15f..0.8f),
-    ARModel("Dragon", "$CDN/animated_dragon.glb", 0.3f, 0.1f..0.6f),
-)
-*/
-
 private val arModels = listOf(
     ARModel(
         "Pichu picoreja",
-        "assets/models/pichu.glb",
+        "models/pichu.glb",
         0.3f,
         0.1f..0.6f
     )
