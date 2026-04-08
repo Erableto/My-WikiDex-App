@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.erableto.mywikidexapp.ui.ARScreen
 import com.erableto.mywikidexapp.ui.AboutScreen
 import com.erableto.mywikidexapp.ui.FavoritesScreen
 import com.erableto.mywikidexapp.ui.HistoryScreen
@@ -107,7 +108,7 @@ fun MyWikiDexAppApp() {
                         }
                     )
                     AppDestinations.TEAMS -> TeamsScreen()
-                    AppDestinations.ABOUT -> AboutScreen()
+                    AppDestinations.ABOUT -> ARScreen()
                 }
             }
         }

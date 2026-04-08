@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">My WikiDex App</string>
+
+    <!-- AR screen -->
+    <string name="ar_scan_surface">Point your camera at a flat surface</string>
+    <string name="ar_model_placed">Model placed \u2014 tap to reposition</string>
+    <string name="ar_not_available_title">AR Not Available</string>
+    <string name="ar_not_available_description">This device does not support ARCore.\nAR features require a compatible Android device with Google Play Services for AR installed.</string>
+    <string name="ar_drag_to_move">Drag to move</string>
+    <string name="ar_pinch_to_scale">Pinch to scale</string>
+    <string name="ar_twist_to_rotate">Twist to rotate</string>
+    <string name="ar_remove">Remove</string>
+
+    <!-- Error states -->
+    <string name="ar_camera_permission">Camera permission is required for AR</string>
+    <string name="ar_grant_permission">Grant Camera Permission</string>
+
+    <!-- Accessibility -->
+    <string name="cd_ar_scene">Augmented reality viewport</string>
+    <string name="cd_remove_model">Remove placed model</string>
 </resources>
