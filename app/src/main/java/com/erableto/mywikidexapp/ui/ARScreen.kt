@@ -97,7 +97,7 @@ private val arModels = listOf(
         "models/pichu.glb",
         0.3f,
         0.1f..0.6f
-    )
+    ),
 )
 
 @Composable

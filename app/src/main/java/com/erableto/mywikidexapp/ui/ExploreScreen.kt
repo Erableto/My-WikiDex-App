@@ -73,12 +73,16 @@ private data class ExploreModel(
 private data class ExploreEnvironment(val label: String, val assetPath: String)
 
 private val exploreEnvironments = listOf(
-    ExploreEnvironment("Night", "environments/rooftop_night_2k.hdr"),
-    ExploreEnvironment("Studio", "environments/studio_2k.hdr"),
-    ExploreEnvironment("Warm", "environments/studio_warm_2k.hdr"),
-    ExploreEnvironment("Sunset", "environments/sunset_2k.hdr"),
-    ExploreEnvironment("Outdoor", "environments/outdoor_cloudy_2k.hdr"),
+    ExploreEnvironment("Artist workshop", "environments/artist_workshop_2k.hdr"),
     ExploreEnvironment("Autumn", "environments/autumn_field_2k.hdr"),
+    ExploreEnvironment("Chinese garden", "environments/chinese_garden_2k.hdr"),
+    ExploreEnvironment("Comfy cafe", "environments/comfy_cafe_2k.hdr"),
+    ExploreEnvironment("Outdoor cloudy", "environments/outdoor_cloudy_2k.hdr"),
+    ExploreEnvironment("Pav studio", "environments/outdoor_pav_studio_2k.hdr"),
+    ExploreEnvironment("Rooftop night", "environments/rooftop_night_2k.hdr"),
+    ExploreEnvironment("Studio", "environments/studio_2k.hdr"),
+    ExploreEnvironment("Studio warm", "environments/studio_warm_2k.hdr"),
+    ExploreEnvironment("Sunset", "environments/sunset_2k.hdr"),
 )
 
 private val exploreModels = listOf(
