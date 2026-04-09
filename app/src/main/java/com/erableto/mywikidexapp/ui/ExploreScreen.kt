@@ -61,7 +61,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import com.erableto.mywikidexapp.R
 
-private const val CDN = "https://github.com/sceneview/sceneview/releases/download/assets-v1"
+//private const val CDN = "https://github.com/sceneview/sceneview/releases/download/assets-v1"
 
 private data class ExploreModel(
     val label: String,
@@ -86,7 +86,8 @@ private val exploreEnvironments = listOf(
 )
 
 private val exploreModels = listOf(
-    /*ExploreModel("Toy Car", "models/toy_car.glb", 0.8f, 3.0f),
+    /*
+    ExploreModel("Toy Car", "models/toy_car.glb", 0.8f, 3.0f),
     ExploreModel("Red Car", "models/red_car.glb", 1.0f, 3.5f),
     ExploreModel("Game Boy", "models/game_boy_classic.glb", 0.7f, 2.5f),
     ExploreModel("Chair", "models/sheen_chair.glb", 0.6f, 3.5f),
@@ -125,7 +126,8 @@ private val exploreModels = listOf(
     ExploreModel("Cybertruck", "models/tesla_cybertruck.glb", 0.6f, 4.0f),
     ExploreModel("Mercedes AMG", "$CDN/mercedes_a45_amg.glb", 0.5f, 4.0f),
     ExploreModel("Switch", "models/nintendo_switch.glb", 0.8f, 2.5f),
-    ExploreModel("BMW M3 E30", "$CDN/bmw_m3_e30.glb", 0.6f, 4.0f),*/
+    ExploreModel("BMW M3 E30", "$CDN/bmw_m3_e30.glb", 0.6f, 4.0f),
+    */
     ExploreModel("Pichu picoreja", "models/pichu.glb", 1f, 4.0f),
 )
 
@@ -156,6 +158,7 @@ fun ExploreScreen() {
         }
 
         val cameraTransition = rememberInfiniteTransition(label = "CameraRotation")
+        /*
         val cameraRotation by cameraTransition.animateRotation(
             initialValue = Float3(y = 0.0f),
             targetValue = Float3(y = 360.0f),
@@ -163,6 +166,7 @@ fun ExploreScreen() {
                 animation = tween(durationMillis = 12_000)
             )
         )
+        */
 
         val modelInstance = rememberModelInstance(modelLoader, selectedModel.assetPath)
         val environment = key(selectedEnv.assetPath) {
@@ -187,7 +191,7 @@ fun ExploreScreen() {
             ),
             environment = environment,
             onFrame = {
-                centerNode.rotation = cameraRotation
+                //centerNode.rotation = cameraRotation
                 cameraNode.lookAt(centerNode)
             },
             onGestureListener = rememberOnGestureListener(
