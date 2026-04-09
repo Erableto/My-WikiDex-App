@@ -30,11 +30,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.erableto.mywikidexapp.R
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
 @Composable
-fun AboutScreen() {
+fun AboutScreen(
+    onNavigateToAR: () -> Unit,
+    onNavigateToExplore: () -> Unit
+) {
     val context = LocalContext.current
 
     Box(
@@ -43,7 +48,9 @@ fun AboutScreen() {
             .padding(8.dp)
     ) {
         Column(
-            modifier = Modifier.align(Alignment.Center).padding(32.dp),
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(32.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -64,7 +71,7 @@ fun AboutScreen() {
                         .size(125.dp)
                         .aspectRatio(1f)
                         .clickable {
-                            //
+                            onNavigateToAR()
                         },
                     painter = BitmapPainter(iconBitmap.asImageBitmap()),
                     contentDescription = "Logo de la app"
@@ -112,7 +119,7 @@ fun AboutScreen() {
                         .clip(CircleShape)
                         .aspectRatio(1f)
                         .clickable {
-                            //
+                            onNavigateToExplore()
                         },
                     painter = painterResource(images.random()),
                     contentDescription = "Erableto"
@@ -134,6 +141,6 @@ fun AboutScreen() {
 @Composable
 fun AboutScreenPreview() {
     MyWikiDexAppTheme() {
-        AboutScreen()
+        AboutScreen({}, {})
     }
 }

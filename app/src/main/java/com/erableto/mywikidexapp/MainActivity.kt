@@ -21,7 +21,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.erableto.mywikidexapp.ui.ARScreen
 import com.erableto.mywikidexapp.ui.AboutScreen
+import com.erableto.mywikidexapp.ui.ExploreScreen
 import com.erableto.mywikidexapp.ui.FavoritesScreen
 import com.erableto.mywikidexapp.ui.HistoryScreen
 import com.erableto.mywikidexapp.ui.TeamsScreen
@@ -57,7 +59,9 @@ fun MyWikiDexAppApp() {
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
-            AppDestinations.entries.forEach {
+            AppDestinations.entries.filter {
+                it.showInMenu
+            }.forEach {
                 item(
                     icon = {
                         val iconRes =
@@ -107,7 +111,16 @@ fun MyWikiDexAppApp() {
                         }
                     )
                     AppDestinations.TEAMS -> TeamsScreen()
-                    AppDestinations.ABOUT -> AboutScreen()
+                    AppDestinations.ABOUT -> AboutScreen(
+                        onNavigateToAR = {
+                            currentDestination = AppDestinations.AR
+                        },
+                        onNavigateToExplore = {
+                            currentDestination = AppDestinations.EXPLORE
+                        }
+                    )
+                    AppDestinations.AR -> ARScreen()
+                    AppDestinations.EXPLORE -> ExploreScreen()
                 }
             }
         }
@@ -117,7 +130,8 @@ fun MyWikiDexAppApp() {
 enum class AppDestinations(
     val label: String,
     val icon: Int,
-    val selectedIcon: Int
+    val selectedIcon: Int,
+    val showInMenu: Boolean = true
 ) {
     WIKI(
         "Inicio",
@@ -143,6 +157,18 @@ enum class AppDestinations(
         "Acerca de",
         R.drawable.rounded_info_24,
         R.drawable.rounded_filled_info_24
+    ),
+    AR(
+        "Realidad Aumentada",
+        0,
+        0,
+        false
+    ),
+    EXPLORE(
+        "Explorar",
+        0,
+        0,
+        false
     )
 }
 
