@@ -111,8 +111,6 @@ fun MyWikiDexAppApp() {
                     )
                     AppDestinations.TEAMS -> TeamsScreen()
                     AppDestinations.ABOUT -> AboutScreen()
-                    AppDestinations.AR -> ARScreen()
-                    AppDestinations.EXPLORE -> ExploreScreen()
                 }
             }
         }
@@ -146,16 +144,6 @@ enum class AppDestinations(
     ),
     ABOUT(
         "Acerca de",
-        R.drawable.rounded_info_24,
-        R.drawable.rounded_filled_info_24
-    ),
-    AR(
-        "-",
-        R.drawable.rounded_info_24,
-        R.drawable.rounded_filled_info_24
-    ),
-    EXPLORE(
-        "-",
         R.drawable.rounded_info_24,
         R.drawable.rounded_filled_info_24
     )
