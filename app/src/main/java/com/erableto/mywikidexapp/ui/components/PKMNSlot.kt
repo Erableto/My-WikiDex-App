@@ -2,7 +2,9 @@ package com.erableto.mywikidexapp.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
@@ -41,6 +43,10 @@ fun PKMNSlot(
                     colors = listOf(color1, color2)
                 )
             )
+            .padding(4.dp)
+            .clickable{
+                // TODO
+            }
     ) {
         Image(
             modifier = Modifier.align(Alignment.Center).size(50.dp),

@@ -209,7 +209,7 @@ fun HistoryScreen(
                         },
                         leadingIcon = {
                             Icon(
-                                painterResource(id = R.drawable.rounded_search_24),
+                                painter = painterResource(id = R.drawable.rounded_search_24),
                                 contentDescription = "Buscar"
                             )
                         },
@@ -221,7 +221,7 @@ fun HistoryScreen(
                                     }
                                 ) {
                                     Icon(
-                                        painterResource(id = R.drawable.rounded_close_24),
+                                        painter = painterResource(id = R.drawable.rounded_close_24),
                                         contentDescription = "Cerrar"
                                     )
                                 }
