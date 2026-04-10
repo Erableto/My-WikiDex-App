@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -29,13 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.erableto.mywikidexapp.R
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
-import com.erableto.mywikidexapp.utils.DARK_TYPE
 import com.erableto.mywikidexapp.utils.DRAGON_TYPE
 import com.erableto.mywikidexapp.utils.ELECTRIC_TYPE
 import com.erableto.mywikidexapp.utils.FIGHTING_TYPE
 import com.erableto.mywikidexapp.utils.FIRE_TYPE
 import com.erableto.mywikidexapp.utils.GHOST_TYPE
-import com.erableto.mywikidexapp.utils.WATER_TYPE
 
 @Composable
 fun TeamsListItem() {
@@ -135,7 +132,7 @@ fun TeamsListItem() {
                     PKMNSlot(
                         pkmnName = null,
                         itemName = null,
-                        pkmnIcon = painterResource(R.drawable.ic_pkmn_pichu),
+                        pkmnIcon = painterResource(R.drawable.ic_pkmn_0172),
                         itemIcon = painterResource(R.drawable.ic_item_light_ball),
                         type1 = ELECTRIC_TYPE,
                         type2 = null
@@ -146,7 +143,7 @@ fun TeamsListItem() {
                     PKMNSlot(
                         pkmnName = null,
                         itemName = null,
-                        pkmnIcon = painterResource(R.drawable.ic_pkmn_infernape),
+                        pkmnIcon = painterResource(R.drawable.ic_pkmn_0392),
                         itemIcon = painterResource(R.drawable.ic_item_charcoal),
                         type1 = FIRE_TYPE,
                         type2 = FIGHTING_TYPE
@@ -157,7 +154,7 @@ fun TeamsListItem() {
                     PKMNSlot(
                         pkmnName = null,
                         itemName = null,
-                        pkmnIcon = painterResource(R.drawable.ic_pkmn_giratina_origin),
+                        pkmnIcon = painterResource(R.drawable.ic_pkmn_0487_b),
                         itemIcon = painterResource(R.drawable.ic_item_griseous_orb),
                         type1 = DRAGON_TYPE,
                         type2 = GHOST_TYPE

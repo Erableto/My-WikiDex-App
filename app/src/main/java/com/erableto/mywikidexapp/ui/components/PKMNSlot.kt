@@ -71,7 +71,7 @@ fun PKMNSlotPreview() {
         PKMNSlot(
             pkmnName = null,
             itemName = null,
-            pkmnIcon = painterResource(R.drawable.ic_pkmn_giratina_origin),
+            pkmnIcon = painterResource(R.drawable.ic_pkmn_0487_b),
             itemIcon = painterResource(R.drawable.ic_item_griseous_orb),
             type1 = DRAGON_TYPE,
             type2 = GHOST_TYPE
