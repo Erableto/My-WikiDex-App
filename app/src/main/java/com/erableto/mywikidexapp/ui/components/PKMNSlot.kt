@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,7 +53,8 @@ fun PKMNSlot(
         Image(
             modifier = Modifier.align(Alignment.Center).size(50.dp),
             painter = pkmnIcon ?: painterResource(R.drawable.rounded_catching_pokemon_50),
-            contentDescription = pkmnName
+            contentDescription = pkmnName,
+            colorFilter = if (pkmnIcon == null) ColorFilter.tint(LocalContentColor.current) else null
         )
 
         if (itemIcon != null) {
