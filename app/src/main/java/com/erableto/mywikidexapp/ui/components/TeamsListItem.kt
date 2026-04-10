@@ -133,7 +133,7 @@ fun TeamsListItem() {
                         pkmnName = null,
                         itemName = null,
                         pkmnIcon = painterResource(R.drawable.ic_pkmn_0172),
-                        itemIcon = painterResource(R.drawable.ic_item_light_ball),
+                        itemIcon = null,
                         type1 = ELECTRIC_TYPE,
                         type2 = null
                     )
