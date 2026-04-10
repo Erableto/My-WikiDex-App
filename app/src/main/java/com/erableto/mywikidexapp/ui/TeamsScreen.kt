@@ -13,9 +13,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,10 +35,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.erableto.mywikidexapp.R
+import com.erableto.mywikidexapp.ui.components.TeamsListItem
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
 /*
-val favoritesList_ = mutableStateListOf(
+val TeamsList_ = mutableStateListOf(
     Favorite(
         0,
         "https://www.wikidex.net/wiki/Usuario:Erableto",
@@ -53,29 +57,29 @@ val favoritesList_ = mutableStateListOf(
     )
 )
 
-val favoritesList_empty = mutableStateListOf<Favorite>()
+val teamsList_empty = mutableStateListOf<Favorite>()
 */
 
 @Composable
 fun TeamsScreen(
     /*
-    viewModel: FavoritesViewModel = ViewModelProvider(
+    viewModel: TeamsViewModel = ViewModelProvider(
         LocalActivity.current as ComponentActivity,
-        FavoritesViewModelFactory(LocalContext.current)
-    )[FavoritesViewModel::class.java], // ).get(FavoritesViewModel::class.java),
+        TeamsViewModelFactory(LocalContext.current)
+    )[TeamsViewModel::class.java], // ).get(TeamsViewModel::class.java),
     onNavigateToWiki: (String) -> Unit
     */
 ) {
     val context = LocalContext.current
 
-    //val favoritesList by viewModel.favorites.collectAsState()
+    //val teamsList by viewModel.teams.collectAsState()
 
     var searchQuery by remember {
         mutableStateOf<String?>(null)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        //if (favoritesList.isEmpty()) {
+        /*if (teamsList.isEmpty()) {
             Column(
                 modifier = Modifier.padding(8.dp).align(Alignment.Center),
                 verticalArrangement = Arrangement.Center,
@@ -104,7 +108,7 @@ fun TeamsScreen(
                     fontSize = 32.sp
                 )
             }
-        /*} else {
+        } else {*/
             Column {
                 TextField(
                     value = searchQuery ?: "",
@@ -145,7 +149,7 @@ fun TeamsScreen(
                         .fillMaxSize()
                         .padding(8.dp)
                 ) {
-                    items(favoritesList.size) { index: Int ->
+                    /*items(favoritesList.size) { index: Int ->
                         val favorite = favoritesList[index]
 
                         FavoritesListItem(
@@ -158,10 +162,13 @@ fun TeamsScreen(
                                 viewModel.delete(favorite)
                             }
                         )
+                    }*/
+                    item {
+                        TeamsListItem()
                     }
                 }
             }
-        }*/
+        //}
 
         FloatingActionButton(
             modifier = Modifier
