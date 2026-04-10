@@ -11,10 +11,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -32,6 +39,10 @@ import com.erableto.mywikidexapp.utils.WATER_TYPE
 
 @Composable
 fun TeamsListItem() {
+    var showMenu by remember {
+        mutableStateOf(false)
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -46,13 +57,70 @@ fun TeamsListItem() {
 
                 Spacer(modifier = Modifier.width(8.dp).weight(1f))
 
-                FloatingActionButton(onClick = {
-                    // TODO
-                }) {
-                    Icon(
-                        painter = painterResource(R.drawable.rounded_delete_24),
-                        contentDescription = "Borrar equipo"
-                    )
+                Row {
+                    IconButton(
+                        onClick = {
+                            showMenu = true
+                        }
+                    ) {
+                        Icon(
+                            painterResource(id = R.drawable.rounded_more_vert_24),
+                            contentDescription = "Opciones"
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = {
+                            showMenu = false
+                        }
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Text("Renombrar equipo")
+                            },
+                            onClick = {
+                                showMenu = false
+                                // TODO
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.rounded_edit_24),
+                                    contentDescription = "Renombrar equipo"
+                                )
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text("Compartir equipo como QR")
+                            },
+                            onClick = {
+                                showMenu = false
+                                // TODO
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.rounded_qr_code_24),
+                                    contentDescription = "Compartir equipo como QR"
+                                )
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text("Eliminar equipo")
+                            },
+                            onClick = {
+                                showMenu = false
+                                // TODO
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.rounded_delete_24),
+                                    contentDescription = "Eliminar equipo"
+                                )
+                            }
+                        )
+                    }
                 }
             }
 

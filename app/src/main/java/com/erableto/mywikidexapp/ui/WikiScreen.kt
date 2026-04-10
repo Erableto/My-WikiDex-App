@@ -3,7 +3,6 @@ package com.erableto.mywikidexapp.ui
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -288,7 +287,7 @@ fun WikiScreen(
                     },
                     leadingIcon = {
                         Icon(
-                            painterResource(id = R.drawable.rounded_search_24),
+                            painter = painterResource(id = R.drawable.rounded_search_24),
                             contentDescription = "Buscar"
                         )
                     },
@@ -317,7 +316,7 @@ fun WikiScreen(
                                     enabled = numberOfResults > 0 // Para que se desactive y se ponga gris el botón.
                                 ) {
                                     Icon(
-                                        painterResource(id = R.drawable.rounded_arrow_upward_24),
+                                        painter = painterResource(id = R.drawable.rounded_arrow_upward_24),
                                         contentDescription = "Anterior"
                                     )
                                 }
@@ -329,7 +328,7 @@ fun WikiScreen(
                                     enabled = numberOfResults > 0 // Para que se desactive y se ponga gris el botón.
                                 ) {
                                     Icon(
-                                        painterResource(id = R.drawable.rounded_arrow_downward_24),
+                                        painter = painterResource(id = R.drawable.rounded_arrow_downward_24),
                                         contentDescription = "Siguiente"
                                     )
                                 }
@@ -341,7 +340,7 @@ fun WikiScreen(
                                 }
                             ) {
                                 Icon(
-                                    painterResource(id = R.drawable.rounded_close_24),
+                                    painter = painterResource(id = R.drawable.rounded_close_24),
                                     contentDescription = "Cerrar"
                                 )
                             }
