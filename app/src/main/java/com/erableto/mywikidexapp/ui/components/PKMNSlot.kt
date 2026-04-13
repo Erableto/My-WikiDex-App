@@ -20,9 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.erableto.mywikidexapp.R
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
-import com.erableto.mywikidexapp.utils.DRAGON_TYPE
-import com.erableto.mywikidexapp.utils.GHOST_TYPE
-import com.erableto.mywikidexapp.utils.getTypeColor
+import com.erableto.mywikidexapp.util.DRAGON_TYPE
+import com.erableto.mywikidexapp.util.GHOST_TYPE
+import com.erableto.mywikidexapp.util.getTypeColor
 import kotlin.String
 
 @Composable

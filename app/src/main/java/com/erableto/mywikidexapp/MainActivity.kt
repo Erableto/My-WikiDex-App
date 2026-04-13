@@ -29,7 +29,7 @@ import com.erableto.mywikidexapp.ui.HistoryScreen
 import com.erableto.mywikidexapp.ui.TeamsScreen
 import com.erableto.mywikidexapp.ui.WikiScreen
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
-import com.erableto.mywikidexapp.utils.WikiDexURL
+import com.erableto.mywikidexapp.util.WIKIDEX_URL
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +54,7 @@ fun MyWikiDexAppApp() {
         mutableStateOf(0)
     }
     var currentWikiURL by rememberSaveable {
-        mutableStateOf(WikiDexURL)
+        mutableStateOf(WIKIDEX_URL)
     }
 
     NavigationSuiteScaffold(
@@ -82,7 +82,7 @@ fun MyWikiDexAppApp() {
                                 // Ya estamos en Inicio, así que reseteamos el WebView.
                                 wikiResetTrigger++
                             } else {
-                                currentWikiURL = WikiDexURL
+                                currentWikiURL = WIKIDEX_URL
                             }
                         }
                         currentDestination = it

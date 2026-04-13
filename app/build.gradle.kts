@@ -59,10 +59,6 @@ dependencies {
     implementation(libs.androidx.webkit)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.jetpack.loading)
-    implementation(libs.dotlottie.android)
-    implementation(libs.lottie)
-    implementation(libs.lottie.compose)
-    implementation(libs.arsceneview)
     implementation(libs.androidx.paging.common)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.navigation.compose)
@@ -80,4 +76,19 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.paging)
+
+    // Lottie
+    implementation(libs.dotlottie.android)
+    implementation(libs.lottie)
+    implementation(libs.lottie.compose)
+
+    // SceneView (3D + AR)
+    implementation(libs.arsceneview)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // OkHttp
+    implementation(libs.logging.interceptor)
 }
