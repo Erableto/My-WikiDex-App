@@ -1,4 +1,4 @@
-package com.erableto.mywikidexapp.utils
+package com.erableto.mywikidexapp.util
 
 import android.content.Context
 import android.os.Build
@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets
 
 fun getReadableTitleFromURL(url: String?): String? {
     if (url != null) {
-        val raw = url.removePrefix(WikiDexURLHeader)
+        val raw = url.removePrefix(WIKIDEX_URL_HEADER)
         return URLDecoder.decode(raw, StandardCharsets.UTF_8.toString()).replace("_", " ")
     } else {
         return null

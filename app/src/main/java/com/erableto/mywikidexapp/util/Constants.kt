@@ -1,0 +1,30 @@
+package com.erableto.mywikidexapp.util
+
+const val WIKIDEX_URL: String = "https://www.wikidex.net/"
+const val WIKIDEX_URL_HEADER: String = "https://www.wikidex.net/wiki/"
+const val WIKIDEX_PORTADA_URL: String = "https://www.wikidex.net/wiki/WikiDex"
+const val WIKIDEX_MAIN_DOMAIN: String = "wikidex.net"
+const val WIKIDEX_MASTODON_DOMAIN: String = "social.wikidex.net"
+const val WIKIDEX_AC_DOMAIN: String = "animalcrossing.wikidex.net"
+const val WIKIDEX_LABEL: String = " - WikiDex, la enciclopedia Pokémon"
+
+//// TYPES ////
+const val BUG_TYPE: String = "BUG_TYPE"
+const val DARK_TYPE: String = "DARK_TYPE"
+const val DRAGON_TYPE: String = "DRAGON_TYPE"
+const val ELECTRIC_TYPE: String = "ELECTRIC_TYPE"
+const val FAIRY_TYPE: String = "FAIRY_TYPE"
+const val FIGHTING_TYPE: String = "FIGHTING_TYPE"
+const val FIRE_TYPE: String = "FIRE_TYPE"
+const val FLYING_TYPE: String = "FLYING_TYPE"
+const val GHOST_TYPE: String = "GHOST_TYPE"
+const val GRASS_TYPE: String = "GRASS_TYPE"
+const val GROUND_TYPE: String = "GROUND_TYPE"
+const val ICE_TYPE: String = "ICE_TYPE"
+const val NORMAL_TYPE: String = "NORMAL_TYPE"
+const val POISON_TYPE: String = "POISON_TYPE"
+const val PSYCHIC_TYPE: String = "PSYCHIC_TYPE"
+const val ROCK_TYPE: String = "ROCK_TYPE"
+const val STEEL_TYPE: String = "STEEL_TYPE"
+const val WATER_TYPE: String = "WATER_TYPE"
+//// ----- ////

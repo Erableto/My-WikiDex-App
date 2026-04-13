@@ -28,11 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.erableto.mywikidexapp.R
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
-import com.erableto.mywikidexapp.utils.DRAGON_TYPE
-import com.erableto.mywikidexapp.utils.ELECTRIC_TYPE
-import com.erableto.mywikidexapp.utils.FIGHTING_TYPE
-import com.erableto.mywikidexapp.utils.FIRE_TYPE
-import com.erableto.mywikidexapp.utils.GHOST_TYPE
+import com.erableto.mywikidexapp.util.DRAGON_TYPE
+import com.erableto.mywikidexapp.util.ELECTRIC_TYPE
+import com.erableto.mywikidexapp.util.FIGHTING_TYPE
+import com.erableto.mywikidexapp.util.FIRE_TYPE
+import com.erableto.mywikidexapp.util.GHOST_TYPE
 
 @Composable
 fun TeamsListItem() {

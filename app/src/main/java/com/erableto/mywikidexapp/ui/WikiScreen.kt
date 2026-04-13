@@ -72,14 +72,14 @@ import com.erableto.mywikidexapp.data.FavoritesViewModelFactory
 import com.erableto.mywikidexapp.data.HistoryViewModel
 import com.erableto.mywikidexapp.data.HistoryViewModelFactory
 import com.erableto.mywikidexapp.ui.components.LabeledSmallFab
-import com.erableto.mywikidexapp.utils.WikiDexACDomain
-import com.erableto.mywikidexapp.utils.WikiDexMastodonDomain
-import com.erableto.mywikidexapp.utils.WikiDexMainDomain
-import com.erableto.mywikidexapp.utils.WikiDexLabel
-import com.erableto.mywikidexapp.utils.WikiDexPortadaURL
-import com.erableto.mywikidexapp.utils.WikiDexURL
-import com.erableto.mywikidexapp.utils.getReadableTitleFromURL
-import com.erableto.mywikidexapp.utils.vibrateError
+import com.erableto.mywikidexapp.util.WIKIDEX_AC_DOMAIN
+import com.erableto.mywikidexapp.util.WIKIDEX_MASTODON_DOMAIN
+import com.erableto.mywikidexapp.util.WIKIDEX_MAIN_DOMAIN
+import com.erableto.mywikidexapp.util.WIKIDEX_LABEL
+import com.erableto.mywikidexapp.util.WIKIDEX_PORTADA_URL
+import com.erableto.mywikidexapp.util.WIKIDEX_URL
+import com.erableto.mywikidexapp.util.getReadableTitleFromURL
+import com.erableto.mywikidexapp.util.vibrateError
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -171,8 +171,8 @@ fun WikiScreen(
             val url = webViewRef.value?.url
 
             // Si estamos ya en la portada, no volvemos a la portada.
-            if (url != WikiDexPortadaURL) {
-                webViewRef.value?.loadUrl(WikiDexURL)
+            if (url != WIKIDEX_PORTADA_URL) {
+                webViewRef.value?.loadUrl(WIKIDEX_URL)
             }
 
             lastResetTrigger.value = resetTrigger
@@ -384,11 +384,11 @@ fun WikiScreen(
                                 if (
                                     url != null &&
                                     title != null &&
-                                    url != WikiDexURL && // Para no incluir la página de la portada.
-                                    url != WikiDexPortadaURL && // Para no incluir la página de la portada.
+                                    url != WIKIDEX_URL && // Para no incluir la página de la portada.
+                                    url != WIKIDEX_PORTADA_URL && // Para no incluir la página de la portada.
                                     (
-                                            url.contains("$WikiDexPortadaURL:") || // Para permitir páginas del espacio de nombres WikiDex.
-                                            !url.contains(WikiDexPortadaURL) // Para no incluir la página de la portada.
+                                            url.contains("$WIKIDEX_PORTADA_URL:") || // Para permitir páginas del espacio de nombres WikiDex.
+                                            !url.contains(WIKIDEX_PORTADA_URL) // Para no incluir la página de la portada.
                                     ) &&
                                     !url.contains("?search") && // Para no incluir páginas de búsqueda.
                                     !url.contains("&search") && // Para no incluir páginas de búsqueda.
@@ -431,9 +431,9 @@ fun WikiScreen(
                                 val currentURL = request?.url ?: return true
                                 val currentHost = currentURL.host ?: return true
 
-                                val isAllowed = currentHost.endsWith(WikiDexMainDomain)
-                                val isMastodon = currentHost.endsWith(WikiDexMastodonDomain)
-                                val isAC = currentHost.endsWith(WikiDexACDomain)
+                                val isAllowed = currentHost.endsWith(WIKIDEX_MAIN_DOMAIN)
+                                val isMastodon = currentHost.endsWith(WIKIDEX_MASTODON_DOMAIN)
+                                val isAC = currentHost.endsWith(WIKIDEX_AC_DOMAIN)
                                 toDesktopMode = currentURL.toString()
                                     .contains("mobileaction=toggle_view_desktop")
                                 toSkin = currentURL.toString().contains("useskin=")
@@ -578,7 +578,7 @@ fun WikiScreen(
                                                 } else {
                                                     favoritesViewModel.insert(
                                                         currentURL,
-                                                        currentTitle.removeSuffix(WikiDexLabel)
+                                                        currentTitle.removeSuffix(WIKIDEX_LABEL)
                                                     )
                                                 }
                                             }
@@ -688,6 +688,6 @@ fun WikiScreen(
 @Composable
 fun WikiScreenPreview() {
     MyWikiDexAppTheme() {
-        WikiScreen(url = WikiDexURL, resetTrigger = 0)
+        WikiScreen(url = WIKIDEX_URL, resetTrigger = 0)
     }
 }
