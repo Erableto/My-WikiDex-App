@@ -8,6 +8,15 @@ const val WIKIDEX_MASTODON_DOMAIN: String = "social.wikidex.net"
 const val WIKIDEX_AC_DOMAIN: String = "animalcrossing.wikidex.net"
 const val WIKIDEX_LABEL: String = " - WikiDex, la enciclopedia Pokémon"
 
+/**
+ * #### -> Nº de Pokémon (0000 - 9999)
+ * @@ -> ID de forma (00 - 99)
+ * Ejemplos:
+ * * https://resource.pokemon-home.com/battledata/img/pokei128/icon0487_f00_s0.png
+ * * https://resource.pokemon-home.com/battledata/img/pokei128/icon0487_f01_s0.png
+**/
+const val POKEICON_URL: String = "https://resource.pokemon-home.com/battledata/img/pokei128/icon####_f@@_s0.png"
+
 //// TYPES ////
 const val BUG_TYPE: String = "BUG_TYPE"
 const val DARK_TYPE: String = "DARK_TYPE"

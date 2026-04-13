@@ -91,4 +91,7 @@ dependencies {
 
     // OkHttp
     implementation(libs.logging.interceptor)
+
+    // PokéAPI
+    implementation(libs.pokekotlin)
 }
