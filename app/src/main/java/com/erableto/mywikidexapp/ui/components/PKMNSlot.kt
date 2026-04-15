@@ -1,20 +1,9 @@
 package com.erableto.mywikidexapp.ui.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,20 +35,12 @@ fun PKMNSlot(
         colors = listOf(color1, color2),
         padding = PaddingValues(4.dp)
     ) {
-        Image(
-            modifier = Modifier.align(Alignment.Center).size(50.dp),
-            painter = pkmnIcon ?: painterResource(R.drawable.rounded_catching_pokemon_50),
-            contentDescription = pkmnName,
-            colorFilter = if (pkmnIcon == null) ColorFilter.tint(LocalContentColor.current) else null
+        PKMNIcon(
+            pkmnName = pkmnName,
+            itemName = itemName,
+            pkmnIcon = pkmnIcon,
+            itemIcon = itemIcon
         )
-
-        if (itemIcon != null) {
-            Image(
-                modifier = Modifier.align(Alignment.BottomEnd).size(25.dp),
-                painter = itemIcon,
-                contentDescription = itemName
-            )
-        }
     }
 }
 
