@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
@@ -37,18 +38,13 @@ fun PKMNSlot(
     val color1 = getTypeColor(type1)
     val color2 = if (type2 != null) getTypeColor(type2) else color1
 
-    Box(
+    GradientBoxCard(
         modifier = Modifier
-            .clip(CardDefaults.shape)
-            .background(
-                Brush.horizontalGradient(
-                    colors = listOf(color1, color2)
-                )
-            )
-            .padding(4.dp)
             .clickable{
                 // TODO
-            }
+            },
+        colors = listOf(color1, color2),
+        padding = PaddingValues(4.dp)
     ) {
         Image(
             modifier = Modifier.align(Alignment.Center).size(50.dp),

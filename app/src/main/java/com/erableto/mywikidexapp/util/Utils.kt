@@ -64,6 +64,7 @@ fun getTypeColor(type: String?): Color {
             ROCK_TYPE -> return colorResource(id = R.color.rock_type)
             STEEL_TYPE -> return colorResource(id = R.color.steel_type)
             WATER_TYPE -> return colorResource(id = R.color.water_type)
+            else -> return MaterialTheme.colorScheme.surfaceContainer
         }
     }
 
