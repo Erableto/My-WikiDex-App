@@ -70,7 +70,10 @@ fun PKMNTeamListItem(
     val color1 = getTypeColor(type1)
     val color2 = if (type2 != null) getTypeColor(type2) else color1
 
-    Row {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -111,7 +114,7 @@ fun PKMNTeamListItem(
                             Text(
                                 text = text,
                                 textAlign = TextAlign.Start,
-                                color = Color.Black,
+                                color = Color.White,
                                 inlineContent = mapOf(
                                     inlineContentId to InlineTextContent(
                                         placeholder = Placeholder(
@@ -167,7 +170,7 @@ fun PKMNTeamListItem(
                             Text(
                                 text = "Habilidad: $ability",
                                 textAlign = TextAlign.Start,
-                                color = Color.Black
+                                color = Color.White
                             )
                         }
 
