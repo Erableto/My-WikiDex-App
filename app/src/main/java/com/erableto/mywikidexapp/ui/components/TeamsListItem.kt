@@ -87,6 +87,7 @@ fun TeamsListItem() {
                                 )
                             }
                         )
+
                         DropdownMenuItem(
                             text = {
                                 Text("Compartir equipo como QR")
@@ -102,6 +103,7 @@ fun TeamsListItem() {
                                 )
                             }
                         )
+
                         DropdownMenuItem(
                             text = {
                                 Text("Eliminar equipo")
