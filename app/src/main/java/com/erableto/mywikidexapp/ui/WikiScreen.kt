@@ -399,7 +399,9 @@ fun WikiScreen(
                                     !url.contains("/index.php") && // Para no incluir páginas con "/index.php".
                                     !url.contains("/editor") && // Para no incluir páginas de edición.
                                     !url.contains("action=") && // Para no incluir páginas de edición.
-                                    !url.contains("/media") // Para no incluir vistas de imágenes dentro de páginas.
+                                    !url.contains("/media") && // Para no incluir vistas de imágenes dentro de páginas.
+                                    !url.contains("?mfnotify") && // Para no incluir páginas que salen tras guardar una edición.
+                                    !url.contains("&mfnotify") // Para no incluir páginas que salen tras guardar una edición.
                                 ) {
                                     // Hacemos cosas con el historial si la página actual no es la portada.
                                     /*val historyEntryAux = historyViewModel.getByURL(url).value
@@ -562,7 +564,9 @@ fun WikiScreen(
                                     !currentURL.contains("/index.php") && // Para no incluir páginas con "/index.php".
                                     !currentURL.contains("/editor") && // Para no incluir páginas de edición.
                                     !currentURL.contains("action=") && // Para no incluir páginas de edición.
-                                    !currentURL.contains("/media") // Para no incluir vistas de imágenes dentro de páginas.
+                                    !currentURL.contains("/media") && // Para no incluir vistas de imágenes dentro de páginas.
+                                    !currentURL.contains("?mfnotify") && // Para no incluir páginas que salen tras guardar una edición.
+                                    !currentURL.contains("&mfnotify") // Para no incluir páginas que salen tras guardar una edición.
                                 ) {
                                     LabeledSmallFab(
                                         text =
