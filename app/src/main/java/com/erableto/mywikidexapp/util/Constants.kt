@@ -37,3 +37,7 @@ const val ROCK_TYPE: String = "ROCK_TYPE"
 const val STEEL_TYPE: String = "STEEL_TYPE"
 const val WATER_TYPE: String = "WATER_TYPE"
 //// ----- ////
+
+const val GENDER_MALE: String = "GENDER_MALE"
+const val GENDER_FEMALE: String = "GENDER_FEMALE"
+const val GENDER_UNKNOWN: String = "GENDER_UNKNOWN"
