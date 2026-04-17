@@ -42,6 +42,7 @@ import com.erableto.mywikidexapp.util.DRAGON_TYPE
 import com.erableto.mywikidexapp.util.ELECTRIC_TYPE
 import com.erableto.mywikidexapp.util.FIGHTING_TYPE
 import com.erableto.mywikidexapp.util.FIRE_TYPE
+import com.erableto.mywikidexapp.util.GENDER_FEMALE
 import com.erableto.mywikidexapp.util.GENDER_MALE
 import com.erableto.mywikidexapp.util.GHOST_TYPE
 
@@ -180,7 +181,7 @@ fun TeamsScreen(
                             itemIcon = null,
                             type1 = ELECTRIC_TYPE,
                             type2 = null,
-                            gender = GENDER_MALE,
+                            gender = GENDER_FEMALE,
                             lv = 100,
                             ability = "Electricidad Estática"
                         )
