@@ -74,6 +74,7 @@ fun PKMNTeamListItem(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 8.dp)
                 .clickable {
                     showMenu = true
                 }
