@@ -49,8 +49,8 @@ fun PKMNSlot(
 fun PKMNSlotPreview() {
     MyWikiDexAppTheme() {
         PKMNSlot(
-            pkmnName = null,
-            itemName = null,
+            pkmnName = "Giratina",
+            itemName = "Griseosfera",
             pkmnIcon = painterResource(R.drawable.ic_pkmn_0487_b),
             itemIcon = painterResource(R.drawable.ic_item_griseous_orb),
             type1 = DRAGON_TYPE,
