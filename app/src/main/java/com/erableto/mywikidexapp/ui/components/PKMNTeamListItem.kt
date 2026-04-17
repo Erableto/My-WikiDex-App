@@ -192,9 +192,11 @@ fun PKMNTeamListItem(
                             ) {
                                 PKMNTypeIcon(modifier = Modifier.size(25.dp), type = type1)
 
-                                Spacer(modifier = Modifier.width(4.dp))
+                                if (type2 != null) {
+                                    Spacer(modifier = Modifier.width(4.dp))
 
-                                PKMNTypeIcon(modifier = Modifier.size(25.dp), type = type2)
+                                    PKMNTypeIcon(modifier = Modifier.size(25.dp), type = type2)
+                                }
                             }
                         }
                     }

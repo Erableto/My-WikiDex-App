@@ -155,7 +155,7 @@ fun TeamsScreen(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(8.dp)
+                        .padding(start = 8.dp, end = 8.dp)
                 ) {
                     /*items(favoritesList.size) { index: Int ->
                         val favorite = favoritesList[index]
