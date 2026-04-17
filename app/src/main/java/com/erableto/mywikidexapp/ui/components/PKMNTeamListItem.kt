@@ -17,8 +17,15 @@ import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,163 +63,210 @@ fun PKMNTeamListItem(
     mov3: String = "-",
     mov4: String = "-"
 ) {
+    var showMenu by remember {
+        mutableStateOf(false)
+    }
+
     val color1 = getTypeColor(type1)
     val color2 = if (type2 != null) getTypeColor(type2) else color1
 
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            GradientBoxCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable{
-                        // TODO
-                    },
-                colors = listOf(color1, color2),
-                padding = PaddingValues(8.dp)
-            ) {
-                Row(
+    Row {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    showMenu = true
+                }
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                GradientBoxCard(
                     modifier = Modifier.fillMaxWidth(),
+                    colors = listOf(color1, color2),
+                    padding = PaddingValues(8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        PKMNIcon(
+                            pkmnName = pkmnName,
+                            itemName = itemName,
+                            pkmnIcon = pkmnIcon,
+                            itemIcon = itemIcon
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        val inlineContentId = "genderIcon"
+                        val text = buildAnnotatedString {
+                            append(pkmnName ?: "MissingNo.")
+                            append(" ")
+                            appendInlineContent(inlineContentId, "[genderIcon]")
+                            append("    Nv. $lv")
+                        }
+
+                        Column(verticalArrangement = Arrangement.Center) {
+                            Text(
+                                text = text,
+                                textAlign = TextAlign.Start,
+                                color = Color.Black,
+                                inlineContent = mapOf(
+                                    inlineContentId to InlineTextContent(
+                                        placeholder = Placeholder(
+                                            width = 20.sp,
+                                            height = 20.sp,
+                                            placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                                        )
+                                    ) {
+                                        val painterResource = when (gender) {
+                                            GENDER_MALE -> {
+                                                painterResource(R.drawable.rounded_male_24)
+                                            }
+
+                                            GENDER_FEMALE -> {
+                                                painterResource(R.drawable.rounded_female_24)
+                                            }
+
+                                            GENDER_UNKNOWN -> {
+                                                painterResource(R.drawable.rounded_blank_24)
+                                            }
+
+                                            else -> {
+                                                painterResource(R.drawable.rounded_blank_24)
+                                            }
+                                        }
+
+                                        val contentDescription = when (gender) {
+                                            GENDER_MALE -> {
+                                                "Macho"
+                                            }
+
+                                            GENDER_FEMALE -> {
+                                                "Hembra"
+                                            }
+
+                                            GENDER_UNKNOWN -> {
+                                                "Desconocido"
+                                            }
+
+                                            else -> {
+                                                "Desconocido"
+                                            }
+                                        }
+
+                                        Image(
+                                            painter = painterResource,
+                                            contentDescription = contentDescription
+                                        )
+                                    }
+                                )
+                            )
+
+                            Text(
+                                text = "Habilidad: $ability",
+                                textAlign = TextAlign.Start,
+                                color = Color.Black
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        Card(
+                            shape = RoundedCornerShape(4.dp),
+                            colors = CardColors(
+                                Color.White,
+                                Color.White,
+                                Color.White,
+                                Color.White
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(4.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                PKMNTypeIcon(modifier = Modifier.size(25.dp), type = type1)
+
+                                Spacer(modifier = Modifier.width(4.dp))
+
+                                PKMNTypeIcon(modifier = Modifier.size(25.dp), type = type2)
+                            }
+                        }
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    PKMNIcon(
-                        pkmnName = pkmnName,
-                        itemName = itemName,
-                        pkmnIcon = pkmnIcon,
-                        itemIcon = itemIcon
-                    )
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = mov1, textAlign = TextAlign.Center)
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                    val inlineContentId = "genderIcon"
-                    val text = buildAnnotatedString {
-                        append(pkmnName ?: "MissingNo.")
-                        append(" ")
-                        appendInlineContent(inlineContentId, "[genderIcon]")
-                        append("    Nv. $lv")
-                    }
-
-                    Column(verticalArrangement = Arrangement.Center) {
-                        Text(
-                            text = text,
-                            textAlign = TextAlign.Start,
-                            color = Color.Black,
-                            inlineContent = mapOf(
-                                inlineContentId to InlineTextContent(
-                                    placeholder = Placeholder(
-                                        width = 20.sp,
-                                        height = 20.sp,
-                                        placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                                    )
-                                ) {
-                                    val painterResource = when (gender) {
-                                        GENDER_MALE -> {
-                                            painterResource(R.drawable.rounded_male_24)
-                                        }
-
-                                        GENDER_FEMALE -> {
-                                            painterResource(R.drawable.rounded_female_24)
-                                        }
-
-                                        GENDER_UNKNOWN -> {
-                                            painterResource(R.drawable.rounded_blank_24)
-                                        }
-
-                                        else -> {
-                                            painterResource(R.drawable.rounded_blank_24)
-                                        }
-                                    }
-
-                                    val contentDescription = when (gender) {
-                                        GENDER_MALE -> {
-                                            "Macho"
-                                        }
-
-                                        GENDER_FEMALE -> {
-                                            "Hembra"
-                                        }
-
-                                        GENDER_UNKNOWN -> {
-                                            "Desconocido"
-                                        }
-
-                                        else -> {
-                                            "Desconocido"
-                                        }
-                                    }
-
-                                    Image(
-                                        painter = painterResource,
-                                        contentDescription = contentDescription
-                                    )
-                                }
-                            )
-                        )
-
-                        Text(
-                            text = "Habilidad: $ability",
-                            textAlign = TextAlign.Start,
-                            color = Color.Black
-                        )
+                        Text(text = mov3, textAlign = TextAlign.Center)
                     }
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    Card(
-                        shape = RoundedCornerShape(4.dp),
-                        colors = CardColors(
-                            Color.White,
-                            Color.White,
-                            Color.White,
-                            Color.White
-                        )
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Row(
-                            modifier = Modifier.padding(4.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            PKMNTypeIcon(modifier = Modifier.size(25.dp), type = type1)
+                        Text(text = mov2, textAlign = TextAlign.Center)
 
-                            Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                            PKMNTypeIcon(modifier = Modifier.size(25.dp), type = type2)
-                        }
+                        Text(text = mov4, textAlign = TextAlign.Center)
                     }
                 }
             }
+        }
 
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(text = mov1, textAlign = TextAlign.Center)
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(text = mov3, textAlign = TextAlign.Center)
-                }
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(text = mov2, textAlign = TextAlign.Center)
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(text = mov4, textAlign = TextAlign.Center)
-                }
+        DropdownMenu(
+            expanded = showMenu,
+            onDismissRequest = {
+                showMenu = false
             }
+        ) {
+            DropdownMenuItem(
+                text = {
+                    Text("Editar Pokémon")
+                },
+                onClick = {
+                    showMenu = false
+                    // TODO
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.rounded_edit_24),
+                        contentDescription = "Editar Pokémon"
+                    )
+                }
+            )
+
+            DropdownMenuItem(
+                text = {
+                    Text("Eliminar Pokémon")
+                },
+                onClick = {
+                    showMenu = false
+                    // TODO
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.rounded_delete_24),
+                        contentDescription = "Eliminar Pokémon"
+                    )
+                }
+            )
         }
     }
 }
