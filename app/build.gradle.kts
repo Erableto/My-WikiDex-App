@@ -92,8 +92,15 @@ dependencies {
     // OkHttp
     implementation(libs.logging.interceptor)
 
-    /*
     // PokéAPI
     implementation(libs.pokekotlin)
-    */
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("io.ktor:ktor-client-core:3.4.2")
+        force("io.ktor:ktor-client-okhttp:3.4.2")
+        force("io.ktor:ktor-client-content-negotiation:3.4.2")
+        force("io.ktor:ktor-serialization-kotlinx-json:3.4.2")
+    }
 }
