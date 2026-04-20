@@ -1,6 +1,6 @@
 [versions]
 agp = "9.1.1"
-arsceneview = "3.6.2"
+arsceneview = "4.0.1"
 converterGson = "3.0.0"
 coreKtx = "1.18.0"
 coreSplashscreen = "1.2.0"
