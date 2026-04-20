@@ -1,5 +1,5 @@
 [versions]
-agp = "9.1.0"
+agp = "9.1.1"
 arsceneview = "3.6.2"
 converterGson = "3.0.0"
 coreKtx = "1.18.0"
