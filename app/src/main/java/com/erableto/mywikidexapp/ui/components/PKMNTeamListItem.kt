@@ -38,7 +38,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
 import com.erableto.mywikidexapp.R
+import com.erableto.mywikidexapp.data.PKMN
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import com.erableto.mywikidexapp.util.FIGHTING_TYPE
 import com.erableto.mywikidexapp.util.FIRE_TYPE
@@ -48,27 +50,20 @@ import com.erableto.mywikidexapp.util.GENDER_UNKNOWN
 import com.erableto.mywikidexapp.util.getTypeColor
 
 @Composable
-fun PKMNTeamListItem(
-    pkmnName: String?,
-    itemName: String?,
-    pkmnIcon: Painter?,
-    itemIcon: Painter?,
-    type1: String?,
-    type2: String?,
-    gender: String = GENDER_UNKNOWN,
-    lv: Int = 0,
-    ability: String = "-",
-    mov1: String = "-",
-    mov2: String = "-",
-    mov3: String = "-",
-    mov4: String = "-"
-) {
+fun PKMNTeamListItem(pkmn: PKMN) {
+    val pkmnIcon: Painter? =
+        if (pkmn.pkmnIcon != null && pkmn.pkmnIcon.isDigitsOnly()) painterResource(pkmn.pkmnIcon.toInt())
+        else null
+    val itemIcon: Painter? =
+        if (pkmn.itemIcon != null && pkmn.itemIcon.isDigitsOnly()) painterResource(pkmn.itemIcon.toInt())
+        else null
+
     var showMenu by remember {
         mutableStateOf(false)
     }
 
-    val color1 = getTypeColor(type1)
-    val color2 = if (type2 != null) getTypeColor(type2) else color1
+    val color1 = getTypeColor(pkmn.type1)
+    val color2 = if (pkmn.type2 != null) getTypeColor(pkmn.type2) else color1
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -94,8 +89,8 @@ fun PKMNTeamListItem(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         PKMNIcon(
-                            pkmnName = pkmnName,
-                            itemName = itemName,
+                            pkmnName = pkmn.pkmnName,
+                            itemName = pkmn.itemName,
                             pkmnIcon = pkmnIcon,
                             itemIcon = itemIcon
                         )
@@ -104,10 +99,10 @@ fun PKMNTeamListItem(
 
                         val inlineContentId = "genderIcon"
                         val text = buildAnnotatedString {
-                            append(pkmnName ?: "MissingNo.")
+                            append(pkmn.pkmnName ?: "MissingNo.")
                             append(" ")
                             appendInlineContent(inlineContentId, "[genderIcon]")
-                            append("    Nv. $lv")
+                            append("    Nv. ${pkmn.lv}")
                         }
 
                         Column(verticalArrangement = Arrangement.Center) {
@@ -123,7 +118,7 @@ fun PKMNTeamListItem(
                                             placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
                                         )
                                     ) {
-                                        val painterResource = when (gender) {
+                                        val painterResource = when (pkmn.gender) {
                                             GENDER_MALE -> {
                                                 painterResource(R.drawable.rounded_male_24)
                                             }
@@ -141,7 +136,7 @@ fun PKMNTeamListItem(
                                             }
                                         }
 
-                                        val contentDescription = when (gender) {
+                                        val contentDescription = when (pkmn.gender) {
                                             GENDER_MALE -> {
                                                 "Macho"
                                             }
@@ -159,7 +154,7 @@ fun PKMNTeamListItem(
                                             }
                                         }
 
-                                        if (gender == GENDER_MALE || gender == GENDER_FEMALE) {
+                                        if (pkmn.gender == GENDER_MALE || pkmn.gender == GENDER_FEMALE) {
                                             Card(
                                                 shape = RoundedCornerShape(4.dp),
                                                 colors = CardColors(
@@ -180,7 +175,7 @@ fun PKMNTeamListItem(
                             )
 
                             Text(
-                                text = "Habilidad: $ability",
+                                text = "Habilidad: ${pkmn.ability}",
                                 textAlign = TextAlign.Start,
                                 color = Color.White
                             )
@@ -202,12 +197,12 @@ fun PKMNTeamListItem(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                PKMNTypeIcon(modifier = Modifier.size(25.dp), type = type1)
+                                PKMNTypeIcon(modifier = Modifier.size(25.dp), type = pkmn.type1)
 
-                                if (type2 != null) {
+                                if (pkmn.type2 != null) {
                                     Spacer(modifier = Modifier.width(4.dp))
 
-                                    PKMNTypeIcon(modifier = Modifier.size(25.dp), type = type2)
+                                    PKMNTypeIcon(modifier = Modifier.size(25.dp), type = pkmn.type2)
                                 }
                             }
                         }
@@ -224,11 +219,11 @@ fun PKMNTeamListItem(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text(text = mov1, textAlign = TextAlign.Center)
+                        Text(text = pkmn.mov1, textAlign = TextAlign.Center)
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        Text(text = mov3, textAlign = TextAlign.Center)
+                        Text(text = pkmn.mov3, textAlign = TextAlign.Center)
                     }
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -238,11 +233,11 @@ fun PKMNTeamListItem(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text(text = mov2, textAlign = TextAlign.Center)
+                        Text(text = pkmn.mov2, textAlign = TextAlign.Center)
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        Text(text = mov4, textAlign = TextAlign.Center)
+                        Text(text = pkmn.mov4, textAlign = TextAlign.Center)
                     }
                 }
             }
@@ -294,19 +289,21 @@ fun PKMNTeamListItem(
 fun PKMNTeamListItemPreview() {
     MyWikiDexAppTheme() {
         PKMNTeamListItem(
-            pkmnName = "Infernape",
-            itemName = "Carbón",
-            pkmnIcon = painterResource(R.drawable.ic_pkmn_0392),
-            itemIcon = painterResource(R.drawable.ic_item_charcoal),
-            type1 = FIRE_TYPE,
-            type2 = FIGHTING_TYPE,
-            gender = GENDER_MALE,
-            lv = 100,
-            ability = "Mar Llamas",
-            mov1 = "Envite Ígneo",
-            mov2 = "Golpe Aéreo",
-            mov3 = "A Bocajarro",
-            mov4 = "Excavar"
+            PKMN(
+                pkmnName = "Infernape",
+                itemName = "Carbón",
+                pkmnIcon = "${R.drawable.ic_pkmn_0392}",
+                itemIcon = "${R.drawable.ic_item_charcoal}",
+                type1 = FIRE_TYPE,
+                type2 = FIGHTING_TYPE,
+                gender = GENDER_MALE,
+                lv = 100,
+                ability = "Mar Llamas",
+                mov1 = "Envite Ígneo",
+                mov2 = "Golpe Aéreo",
+                mov3 = "A Bocajarro",
+                mov4 = "Excavar"
+            )
         )
     }
 }
