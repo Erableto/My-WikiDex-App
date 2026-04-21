@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.erableto.mywikidexapp.R
+import com.erableto.mywikidexapp.data.PKMN
 import com.erableto.mywikidexapp.ui.components.PKMNTeamListItem
 import com.erableto.mywikidexapp.ui.components.TeamsListItem
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
@@ -175,42 +176,48 @@ fun TeamsScreen(
                         TeamsListItem()
 
                         PKMNTeamListItem(
-                            pkmnName = "Pichu",
-                            itemName = null,
-                            pkmnIcon = painterResource(R.drawable.ic_pkmn_0172),
-                            itemIcon = null,
-                            type1 = ELECTRIC_TYPE,
-                            type2 = null,
-                            gender = GENDER_FEMALE,
-                            lv = 100,
-                            ability = "Electricidad Estática"
+                            PKMN(
+                                pkmnName = "Pichu",
+                                itemName = null,
+                                pkmnIcon = "${R.drawable.ic_pkmn_0172}",
+                                itemIcon = null,
+                                type1 = ELECTRIC_TYPE,
+                                type2 = null,
+                                gender = GENDER_FEMALE,
+                                lv = 100,
+                                ability = "Electricidad Estática"
+                            )
                         )
 
                         PKMNTeamListItem(
-                            pkmnName = "Infernape",
-                            itemName = "Carbón",
-                            pkmnIcon = painterResource(R.drawable.ic_pkmn_0392),
-                            itemIcon = painterResource(R.drawable.ic_item_charcoal),
-                            type1 = FIRE_TYPE,
-                            type2 = FIGHTING_TYPE,
-                            gender = GENDER_MALE,
-                            lv = 100,
-                            ability = "Mar Llamas",
-                            mov1 = "Envite Ígneo",
-                            mov2 = "Golpe Aéreo",
-                            mov3 = "A Bocajarro",
-                            mov4 = "Excavar"
+                            PKMN(
+                                pkmnName = "Infernape",
+                                itemName = "Carbón",
+                                pkmnIcon = "${R.drawable.ic_pkmn_0392}",
+                                itemIcon = "${R.drawable.ic_item_charcoal}",
+                                type1 = FIRE_TYPE,
+                                type2 = FIGHTING_TYPE,
+                                gender = GENDER_MALE,
+                                lv = 100,
+                                ability = "Mar Llamas",
+                                mov1 = "Envite Ígneo",
+                                mov2 = "Golpe Aéreo",
+                                mov3 = "A Bocajarro",
+                                mov4 = "Excavar"
+                            )
                         )
 
                         PKMNTeamListItem(
-                            pkmnName = "Giratina",
-                            itemName = "Griseosfera",
-                            pkmnIcon = painterResource(R.drawable.ic_pkmn_0487_b),
-                            itemIcon = painterResource(R.drawable.ic_item_griseous_orb),
-                            type1 = DRAGON_TYPE,
-                            type2 = GHOST_TYPE,
-                            lv = 100,
-                            ability = "Levitación"
+                            PKMN(
+                                pkmnName = "Giratina",
+                                itemName = "Griseosfera",
+                                pkmnIcon = "${R.drawable.ic_pkmn_0487_b}",
+                                itemIcon = "${R.drawable.ic_item_griseous_orb}",
+                                type1 = DRAGON_TYPE,
+                                type2 = GHOST_TYPE,
+                                lv = 100,
+                                ability = "Levitación"
+                            )
                         )
                     }
                 }
