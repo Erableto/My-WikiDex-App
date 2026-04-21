@@ -159,10 +159,22 @@ fun PKMNTeamListItem(
                                             }
                                         }
 
-                                        Image(
-                                            painter = painterResource,
-                                            contentDescription = contentDescription
-                                        )
+                                        if (gender == GENDER_MALE || gender == GENDER_FEMALE) {
+                                            Card(
+                                                shape = RoundedCornerShape(4.dp),
+                                                colors = CardColors(
+                                                    Color.White,
+                                                    Color.White,
+                                                    Color.White,
+                                                    Color.White
+                                                )
+                                            ) {
+                                                Image(
+                                                    painter = painterResource,
+                                                    contentDescription = contentDescription
+                                                )
+                                            }
+                                        }
                                     }
                                 )
                             )
