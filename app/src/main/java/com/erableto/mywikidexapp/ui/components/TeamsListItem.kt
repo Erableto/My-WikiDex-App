@@ -23,19 +23,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import com.erableto.mywikidexapp.R
+import com.erableto.mywikidexapp.data.PKMN
+import com.erableto.mywikidexapp.data.Team
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import com.erableto.mywikidexapp.util.DRAGON_TYPE
 import com.erableto.mywikidexapp.util.ELECTRIC_TYPE
 import com.erableto.mywikidexapp.util.FIGHTING_TYPE
 import com.erableto.mywikidexapp.util.FIRE_TYPE
+import com.erableto.mywikidexapp.util.GENDER_FEMALE
+import com.erableto.mywikidexapp.util.GENDER_MALE
 import com.erableto.mywikidexapp.util.GHOST_TYPE
 
 @Composable
-fun TeamsListItem() {
+fun TeamsListItem(team: Team) {
     var showMenu by remember {
         mutableStateOf(false)
     }
@@ -141,69 +147,34 @@ fun TeamsListItem() {
                 horizontalArrangement = Arrangement.Center
             ) {
                 item {
-                    PKMNSlot(
-                        pkmnName = null,
-                        itemName = null,
-                        pkmnIcon = painterResource(R.drawable.ic_pkmn_0172),
-                        itemIcon = null,
-                        type1 = ELECTRIC_TYPE,
-                        type2 = null
-                    )
+                    PKMNSlot(pkmn = team.pkmn1)
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    PKMNSlot(
-                        pkmnName = null,
-                        itemName = null,
-                        pkmnIcon = painterResource(R.drawable.ic_pkmn_0392),
-                        itemIcon = painterResource(R.drawable.ic_item_charcoal),
-                        type1 = FIRE_TYPE,
-                        type2 = FIGHTING_TYPE
-                    )
+                    val pkmnIcon2: Painter? =
+                        if (team.pkmn2?.pkmnIcon != null && team.pkmn2.pkmnIcon.isDigitsOnly()) painterResource(team.pkmn2.pkmnIcon.toInt())
+                        else null
+                    val itemIcon2: Painter? =
+                        if (team.pkmn2?.itemIcon != null && team.pkmn2.itemIcon.isDigitsOnly()) painterResource(team.pkmn2.itemIcon.toInt())
+                        else null
+
+                    PKMNSlot(pkmn = team.pkmn2)
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    PKMNSlot(
-                        pkmnName = null,
-                        itemName = null,
-                        pkmnIcon = painterResource(R.drawable.ic_pkmn_0487_b),
-                        itemIcon = painterResource(R.drawable.ic_item_griseous_orb),
-                        type1 = DRAGON_TYPE,
-                        type2 = GHOST_TYPE
-                    )
+                    PKMNSlot(pkmn = team.pkmn3)
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    PKMNSlot(
-                        pkmnName = null,
-                        itemName = null,
-                        pkmnIcon = null,
-                        itemIcon = null,
-                        type1 = null,
-                        type2 = null
-                    )
+                    PKMNSlot(pkmn = team.pkmn4)
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    PKMNSlot(
-                        pkmnName = null,
-                        itemName = null,
-                        pkmnIcon = null,
-                        itemIcon = null,
-                        type1 = null,
-                        type2 = null
-                    )
+                    PKMNSlot(pkmn = team.pkmn5)
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    PKMNSlot(
-                        pkmnName = null,
-                        itemName = null,
-                        pkmnIcon = null,
-                        itemIcon = null,
-                        type1 = null,
-                        type2 = null
-                    )
+                    PKMNSlot(pkmn = team.pkmn6)
                 }
             }
         }
@@ -214,6 +185,49 @@ fun TeamsListItem() {
 @Preview
 fun TeamsListItemPreview() {
     MyWikiDexAppTheme() {
-        TeamsListItem()
+        TeamsListItem(
+            team = Team(
+                teamName = "Equipo",
+                pkmn1 = PKMN(
+                    pkmnName = "Pichu",
+                    itemName = null,
+                    pkmnIcon = "${R.drawable.ic_pkmn_0172}",
+                    itemIcon = null,
+                    type1 = ELECTRIC_TYPE,
+                    type2 = null,
+                    gender = GENDER_FEMALE,
+                    lv = 100,
+                    ability = "Electricidad Estática"
+                ),
+                pkmn2 = PKMN(
+                    pkmnName = "Infernape",
+                    itemName = "Carbón",
+                    pkmnIcon = "${R.drawable.ic_pkmn_0392}",
+                    itemIcon = "${R.drawable.ic_item_charcoal}",
+                    type1 = FIRE_TYPE,
+                    type2 = FIGHTING_TYPE,
+                    gender = GENDER_MALE,
+                    lv = 100,
+                    ability = "Mar Llamas",
+                    mov1 = "Envite Ígneo",
+                    mov2 = "Golpe Aéreo",
+                    mov3 = "A Bocajarro",
+                    mov4 = "Excavar"
+                ),
+                pkmn3 = PKMN(
+                    pkmnName = "Giratina",
+                    itemName = "Griseosfera",
+                    pkmnIcon = "${R.drawable.ic_pkmn_0487_b}",
+                    itemIcon = "${R.drawable.ic_item_griseous_orb}",
+                    type1 = DRAGON_TYPE,
+                    type2 = GHOST_TYPE,
+                    lv = 100,
+                    ability = "Levitación"
+                ),
+                pkmn4 = null,
+                pkmn5 = null,
+                pkmn6 = null
+            )
+        )
     }
 }

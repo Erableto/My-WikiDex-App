@@ -88,12 +88,7 @@ fun PKMNTeamListItem(pkmn: PKMN) {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        PKMNIcon(
-                            pkmnName = pkmn.pkmnName,
-                            itemName = pkmn.itemName,
-                            pkmnIcon = pkmnIcon,
-                            itemIcon = itemIcon
-                        )
+                        PKMNIcon(pkmn = pkmn)
 
                         Spacer(modifier = Modifier.width(8.dp))
 
@@ -289,7 +284,7 @@ fun PKMNTeamListItem(pkmn: PKMN) {
 fun PKMNTeamListItemPreview() {
     MyWikiDexAppTheme() {
         PKMNTeamListItem(
-            PKMN(
+            pkmn = PKMN(
                 pkmnName = "Infernape",
                 itemName = "Carbón",
                 pkmnIcon = "${R.drawable.ic_pkmn_0392}",
