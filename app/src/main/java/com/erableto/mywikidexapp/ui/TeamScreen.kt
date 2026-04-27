@@ -23,6 +23,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -72,6 +73,8 @@ val TeamsList_ = mutableStateListOf(
 val teamsList_empty = mutableStateListOf<Favorite>()
 */
 
+val pkmnList = mutableStateListOf<PKMN>()
+
 @Composable
 fun TeamScreen(
     team: Team
@@ -87,8 +90,27 @@ fun TeamScreen(
 
     //val teamsList by viewModel.teams.collectAsState()
 
+    if (team.pkmn1 != null) {
+        pkmnList.add(team.pkmn1)
+    }
+    if (team.pkmn2 != null) {
+        pkmnList.add(team.pkmn2)
+    }
+    if (team.pkmn3 != null) {
+        pkmnList.add(team.pkmn3)
+    }
+    if (team.pkmn4 != null) {
+        pkmnList.add(team.pkmn4)
+    }
+    if (team.pkmn5 != null) {
+        pkmnList.add(team.pkmn5)
+    }
+    if (team.pkmn6 != null) {
+        pkmnList.add(team.pkmn6)
+    }
+
     var teamSize by remember {
-        mutableIntStateOf(0)
+        mutableIntStateOf(pkmnList.size)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -152,65 +174,10 @@ fun TeamScreen(
                     .fillMaxSize()
                     .padding(start = 8.dp, end = 8.dp)
             ) {
-                /*items(favoritesList.size) { index: Int ->
-                    val favorite = favoritesList[index]
+                items(pkmnList.size) { index: Int ->
+                    val pkmn = pkmnList[index]
 
-                    FavoritesListItem(
-                        favorite = favorite,
-                        onClickFav = {
-                            onNavigateToWiki(favorite.url)
-                        },
-                        onClickDeleteFav = {
-                            //favoritesList.remove(favorite)
-                            viewModel.delete(favorite)
-                        }
-                    )
-                }*/
-                item {
-                    PKMNTeamListItem(
-                        PKMN(
-                            pkmnName = "Pichu",
-                            itemName = null,
-                            pkmnIcon = "${R.drawable.ic_pkmn_0172}",
-                            itemIcon = null,
-                            type1 = ELECTRIC_TYPE,
-                            type2 = null,
-                            gender = GENDER_FEMALE,
-                            lv = 100,
-                            ability = "Electricidad Estática"
-                        )
-                    )
-
-                    PKMNTeamListItem(
-                        PKMN(
-                            pkmnName = "Infernape",
-                            itemName = "Carbón",
-                            pkmnIcon = "${R.drawable.ic_pkmn_0392}",
-                            itemIcon = "${R.drawable.ic_item_charcoal}",
-                            type1 = FIRE_TYPE,
-                            type2 = FIGHTING_TYPE,
-                            gender = GENDER_MALE,
-                            lv = 100,
-                            ability = "Mar Llamas",
-                            mov1 = "Envite Ígneo",
-                            mov2 = "Golpe Aéreo",
-                            mov3 = "A Bocajarro",
-                            mov4 = "Excavar"
-                        )
-                    )
-
-                    PKMNTeamListItem(
-                        PKMN(
-                            pkmnName = "Giratina",
-                            itemName = "Griseosfera",
-                            pkmnIcon = "${R.drawable.ic_pkmn_0487_b}",
-                            itemIcon = "${R.drawable.ic_item_griseous_orb}",
-                            type1 = DRAGON_TYPE,
-                            type2 = GHOST_TYPE,
-                            lv = 100,
-                            ability = "Levitación"
-                        )
-                    )
+                    PKMNTeamListItem(pkmn = pkmn)
                 }
             }
         }
@@ -244,7 +211,7 @@ fun TeamScreenPreview() {
     MyWikiDexAppTheme() {
         TeamScreen(
             Team(
-                teamName = "Equipo",
+                teamName = "Equipo de Erableto",
                 pkmn1 = PKMN(
                     pkmnName = "Pichu",
                     itemName = null,
