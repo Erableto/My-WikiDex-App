@@ -30,8 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.erableto.mywikidexapp.R
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
