@@ -247,10 +247,7 @@ fun TeamScreenPreview() {
                     type2 = GHOST_TYPE,
                     lv = 100,
                     ability = "Levitación"
-                ),
-                pkmn4 = null,
-                pkmn5 = null,
-                pkmn6 = null
+                )
             )
         /*onNavigateToWiki = { url ->
             DUMMY = url

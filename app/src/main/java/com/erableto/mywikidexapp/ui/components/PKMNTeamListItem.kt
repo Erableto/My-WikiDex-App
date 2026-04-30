@@ -47,6 +47,7 @@ import com.erableto.mywikidexapp.util.FIRE_TYPE
 import com.erableto.mywikidexapp.util.GENDER_FEMALE
 import com.erableto.mywikidexapp.util.GENDER_MALE
 import com.erableto.mywikidexapp.util.GENDER_UNKNOWN
+import com.erableto.mywikidexapp.util.getGenderName
 import com.erableto.mywikidexapp.util.getTypeColor
 
 @Composable
@@ -113,42 +114,6 @@ fun PKMNTeamListItem(pkmn: PKMN) {
                                             placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
                                         )
                                     ) {
-                                        val painterResource = when (pkmn.gender) {
-                                            GENDER_MALE -> {
-                                                painterResource(R.drawable.rounded_male_24)
-                                            }
-
-                                            GENDER_FEMALE -> {
-                                                painterResource(R.drawable.rounded_female_24)
-                                            }
-
-                                            GENDER_UNKNOWN -> {
-                                                painterResource(R.drawable.rounded_blank_24)
-                                            }
-
-                                            else -> {
-                                                painterResource(R.drawable.rounded_blank_24)
-                                            }
-                                        }
-
-                                        val contentDescription = when (pkmn.gender) {
-                                            GENDER_MALE -> {
-                                                "Macho"
-                                            }
-
-                                            GENDER_FEMALE -> {
-                                                "Hembra"
-                                            }
-
-                                            GENDER_UNKNOWN -> {
-                                                "Desconocido"
-                                            }
-
-                                            else -> {
-                                                "Desconocido"
-                                            }
-                                        }
-
                                         if (pkmn.gender == GENDER_MALE || pkmn.gender == GENDER_FEMALE) {
                                             Card(
                                                 shape = RoundedCornerShape(4.dp),
@@ -159,10 +124,7 @@ fun PKMNTeamListItem(pkmn: PKMN) {
                                                     Color.White
                                                 )
                                             ) {
-                                                Image(
-                                                    painter = painterResource,
-                                                    contentDescription = contentDescription
-                                                )
+                                                PKMNGenderIcon(gender = pkmn.gender)
                                             }
                                         }
                                     }
@@ -279,8 +241,8 @@ fun PKMNTeamListItem(pkmn: PKMN) {
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-@Preview
 fun PKMNTeamListItemPreview() {
     MyWikiDexAppTheme() {
         PKMNTeamListItem(

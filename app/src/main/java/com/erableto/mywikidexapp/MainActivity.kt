@@ -21,14 +21,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.erableto.mywikidexapp.data.PKMN
 import com.erableto.mywikidexapp.ui.ARScreen
 import com.erableto.mywikidexapp.ui.AboutScreen
 import com.erableto.mywikidexapp.ui.ExploreScreen
 import com.erableto.mywikidexapp.ui.FavoritesScreen
 import com.erableto.mywikidexapp.ui.HistoryScreen
-import com.erableto.mywikidexapp.ui.TeamsScreen
 import com.erableto.mywikidexapp.ui.WikiScreen
+import com.erableto.mywikidexapp.ui.PKMNEditScreen
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
+import com.erableto.mywikidexapp.util.FIGHTING_TYPE
+import com.erableto.mywikidexapp.util.FIRE_TYPE
+import com.erableto.mywikidexapp.util.GENDER_MALE
 import com.erableto.mywikidexapp.util.WIKIDEX_URL
 
 class MainActivity : ComponentActivity() {
@@ -110,7 +114,24 @@ fun MyWikiDexAppApp() {
                             currentDestination = AppDestinations.WIKI
                         }
                     )
-                    AppDestinations.TEAMS -> TeamsScreen()
+                    //AppDestinations.TEAMS -> TeamsScreen()
+                    AppDestinations.TEAMS -> PKMNEditScreen(
+                        pkmn = PKMN(
+                            pkmnName = "Infernape",
+                            itemName = "Carbón",
+                            pkmnIcon = "${R.drawable.ic_pkmn_0392}",
+                            itemIcon = "${R.drawable.ic_item_charcoal}",
+                            type1 = FIRE_TYPE,
+                            type2 = FIGHTING_TYPE,
+                            gender = GENDER_MALE,
+                            lv = 100,
+                            ability = "Mar Llamas",
+                            mov1 = "Envite Ígneo",
+                            mov2 = "Golpe Aéreo",
+                            mov3 = "A Bocajarro",
+                            mov4 = "Excavar"
+                        )
+                    )
                     AppDestinations.ABOUT -> AboutScreen(
                         onNavigateToAR = {
                             currentDestination = AppDestinations.AR

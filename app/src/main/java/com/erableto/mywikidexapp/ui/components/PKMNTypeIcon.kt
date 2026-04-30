@@ -25,6 +25,7 @@ import com.erableto.mywikidexapp.util.PSYCHIC_TYPE
 import com.erableto.mywikidexapp.util.ROCK_TYPE
 import com.erableto.mywikidexapp.util.STEEL_TYPE
 import com.erableto.mywikidexapp.util.WATER_TYPE
+import com.erableto.mywikidexapp.util.getTypeName
 
 @Composable
 fun PKMNTypeIcon(modifier: Modifier = Modifier, type: String?) {
@@ -88,75 +89,15 @@ fun PKMNTypeIcon(modifier: Modifier = Modifier, type: String?) {
         }
     }
 
-    val contentDescription = when (type) {
-        BUG_TYPE -> {
-            "Bicho"
-        }
-        DARK_TYPE -> {
-            "Siniestro"
-        }
-        DRAGON_TYPE -> {
-            "Dragón"
-        }
-        ELECTRIC_TYPE -> {
-            "Eléctrico"
-        }
-        FAIRY_TYPE -> {
-            "Hada"
-        }
-        FIGHTING_TYPE -> {
-            "Lucha"
-        }
-        FIRE_TYPE -> {
-            "Fuego"
-        }
-        FLYING_TYPE -> {
-            "Volador"
-        }
-        GHOST_TYPE -> {
-            "Fantasma"
-        }
-        GRASS_TYPE -> {
-            "Planta"
-        }
-        GROUND_TYPE -> {
-            "Tierra"
-        }
-        ICE_TYPE -> {
-            "Hielo"
-        }
-        NORMAL_TYPE -> {
-            "Normal"
-        }
-        POISON_TYPE -> {
-            "Veneno"
-        }
-        PSYCHIC_TYPE -> {
-            "Psíquico"
-        }
-        ROCK_TYPE -> {
-            "Roca"
-        }
-        STEEL_TYPE -> {
-            "Acero"
-        }
-        WATER_TYPE -> {
-            "Agua"
-        }
-        else -> {
-            ""
-        }
-    }
-
     Image(
         modifier = modifier,
         painter = painterResource,
-        contentDescription = contentDescription
+        contentDescription = getTypeName(type)
     )
 }
 
+@Preview(showBackground = true)
 @Composable
-@Preview
 fun PKMNTypeIconPreview() {
     MyWikiDexAppTheme() {
         PKMNTypeIcon(type = FIRE_TYPE)
