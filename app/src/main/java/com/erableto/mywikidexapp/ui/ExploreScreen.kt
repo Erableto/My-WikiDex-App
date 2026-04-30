@@ -1,8 +1,6 @@
 package com.erableto.mywikidexapp.ui
 
-import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -45,7 +43,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.sceneview.SceneView
-import io.github.sceneview.animation.Transition.animateRotation
 import dev.romainguy.kotlin.math.Float3
 import io.github.sceneview.rememberCameraManipulator
 import io.github.sceneview.rememberCameraNode

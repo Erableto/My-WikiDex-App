@@ -1,6 +1,5 @@
 package com.erableto.mywikidexapp.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,8 +45,6 @@ import com.erableto.mywikidexapp.util.FIGHTING_TYPE
 import com.erableto.mywikidexapp.util.FIRE_TYPE
 import com.erableto.mywikidexapp.util.GENDER_FEMALE
 import com.erableto.mywikidexapp.util.GENDER_MALE
-import com.erableto.mywikidexapp.util.GENDER_UNKNOWN
-import com.erableto.mywikidexapp.util.getGenderName
 import com.erableto.mywikidexapp.util.getTypeColor
 
 @Composable
