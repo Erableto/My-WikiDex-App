@@ -184,7 +184,7 @@ fun PKMNEditScreen(
                         isError = pkmnName.isBlank()
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(1.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -328,7 +328,7 @@ fun PKMNEditScreen(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(1.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -423,7 +423,7 @@ fun PKMNEditScreen(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(1.dp))
 
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -437,7 +437,7 @@ fun PKMNEditScreen(
                         //isError = ability.isBlank()
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(1.dp))
 
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -451,7 +451,7 @@ fun PKMNEditScreen(
                         //isError = itemName.isBlank()
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(1.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -485,7 +485,7 @@ fun PKMNEditScreen(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(1.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
