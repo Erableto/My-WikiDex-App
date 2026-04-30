@@ -55,8 +55,8 @@ fun CardFABItem(
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-@Preview
 fun CardFABItemPreview() {
     MyWikiDexAppTheme() {
         CardFABItem(

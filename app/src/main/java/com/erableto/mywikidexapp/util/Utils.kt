@@ -6,6 +6,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -69,4 +70,45 @@ fun getTypeColor(type: String?): Color {
     }
 
     return MaterialTheme.colorScheme.surfaceContainer
+}
+
+fun getTypeName(type: String?): String {
+    if (type != null) {
+        when (type) {
+            NORMAL_TYPE -> return "Tipo Normal"
+            GRASS_TYPE -> return "Tipo Planta"
+            FIRE_TYPE -> return "Tipo Fuego"
+            WATER_TYPE -> return "Tipo Agua"
+            ELECTRIC_TYPE -> return "Tipo Eléctrico"
+            BUG_TYPE -> return "Tipo Bicho"
+            FLYING_TYPE -> return "Tipo Volador"
+            ROCK_TYPE -> return "Tipo Roca"
+            POISON_TYPE -> return "Tipo Veneno"
+            GROUND_TYPE -> return "Tipo Tierra"
+            ICE_TYPE -> return "Tipo Hielo"
+            FIGHTING_TYPE -> return "Tipo Lucha"
+            PSYCHIC_TYPE -> return "Tipo Psíquico"
+            GHOST_TYPE -> return "Tipo Fantasma"
+            DRAGON_TYPE -> return "Tipo Dragón"
+            DARK_TYPE -> return "Tipo Siniestro"
+            STEEL_TYPE -> return "Tipo Acero"
+            FAIRY_TYPE -> return "Tipo Hada"
+            else -> return "-"
+        }
+    }
+
+    return "-"
+}
+
+fun getGenderName(gender: String?): String {
+    if (gender != null) {
+        when (gender) {
+            GENDER_UNKNOWN -> return "Desconocido"
+            GENDER_MALE -> return "Macho"
+            GENDER_FEMALE -> return "Hembra"
+            else -> return "Desconocido"
+        }
+    }
+
+    return "Desconocido"
 }

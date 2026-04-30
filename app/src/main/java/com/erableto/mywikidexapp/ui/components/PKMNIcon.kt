@@ -49,8 +49,8 @@ fun PKMNIcon(
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-@Preview
 fun PKMNIconPreview() {
     MyWikiDexAppTheme() {
         PKMNIcon(

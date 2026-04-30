@@ -8,10 +8,10 @@ import androidx.room.PrimaryKey
 data class Team(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val teamName: String = "Equipo $id",
-    @Embedded(prefix = "pkmn1_") val pkmn1: PKMN?,
-    @Embedded(prefix = "pkmn2_") val pkmn2: PKMN?,
-    @Embedded(prefix = "pkmn3_") val pkmn3: PKMN?,
-    @Embedded(prefix = "pkmn4_") val pkmn4: PKMN?,
-    @Embedded(prefix = "pkmn5_") val pkmn5: PKMN?,
-    @Embedded(prefix = "pkmn6_") val pkmn6: PKMN?
+    @Embedded(prefix = "pkmn1_") val pkmn1: PKMN? = null,
+    @Embedded(prefix = "pkmn2_") val pkmn2: PKMN? = null,
+    @Embedded(prefix = "pkmn3_") val pkmn3: PKMN? = null,
+    @Embedded(prefix = "pkmn4_") val pkmn4: PKMN? = null,
+    @Embedded(prefix = "pkmn5_") val pkmn5: PKMN? = null,
+    @Embedded(prefix = "pkmn6_") val pkmn6: PKMN? = null
 )

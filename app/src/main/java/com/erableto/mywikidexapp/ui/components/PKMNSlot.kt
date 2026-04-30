@@ -30,8 +30,8 @@ fun PKMNSlot(pkmn: PKMN?) {
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-@Preview
 fun PKMNSlotPreview() {
     MyWikiDexAppTheme() {
         PKMNSlot(

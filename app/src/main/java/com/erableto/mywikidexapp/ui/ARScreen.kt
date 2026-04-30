@@ -498,8 +498,8 @@ private fun CameraPermissionScreen(onRequestPermission: () -> Unit) {
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-@Preview
 fun ARScreenPreview() {
     MyWikiDexAppTheme {
         ARScreen()

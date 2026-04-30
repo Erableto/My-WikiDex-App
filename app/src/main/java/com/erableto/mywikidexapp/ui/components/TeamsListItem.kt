@@ -181,8 +181,8 @@ fun TeamsListItem(team: Team) {
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-@Preview
 fun TeamsListItemPreview() {
     MyWikiDexAppTheme() {
         TeamsListItem(
