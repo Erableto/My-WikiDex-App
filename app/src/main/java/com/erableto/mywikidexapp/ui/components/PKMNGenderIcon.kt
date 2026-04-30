@@ -18,9 +18,9 @@ fun PKMNGenderIcon(
     gender: String?
 ) {
     val painterResource = when (gender) {
+        GENDER_UNKNOWN -> painterResource(R.drawable.rounded_blank_24)
         GENDER_MALE -> painterResource(R.drawable.rounded_male_24)
         GENDER_FEMALE -> painterResource(R.drawable.rounded_female_24)
-        GENDER_UNKNOWN -> painterResource(R.drawable.rounded_blank_24)
         else -> painterResource(R.drawable.rounded_blank_24)
     }
 

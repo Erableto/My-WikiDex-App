@@ -30,63 +30,25 @@ import com.erableto.mywikidexapp.util.getTypeName
 @Composable
 fun PKMNTypeIcon(modifier: Modifier = Modifier, type: String?) {
     val painterResource = when (type) {
-        NORMAL_TYPE -> {
-            painterResource(R.drawable.ic_type_normal)
-        }
-        GRASS_TYPE -> {
-            painterResource(R.drawable.ic_type_grass)
-        }
-        FIRE_TYPE -> {
-            painterResource(R.drawable.ic_type_fire)
-        }
-        WATER_TYPE -> {
-            painterResource(R.drawable.ic_type_water)
-        }
-        ELECTRIC_TYPE -> {
-            painterResource(R.drawable.ic_type_electric)
-        }
-        BUG_TYPE -> {
-            painterResource(R.drawable.ic_type_bug)
-        }
-        FLYING_TYPE -> {
-            painterResource(R.drawable.ic_type_flying)
-        }
-        ROCK_TYPE -> {
-            painterResource(R.drawable.ic_type_rock)
-        }
-        POISON_TYPE -> {
-            painterResource(R.drawable.ic_type_poison)
-        }
-        GROUND_TYPE -> {
-            painterResource(R.drawable.ic_type_ground)
-        }
-        ICE_TYPE -> {
-            painterResource(R.drawable.ic_type_ice)
-        }
-        FIGHTING_TYPE -> {
-            painterResource(R.drawable.ic_type_fighting)
-        }
-        PSYCHIC_TYPE -> {
-            painterResource(R.drawable.ic_type_psychic)
-        }
-        GHOST_TYPE -> {
-            painterResource(R.drawable.ic_type_ghost)
-        }
-        DRAGON_TYPE -> {
-            painterResource(R.drawable.ic_type_dragon)
-        }
-        DARK_TYPE -> {
-            painterResource(R.drawable.ic_type_dark)
-        }
-        STEEL_TYPE -> {
-            painterResource(R.drawable.ic_type_steel)
-        }
-        FAIRY_TYPE -> {
-            painterResource(R.drawable.ic_type_fairy)
-        }
-        else -> {
-            painterResource(R.drawable.ic_type_null)
-        }
+        NORMAL_TYPE -> painterResource(R.drawable.ic_type_normal)
+        GRASS_TYPE -> painterResource(R.drawable.ic_type_grass)
+        FIRE_TYPE -> painterResource(R.drawable.ic_type_fire)
+        WATER_TYPE -> painterResource(R.drawable.ic_type_water)
+        ELECTRIC_TYPE -> painterResource(R.drawable.ic_type_electric)
+        BUG_TYPE -> painterResource(R.drawable.ic_type_bug)
+        FLYING_TYPE -> painterResource(R.drawable.ic_type_flying)
+        ROCK_TYPE -> painterResource(R.drawable.ic_type_rock)
+        POISON_TYPE -> painterResource(R.drawable.ic_type_poison)
+        GROUND_TYPE -> painterResource(R.drawable.ic_type_ground)
+        ICE_TYPE -> painterResource(R.drawable.ic_type_ice)
+        FIGHTING_TYPE -> painterResource(R.drawable.ic_type_fighting)
+        PSYCHIC_TYPE -> painterResource(R.drawable.ic_type_psychic)
+        GHOST_TYPE -> painterResource(R.drawable.ic_type_ghost)
+        DRAGON_TYPE -> painterResource(R.drawable.ic_type_dragon)
+        DARK_TYPE -> painterResource(R.drawable.ic_type_dark)
+        STEEL_TYPE -> painterResource(R.drawable.ic_type_steel)
+        FAIRY_TYPE -> painterResource(R.drawable.ic_type_fairy)
+        else -> painterResource(R.drawable.ic_type_null)
     }
 
     Image(
