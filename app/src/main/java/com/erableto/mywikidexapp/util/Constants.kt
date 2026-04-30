@@ -38,6 +38,8 @@ const val STEEL_TYPE: String = "STEEL_TYPE"
 const val FAIRY_TYPE: String = "FAIRY_TYPE"
 //// ----- ////
 
+//// GENDER ////
 const val GENDER_UNKNOWN: String = "GENDER_UNKNOWN"
 const val GENDER_MALE: String = "GENDER_MALE"
 const val GENDER_FEMALE: String = "GENDER_FEMALE"
+//// ------ ////
