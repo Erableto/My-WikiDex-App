@@ -12,9 +12,11 @@ import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 @Composable
 fun RoundedDropdownMenuTrailingIcon(expanded: Boolean, modifier: Modifier = Modifier) {
     Icon(
-        painter = painterResource(id = R.drawable.rounded_arrow_drop_down_24),
+        painter =
+            if (expanded) painterResource(id = R.drawable.rounded_arrow_drop_up_24)
+            else painterResource(id = R.drawable.rounded_arrow_drop_down_24),
         contentDescription = null,
-        modifier = modifier.rotate(if (expanded) 180f else 0f)
+        modifier = modifier
     )
 }
 
