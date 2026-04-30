@@ -533,7 +533,7 @@ fun PKMNEditScreen(
                         // TODO
                     }
                 ) {
-                    Text("GUARDAR")
+                    Text("SALIR")
                 }
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -543,7 +543,7 @@ fun PKMNEditScreen(
                         // TODO
                     }
                 ) {
-                    Text("SALIR")
+                    Text("GUARDAR")
                 }
             }
         }
