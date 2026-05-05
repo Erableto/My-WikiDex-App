@@ -28,7 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.erableto.mywikidexapp.R
-import com.erableto.mywikidexapp.data.PKMN
+import com.erableto.mywikidexapp.model.PKMN
 import com.erableto.mywikidexapp.data.Team
 import com.erableto.mywikidexapp.ui.components.PKMNTeamListItem
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
@@ -125,7 +125,7 @@ fun TeamScreen(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
-                    text = team.teamName
+                    text = team.name
                 )
             }
         /*if (teamsList.isEmpty()) {
@@ -200,7 +200,7 @@ fun TeamScreenPreview() {
     MyWikiDexAppTheme() {
         TeamScreen(
             Team(
-                teamName = "Equipo de Erableto",
+                name = "Equipo de Erableto",
                 pkmn1 = PKMN(
                     pkmnName = "Pichu",
                     itemName = null,

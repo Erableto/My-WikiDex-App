@@ -1,12 +1,8 @@
-package com.erableto.mywikidexapp.data
+package com.erableto.mywikidexapp.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.erableto.mywikidexapp.util.GENDER_UNKNOWN
 
-@Entity(tableName = "pkmn")
 data class PKMN(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val pkmnName: String = "MissingNo.",
     val itemName: String?,
     val pkmnIcon: String?,
