@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import com.erableto.mywikidexapp.R
-import com.erableto.mywikidexapp.data.PKMN
+import com.erableto.mywikidexapp.model.PKMN
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import com.erableto.mywikidexapp.util.FIGHTING_TYPE
 import com.erableto.mywikidexapp.util.FIRE_TYPE
