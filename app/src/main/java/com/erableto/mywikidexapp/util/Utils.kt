@@ -9,7 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import com.erableto.mywikidexapp.R
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -70,6 +72,35 @@ fun getTypeColor(type: String?): Color {
     }
 
     return MaterialTheme.colorScheme.surfaceContainer
+}
+
+@Composable
+fun getTypePainter(type: String?): Painter {
+    if (type != null) {
+        when (type) {
+            NORMAL_TYPE -> return painterResource(R.drawable.ic_type_normal)
+            GRASS_TYPE -> return painterResource(R.drawable.ic_type_grass)
+            FIRE_TYPE -> return painterResource(R.drawable.ic_type_fire)
+            WATER_TYPE -> return painterResource(R.drawable.ic_type_water)
+            ELECTRIC_TYPE -> return painterResource(R.drawable.ic_type_electric)
+            BUG_TYPE -> return painterResource(R.drawable.ic_type_bug)
+            FLYING_TYPE -> return painterResource(R.drawable.ic_type_flying)
+            ROCK_TYPE -> return painterResource(R.drawable.ic_type_rock)
+            POISON_TYPE -> return painterResource(R.drawable.ic_type_poison)
+            GROUND_TYPE -> return painterResource(R.drawable.ic_type_ground)
+            ICE_TYPE -> return painterResource(R.drawable.ic_type_ice)
+            FIGHTING_TYPE -> return painterResource(R.drawable.ic_type_fighting)
+            PSYCHIC_TYPE -> return painterResource(R.drawable.ic_type_psychic)
+            GHOST_TYPE -> return painterResource(R.drawable.ic_type_ghost)
+            DRAGON_TYPE -> return painterResource(R.drawable.ic_type_dragon)
+            DARK_TYPE -> return painterResource(R.drawable.ic_type_dark)
+            STEEL_TYPE -> return painterResource(R.drawable.ic_type_steel)
+            FAIRY_TYPE -> return painterResource(R.drawable.ic_type_fairy)
+            else -> return painterResource(R.drawable.ic_type_null)
+        }
+    }
+
+    return painterResource(R.drawable.ic_type_null)
 }
 
 fun getTypeName(type: String?): String {
