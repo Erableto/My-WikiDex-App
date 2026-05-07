@@ -7,10 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Favorite::class, HistoryEntry::class], version = 3)
+@Database(entities = [Favorite::class, HistoryEntry::class, Team::class], version = 4)
 abstract class DB: RoomDatabase() {
     abstract fun favoritesDAO(): FavoritesDAO
     abstract fun historyDAO(): HistoryDAO
+    abstract fun teamsDAO(): TeamsDAO
 
     companion object {
         @Volatile

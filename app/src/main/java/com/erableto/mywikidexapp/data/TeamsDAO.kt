@@ -8,7 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
-interface TeamDAO {
+interface TeamsDAO {
     @Query("SELECT * FROM teams ORDER BY id DESC")
     fun getAll(): Flow<List<Team>>
 
