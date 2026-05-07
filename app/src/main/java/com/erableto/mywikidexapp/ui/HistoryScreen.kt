@@ -1,9 +1,7 @@
 package com.erableto.mywikidexapp.ui
 
 import android.app.Activity
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -48,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.erableto.mywikidexapp.R
@@ -83,7 +82,7 @@ val historyList_empty = mutableStateListOf<HistoryEntry>()
 @Composable
 fun HistoryScreen(
     viewModel: HistoryViewModel = ViewModelProvider(
-        LocalActivity.current as ComponentActivity,
+        LocalViewModelStoreOwner.current!!,
         HistoryViewModelFactory(LocalContext.current)
     )[HistoryViewModel::class.java], // ).get(HistoryViewModel::class.java),
     onNavigateToWiki: (String) -> Unit
