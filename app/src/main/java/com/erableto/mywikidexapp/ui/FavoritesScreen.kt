@@ -1,9 +1,7 @@
 package com.erableto.mywikidexapp.ui
 
 import android.app.Activity
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.erableto.mywikidexapp.R
@@ -73,7 +72,7 @@ val favoritesList_empty = mutableStateListOf<Favorite>()
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel = ViewModelProvider(
-        LocalActivity.current as ComponentActivity,
+        LocalViewModelStoreOwner.current!!,
         FavoritesViewModelFactory(LocalContext.current)
     )[FavoritesViewModel::class.java], // ).get(FavoritesViewModel::class.java),
     onNavigateToWiki: (String) -> Unit
