@@ -52,7 +52,7 @@ fun PKMNIcon(
 @Preview(showBackground = true)
 @Composable
 fun PKMNIconPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         PKMNIcon(
             pkmn = PKMN(
                 pkmnName = "Giratina",

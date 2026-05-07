@@ -2,6 +2,7 @@ package com.erableto.mywikidexapp.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -121,6 +122,7 @@ fun ARScreen() {
         try {
             ArCoreApk.getInstance().checkAvailability(context)
         } catch (e: Exception) {
+            Log.e("ARScreen", e.message, e)
             ArCoreApk.Availability.UNSUPPORTED_DEVICE_NOT_CAPABLE
         }
     }

@@ -77,10 +77,10 @@ fun AboutScreen(
 
                 Spacer(modifier = Modifier.width(16.dp))
 
-                Column() {
+                Column {
                     val appName = context.applicationInfo.loadLabel(context.packageManager).toString()
                     val appVersionName = appPackageInfo.versionName
-                    val appVersionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    @Suppress("DEPRECATION") val appVersionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         appPackageInfo.longVersionCode
                     } else {
                         appPackageInfo.versionCode.toLong()
@@ -138,7 +138,7 @@ fun AboutScreen(
 @Preview(showBackground = true)
 @Composable
 fun AboutScreenPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         AboutScreen({}, {})
     }
 }

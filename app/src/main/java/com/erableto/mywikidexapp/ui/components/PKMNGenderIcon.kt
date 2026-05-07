@@ -34,7 +34,7 @@ fun PKMNGenderIcon(
 @Preview(showBackground = true)
 @Composable
 fun PKMNGenderIconPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         PKMNGenderIcon(gender = GENDER_MALE)
     }
 }

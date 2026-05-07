@@ -1,5 +1,6 @@
 package com.erableto.mywikidexapp.ui.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import java.text.SimpleDateFormat
 import java.util.Date
 
+@SuppressLint("SimpleDateFormat")
 @Composable
 fun HistoryListItem(
     historyEntry: HistoryEntry,
@@ -47,7 +49,7 @@ fun HistoryListItem(
 fun HistoryListItemPreview() {
     val historyEntry = HistoryEntry(0, "", "Hola mundo", 1774457631000L)
 
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         HistoryListItem(
             historyEntry,
             {},

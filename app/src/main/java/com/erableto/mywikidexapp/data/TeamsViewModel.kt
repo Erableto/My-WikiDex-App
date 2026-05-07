@@ -35,7 +35,7 @@ class TeamsViewModel(context: Context): ViewModel() {
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val teamsPaged = _searchQuery.flatMapLatest { query ->
+    val teamsPaged = _searchQuery.flatMapLatest { _ ->
         Pager(
             config = PagingConfig(
                 pageSize = 10,

@@ -58,7 +58,7 @@ fun CardFABItem(
 @Preview(showBackground = true)
 @Composable
 fun CardFABItemPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         CardFABItem(
             "Hola mundo",
             painterResource(R.drawable.rounded_delete_24),

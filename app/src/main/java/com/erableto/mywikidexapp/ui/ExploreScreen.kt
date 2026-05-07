@@ -1,6 +1,5 @@
 package com.erableto.mywikidexapp.ui
 
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -154,8 +153,7 @@ fun ExploreScreen() {
             centerNode.addChildNode(this)
         }
 
-        val cameraTransition = rememberInfiniteTransition(label = "CameraRotation")
-        /*
+        /*val cameraTransition = rememberInfiniteTransition(label = "CameraRotation")
         val cameraRotation by cameraTransition.animateRotation(
             initialValue = Float3(y = 0.0f),
             targetValue = Float3(y = 360.0f),
