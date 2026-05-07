@@ -279,7 +279,7 @@ fun TeamsScreen(
 fun TeamsScreenPreview() {
     //var DUMMY: String
 
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         TeamsScreen(/*onNavigateToWiki = { url ->
             DUMMY = url
         }*/)

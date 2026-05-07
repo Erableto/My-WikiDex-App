@@ -554,7 +554,7 @@ fun PKMNEditScreen(
 @Preview(showBackground = true)
 @Composable
 fun PKMNEditScreenPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         PKMNEditScreen(
             pkmn = PKMN(
                 pkmnName = "Infernape",

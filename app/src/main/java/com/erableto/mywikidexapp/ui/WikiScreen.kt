@@ -1,5 +1,6 @@
 package com.erableto.mywikidexapp.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -82,6 +83,7 @@ import com.erableto.mywikidexapp.util.WIKIDEX_URL
 import com.erableto.mywikidexapp.util.getReadableTitleFromURL
 import com.erableto.mywikidexapp.util.vibrateError
 
+@SuppressLint("SetJavaScriptEnabled")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WikiScreen(
@@ -153,7 +155,7 @@ fun WikiScreen(
         it.url == currentURL || it.title == currentTitle
     }
 
-    val backgroundColor = MaterialTheme.colorScheme.background.toArgb()
+    //val backgroundColor = MaterialTheme.colorScheme.background.toArgb()
     val primaryColor = MaterialTheme.colorScheme.primary.toArgb()
     val surfaceColor = MaterialTheme.colorScheme.surface.toArgb()
 
@@ -169,7 +171,7 @@ fun WikiScreen(
     // Cuando cambie resetTrigger, vamos a la portada de WikiDex.
     LaunchedEffect(resetTrigger) {
         // Solo hacemos algo si el valor cambió de verdad.
-        if (resetTrigger != lastResetTrigger.value) {
+        if (resetTrigger != lastResetTrigger.intValue) {
             val url = webViewRef.value?.url
 
             // Si estamos ya en la portada, no volvemos a la portada.
@@ -177,7 +179,7 @@ fun WikiScreen(
                 webViewRef.value?.loadUrl(WIKIDEX_URL)
             }
 
-            lastResetTrigger.value = resetTrigger
+            lastResetTrigger.intValue = resetTrigger
         }
     }
 
@@ -303,7 +305,7 @@ fun WikiScreen(
                                         withStyle(
                                             style = SpanStyle(color = MaterialTheme.colorScheme.error)
                                         ) {
-                                            append("${currentResultNumber} / $numberOfResults")
+                                            append("$currentResultNumber / $numberOfResults")
                                         }
                                     }
                                 }
@@ -584,18 +586,16 @@ fun WikiScreen(
                                             if (isFavorite) "Quitar de favoritos"
                                             else "Añadir a favoritos",
                                         onClick = {
-                                            if (currentURL != null && currentTitle != null) {
-                                                if (isFavorite) {
-                                                    val favorite = favorites.first {
-                                                        it.url == currentURL
-                                                    }
-                                                    favoritesViewModel.delete(favorite)
-                                                } else {
-                                                    favoritesViewModel.insert(
-                                                        currentURL,
-                                                        currentTitle.removeSuffix(WIKIDEX_LABEL)
-                                                    )
+                                            if (isFavorite) {
+                                                val favorite = favorites.first {
+                                                    it.url == currentURL
                                                 }
+                                                favoritesViewModel.delete(favorite)
+                                            } else {
+                                                favoritesViewModel.insert(
+                                                    currentURL,
+                                                    currentTitle.removeSuffix(WIKIDEX_LABEL)
+                                                )
                                             }
 
                                             expanded = false
@@ -702,7 +702,7 @@ fun WikiScreen(
 @Preview(showBackground = true)
 @Composable
 fun WikiScreenPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         WikiScreen(url = WIKIDEX_URL, resetTrigger = 0)
     }
 }

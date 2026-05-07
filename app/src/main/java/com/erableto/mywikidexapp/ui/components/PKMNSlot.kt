@@ -33,7 +33,7 @@ fun PKMNSlot(pkmn: PKMN?) {
 @Preview(showBackground = true)
 @Composable
 fun PKMNSlotPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         PKMNSlot(
             pkmn = PKMN(
                 pkmnName = "Giratina",

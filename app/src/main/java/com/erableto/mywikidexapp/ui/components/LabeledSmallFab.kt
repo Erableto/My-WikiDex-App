@@ -50,7 +50,7 @@ fun LabeledSmallFab(
 @Preview(showBackground = true)
 @Composable
 fun LabeledSmallFabPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         LabeledSmallFab(
             "Hola mundo",
             {},

@@ -23,11 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
 import com.erableto.mywikidexapp.R
 import com.erableto.mywikidexapp.model.PKMN
 import com.erableto.mywikidexapp.data.Team
@@ -151,13 +149,6 @@ fun TeamsListItem(team: Team) {
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    val pkmnIcon2: Painter? =
-                        if (team.pkmn2?.pkmnIcon != null && team.pkmn2.pkmnIcon.isDigitsOnly()) painterResource(team.pkmn2.pkmnIcon.toInt())
-                        else null
-                    val itemIcon2: Painter? =
-                        if (team.pkmn2?.itemIcon != null && team.pkmn2.itemIcon.isDigitsOnly()) painterResource(team.pkmn2.itemIcon.toInt())
-                        else null
-
                     PKMNSlot(pkmn = team.pkmn2)
 
                     Spacer(modifier = Modifier.width(8.dp))
@@ -184,7 +175,7 @@ fun TeamsListItem(team: Team) {
 @Preview(showBackground = true)
 @Composable
 fun TeamsListItemPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         TeamsListItem(
             team = Team(
                 name = "Equipo",

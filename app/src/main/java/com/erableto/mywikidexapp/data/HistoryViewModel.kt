@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class HistoryViewModel(context: Context): ViewModel() {
     private val dao = DB.getDB(context).historyDAO()
-    private val _searchQuery = MutableStateFlow<String>("")
+    private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -34,7 +34,7 @@ class HistoryViewModel(context: Context): ViewModel() {
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val historyPaged = _searchQuery.flatMapLatest { query ->
+    val historyPaged = _searchQuery.flatMapLatest { _ ->
         Pager(
             config = PagingConfig(
                 pageSize = 10,

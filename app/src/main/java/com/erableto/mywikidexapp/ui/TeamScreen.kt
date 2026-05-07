@@ -197,7 +197,7 @@ fun TeamScreen(
 fun TeamScreenPreview() {
     //var DUMMY: String
 
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         TeamScreen(
             Team(
                 name = "Equipo de Erableto",

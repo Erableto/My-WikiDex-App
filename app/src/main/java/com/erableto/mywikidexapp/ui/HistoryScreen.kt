@@ -29,7 +29,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,12 +49,12 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.erableto.mywikidexapp.R
-import com.erableto.mywikidexapp.data.HistoryEntry
 import com.erableto.mywikidexapp.data.HistoryViewModel
 import com.erableto.mywikidexapp.data.HistoryViewModelFactory
 import com.erableto.mywikidexapp.ui.components.HistoryListItem
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
+/*
 val historyList_ = mutableStateListOf(
     HistoryEntry(
         0,
@@ -78,6 +77,7 @@ val historyList_ = mutableStateListOf(
 )
 
 val historyList_empty = mutableStateListOf<HistoryEntry>()
+*/
 
 @Composable
 fun HistoryScreen(
@@ -188,7 +188,7 @@ fun HistoryScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextField(
-                        value = searchQuery ?: "",
+                        value = searchQuery,
                         onValueChange = {
                             viewModel.onSearchQueryChanged(it)
                         },
@@ -290,11 +290,7 @@ fun HistoryScreen(
 @Preview(showBackground = true)
 @Composable
 fun HistoryScreenPreview() {
-    var DUMMY: String
-
-    MyWikiDexAppTheme() {
-        HistoryScreen(onNavigateToWiki = { url ->
-            DUMMY = url
-        })
+    MyWikiDexAppTheme {
+        HistoryScreen(onNavigateToWiki = { _ -> })
     }
 }
