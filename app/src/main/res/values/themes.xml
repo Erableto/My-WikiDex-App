@@ -9,7 +9,7 @@
         <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
 
         <!-- Icono centrado -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ani_wikidex</item>
 
         <!-- Duración de la splash -->
         <item name="windowSplashScreenAnimationDuration">200</item>
