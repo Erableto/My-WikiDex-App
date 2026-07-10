@@ -9,7 +9,7 @@
         <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
 
         <!-- Icono centrado -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ani_wikidex</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ani_wikidex_x3</item>
 
         <!-- Duración de la splash -->
         <item name="windowSplashScreenAnimationDuration">200</item>
@@ -24,7 +24,7 @@
         <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
 
         <!-- Icono centrado -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ani_wikidex_xmas</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ani_wikidex_xmas_x3</item>
 
         <!-- Duración de la splash -->
         <item name="windowSplashScreenAnimationDuration">200</item>
