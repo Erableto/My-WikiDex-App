@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.erableto.mywikidexapp.R
-import com.erableto.mywikidexapp.data.PKMN
+import com.erableto.mywikidexapp.model.PKMN
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import com.erableto.mywikidexapp.util.DRAGON_TYPE
 import com.erableto.mywikidexapp.util.GHOST_TYPE
@@ -33,7 +33,7 @@ fun PKMNSlot(pkmn: PKMN?) {
 @Preview(showBackground = true)
 @Composable
 fun PKMNSlotPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         PKMNSlot(
             pkmn = PKMN(
                 pkmnName = "Giratina",

@@ -21,7 +21,7 @@ fun PKMNTypeIcon(modifier: Modifier = Modifier, type: String?) {
 @Preview(showBackground = true)
 @Composable
 fun PKMNTypeIconPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         PKMNTypeIcon(type = FIRE_TYPE)
     }
 }

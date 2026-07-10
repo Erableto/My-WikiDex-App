@@ -1,9 +1,7 @@
 package com.erableto.mywikidexapp.ui
 
 import android.app.Activity
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +25,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,15 +38,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.erableto.mywikidexapp.R
-import com.erableto.mywikidexapp.data.Favorite
 import com.erableto.mywikidexapp.data.FavoritesViewModel
 import com.erableto.mywikidexapp.data.FavoritesViewModelFactory
 import com.erableto.mywikidexapp.ui.components.FavoritesListItem
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
+/*
 val favoritesList_ = mutableStateListOf(
     Favorite(
         0,
@@ -69,11 +67,12 @@ val favoritesList_ = mutableStateListOf(
 )
 
 val favoritesList_empty = mutableStateListOf<Favorite>()
+*/
 
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel = ViewModelProvider(
-        LocalActivity.current as ComponentActivity,
+        LocalViewModelStoreOwner.current!!,
         FavoritesViewModelFactory(LocalContext.current)
     )[FavoritesViewModel::class.java], // ).get(FavoritesViewModel::class.java),
     onNavigateToWiki: (String) -> Unit
@@ -135,7 +134,7 @@ fun FavoritesScreen(
         } else {
             Column {
                 TextField(
-                    value = searchQuery ?: "",
+                    value = searchQuery,
                     onValueChange = {
                         viewModel.onSearchQueryChanged(it)
                     },
@@ -223,11 +222,7 @@ fun FavoritesScreen(
 @Preview(showBackground = true)
 @Composable
 fun FavoritesScreenPreview() {
-    var DUMMY: String
-
-    MyWikiDexAppTheme() {
-        FavoritesScreen(onNavigateToWiki = { url ->
-            DUMMY = url
-        })
+    MyWikiDexAppTheme {
+        FavoritesScreen(onNavigateToWiki = { _ -> })
     }
 }

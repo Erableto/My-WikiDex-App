@@ -38,7 +38,7 @@ fun RoundedDropdownMenuTrailingIcon(expanded: Boolean, modifier: Modifier = Modi
 @Preview(showBackground = true)
 @Composable
 fun RoundedDropdownMenuTrailingIconPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         RoundedDropdownMenuTrailingIcon(false)
     }
 }

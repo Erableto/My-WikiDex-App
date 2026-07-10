@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,7 @@ fun AboutScreen(
     onNavigateToExplore: () -> Unit
 ) {
     val context = LocalContext.current
+    val isPreview = LocalInspectionMode.current
 
     Box(
         modifier = Modifier
@@ -56,35 +58,61 @@ fun AboutScreen(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val appPackageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-                val appPackageName = appPackageInfo.packageName
-
-                val iconBitmap = remember {
-                    val icon = context.packageManager.getApplicationIcon(appPackageName)
-                    icon.toBitmap()
+                // Use LocalInspectionMode to avoid crashes in Preview due to null packageName or missing package manager
+                val appPackageName = if (isPreview) "com.erableto.mywikidexapp" else context.packageName
+                val appPackageInfo = remember(appPackageName) {
+                    try {
+                        context.packageManager.getPackageInfo(appPackageName, 0)
+                    } catch (_: Exception) {
+                        null
+                    }
                 }
 
-                Image(
-                    modifier = Modifier
-                        .size(125.dp)
-                        .aspectRatio(1f)
-                        .clickable {
-                            onNavigateToAR()
-                        },
-                    painter = BitmapPainter(iconBitmap.asImageBitmap()),
-                    contentDescription = "Logo de la app"
-                )
+                val iconBitmap = remember(appPackageName) {
+                    try {
+                        val icon = context.packageManager.getApplicationIcon(appPackageName)
+                        icon.toBitmap()
+                    } catch (_: Exception) {
+                        null
+                    }
+                }
+
+                if (iconBitmap != null) {
+                    Image(
+                        modifier = Modifier
+                            .size(125.dp)
+                            .aspectRatio(1f)
+                            .clickable {
+                                onNavigateToAR()
+                            },
+                        painter = BitmapPainter(iconBitmap.asImageBitmap()),
+                        contentDescription = "Logo de la app"
+                    )
+                } else {
+                    Image(
+                        modifier = Modifier
+                            .size(125.dp)
+                            .aspectRatio(1f)
+                            .clickable {
+                                onNavigateToAR()
+                            },
+                        painter = painterResource(R.drawable.ic_launcher_foreground),
+                        contentDescription = "Logo de la app"
+                    )
+                }
 
                 Spacer(modifier = Modifier.width(16.dp))
 
-                Column() {
-                    val appName = context.applicationInfo.loadLabel(context.packageManager).toString()
-                    val appVersionName = appPackageInfo.versionName
-                    val appVersionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        appPackageInfo.longVersionCode
-                    } else {
-                        appPackageInfo.versionCode.toLong()
-                    }
+                Column {
+                    val appName = if (isPreview) "My WikiDex App" else context.applicationInfo.loadLabel(context.packageManager).toString()
+                    val appVersionName = appPackageInfo?.versionName ?: "1.0.0"
+                    @Suppress("DEPRECATION") val appVersionCode = if (appPackageInfo != null) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            appPackageInfo.longVersionCode
+                        } else {
+                            appPackageInfo.versionCode.toLong()
+                        }
+                    } else 1L
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
@@ -93,7 +121,7 @@ fun AboutScreen(
                     )
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = appPackageName
+                        text = appPackageName ?: ""
                     )
                 }
             }
@@ -138,7 +166,7 @@ fun AboutScreen(
 @Preview(showBackground = true)
 @Composable
 fun AboutScreenPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         AboutScreen({}, {})
     }
 }

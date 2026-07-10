@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.erableto.mywikidexapp.model.PKMN
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,17 +16,17 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class HistoryViewModel(context: Context): ViewModel() {
-    private val dao = DB.getDB(context).historyDAO()
-    private val _searchQuery = MutableStateFlow("")
+class TeamsViewModel(context: Context): ViewModel() {
+    private val dao = DB.getDB(context).teamsDAO()
+    private val _searchQuery = MutableStateFlow<String>("")
     val searchQuery = _searchQuery.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val history = _searchQuery.flatMapLatest { query ->
+    val teams = _searchQuery.flatMapLatest { query ->
         if (query.isEmpty()) {
             dao.getAll()
         } else {
-            dao.searchHistory("%$query%")
+            dao.searchTeams("%$query%")
         }
     }.stateIn(
         viewModelScope,
@@ -34,14 +35,14 @@ class HistoryViewModel(context: Context): ViewModel() {
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val historyPaged = _searchQuery.flatMapLatest { _ ->
+    val teamsPaged = _searchQuery.flatMapLatest { _ ->
         Pager(
             config = PagingConfig(
                 pageSize = 10,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                dao.searchHistoryPaged("%${searchQuery.value}%")
+                dao.searchTeamsPaged("%${searchQuery.value}%")
             }
         ).flow
     }.cachedIn(viewModelScope)
@@ -57,50 +58,39 @@ class HistoryViewModel(context: Context): ViewModel() {
             0
         )
 
-    fun getByURL(url: String) = dao.getByURL(url)
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            null
-        )
-
-    fun insert(url: String, title: String) {
+    fun insert(
+        name: String,
+        pkmn1: PKMN?,
+        pkmn2: PKMN?,
+        pkmn3: PKMN?,
+        pkmn4: PKMN?,
+        pkmn5: PKMN?,
+        pkmn6: PKMN?
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             dao.insert(
-                HistoryEntry(
-                    url = url,
-                    title = title,
-                    timeMillis = System.currentTimeMillis()
+                Team(
+                    name = name,
+                    pkmn1 = pkmn1,
+                    pkmn2 = pkmn2,
+                    pkmn3 = pkmn3,
+                    pkmn4 = pkmn4,
+                    pkmn5 = pkmn5,
+                    pkmn6 = pkmn6
                 ) // El ID se autogenera.
             )
         }
     }
 
-    fun delete(historyEntry: HistoryEntry) {
+    fun delete(team: Team) {
         viewModelScope.launch(Dispatchers.IO) {
-            dao.delete(historyEntry)
+            dao.delete(team)
         }
     }
 
-    fun deleteAll() {
+    fun update(team: Team) {
         viewModelScope.launch(Dispatchers.IO) {
-            dao.deleteAll()
-        }
-    }
-
-    fun update(historyEntry: HistoryEntry) {
-        viewModelScope.launch(Dispatchers.IO) {
-            dao.update(historyEntry)
-        }
-    }
-
-    fun updateTimeMillis(historyEntry: HistoryEntry) {
-        viewModelScope.launch(Dispatchers.IO) {
-            dao.update(
-                historyEntry.copy(
-                    timeMillis = System.currentTimeMillis()
-                )
-            )
+            dao.update(team)
         }
     }
 }

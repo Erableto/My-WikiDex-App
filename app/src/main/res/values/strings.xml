@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My WikiDex App</string>
+    <string name="app_name" translatable="false">My WikiDex App</string>
 
     <!-- Navigation -->
     <string name="tab_3d">3D Viewer</string>

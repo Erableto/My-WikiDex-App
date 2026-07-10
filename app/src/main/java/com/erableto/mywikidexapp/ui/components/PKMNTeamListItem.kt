@@ -28,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -37,9 +36,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.text.isDigitsOnly
 import com.erableto.mywikidexapp.R
-import com.erableto.mywikidexapp.data.PKMN
+import com.erableto.mywikidexapp.model.PKMN
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import com.erableto.mywikidexapp.util.FIGHTING_TYPE
 import com.erableto.mywikidexapp.util.FIRE_TYPE
@@ -49,13 +47,6 @@ import com.erableto.mywikidexapp.util.getTypeColor
 
 @Composable
 fun PKMNTeamListItem(pkmn: PKMN) {
-    val pkmnIcon: Painter? =
-        if (pkmn.pkmnIcon != null && pkmn.pkmnIcon.isDigitsOnly()) painterResource(pkmn.pkmnIcon.toInt())
-        else null
-    val itemIcon: Painter? =
-        if (pkmn.itemIcon != null && pkmn.itemIcon.isDigitsOnly()) painterResource(pkmn.itemIcon.toInt())
-        else null
-
     var showMenu by remember {
         mutableStateOf(false)
     }
@@ -92,7 +83,7 @@ fun PKMNTeamListItem(pkmn: PKMN) {
 
                         val inlineContentId = "genderIcon"
                         val text = buildAnnotatedString {
-                            append(pkmn.pkmnName ?: "MissingNo.")
+                            append(pkmn.pkmnName)
                             append(" ")
                             appendInlineContent(inlineContentId, "[genderIcon]")
                             append("    Nv. ${pkmn.lv}")
@@ -241,7 +232,7 @@ fun PKMNTeamListItem(pkmn: PKMN) {
 @Preview(showBackground = true)
 @Composable
 fun PKMNTeamListItemPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         PKMNTeamListItem(
             pkmn = PKMN(
                 pkmnName = "Infernape",
