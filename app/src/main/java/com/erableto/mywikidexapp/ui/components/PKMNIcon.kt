@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import com.erableto.mywikidexapp.R
-import com.erableto.mywikidexapp.data.PKMN
+import com.erableto.mywikidexapp.model.PKMN
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 import com.erableto.mywikidexapp.util.DRAGON_TYPE
 import com.erableto.mywikidexapp.util.GHOST_TYPE
@@ -52,7 +52,7 @@ fun PKMNIcon(
 @Preview(showBackground = true)
 @Composable
 fun PKMNIconPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         PKMNIcon(
             pkmn = PKMN(
                 pkmnName = "Giratina",

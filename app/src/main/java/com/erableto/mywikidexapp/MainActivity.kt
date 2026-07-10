@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -21,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.erableto.mywikidexapp.data.PKMN
+import com.erableto.mywikidexapp.model.PKMN
 import com.erableto.mywikidexapp.ui.ARScreen
 import com.erableto.mywikidexapp.ui.AboutScreen
 import com.erableto.mywikidexapp.ui.ExploreScreen
@@ -55,7 +56,7 @@ fun MyWikiDexAppApp() {
         mutableStateOf(AppDestinations.WIKI)
     }
     var wikiResetTrigger by rememberSaveable {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
     var currentWikiURL by rememberSaveable {
         mutableStateOf(WIKIDEX_URL)
@@ -114,8 +115,9 @@ fun MyWikiDexAppApp() {
                             currentDestination = AppDestinations.WIKI
                         }
                     )
+                    // TODO
                     //AppDestinations.TEAMS -> TeamsScreen()
-                    AppDestinations.TEAMS -> PKMNEditScreen(
+                    /*AppDestinations.TEAMS -> PKMNEditScreen(
                         pkmn = PKMN(
                             pkmnName = "Infernape",
                             itemName = "Carbón",
@@ -131,7 +133,7 @@ fun MyWikiDexAppApp() {
                             mov3 = "A Bocajarro",
                             mov4 = "Excavar"
                         )
-                    )
+                    )*/
                     AppDestinations.ABOUT -> AboutScreen(
                         onNavigateToAR = {
                             currentDestination = AppDestinations.AR
@@ -169,11 +171,12 @@ enum class AppDestinations(
         R.drawable.rounded_history_24,
         R.drawable.rounded_filled_history_24
     ),
-    TEAMS(
+    // TODO
+    /*TEAMS(
         "Mis equipos",
         R.drawable.rounded_catching_pokemon_24,
         R.drawable.rounded_filled_catching_pokemon_24
-    ),
+    ),*/
     ABOUT(
         "Acerca de",
         R.drawable.rounded_info_24,

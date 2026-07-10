@@ -1,9 +1,7 @@
 package com.erableto.mywikidexapp.ui
 
 import android.app.Activity
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +29,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -48,15 +45,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.erableto.mywikidexapp.R
-import com.erableto.mywikidexapp.data.HistoryEntry
 import com.erableto.mywikidexapp.data.HistoryViewModel
 import com.erableto.mywikidexapp.data.HistoryViewModelFactory
 import com.erableto.mywikidexapp.ui.components.HistoryListItem
 import com.erableto.mywikidexapp.ui.theme.MyWikiDexAppTheme
 
+/*
 val historyList_ = mutableStateListOf(
     HistoryEntry(
         0,
@@ -79,11 +77,12 @@ val historyList_ = mutableStateListOf(
 )
 
 val historyList_empty = mutableStateListOf<HistoryEntry>()
+*/
 
 @Composable
 fun HistoryScreen(
     viewModel: HistoryViewModel = ViewModelProvider(
-        LocalActivity.current as ComponentActivity,
+        LocalViewModelStoreOwner.current!!,
         HistoryViewModelFactory(LocalContext.current)
     )[HistoryViewModel::class.java], // ).get(HistoryViewModel::class.java),
     onNavigateToWiki: (String) -> Unit
@@ -189,7 +188,7 @@ fun HistoryScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextField(
-                        value = searchQuery ?: "",
+                        value = searchQuery,
                         onValueChange = {
                             viewModel.onSearchQueryChanged(it)
                         },
@@ -291,11 +290,7 @@ fun HistoryScreen(
 @Preview(showBackground = true)
 @Composable
 fun HistoryScreenPreview() {
-    var DUMMY: String
-
-    MyWikiDexAppTheme() {
-        HistoryScreen(onNavigateToWiki = { url ->
-            DUMMY = url
-        })
+    MyWikiDexAppTheme {
+        HistoryScreen(onNavigateToWiki = { _ -> })
     }
 }

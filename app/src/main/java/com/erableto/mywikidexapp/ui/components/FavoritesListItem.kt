@@ -27,7 +27,7 @@ fun FavoritesListItem(
 fun FavoritesListItemPreview() {
     val favorite = Favorite(0, "", "Hola mundo")
 
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         FavoritesListItem(
             favorite,
             {},

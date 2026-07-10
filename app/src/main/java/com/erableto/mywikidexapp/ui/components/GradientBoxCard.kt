@@ -40,7 +40,7 @@ fun GradientBoxCard(
 @Preview(showBackground = true)
 @Composable
 fun GradientBoxCardPreview() {
-    MyWikiDexAppTheme() {
+    MyWikiDexAppTheme {
         GradientBoxCard(
             modifier = Modifier,
             colors = listOf(
