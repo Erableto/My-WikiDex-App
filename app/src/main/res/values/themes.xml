@@ -18,4 +18,19 @@
         <item name="postSplashScreenTheme">@style/Theme.MyWikiDexApp</item>
     </style>
 
+    <!-- Tema para la Splash Screen -->
+    <style name="Theme.MyWikiDexApp.Splash.Xmas" parent="Theme.SplashScreen">
+        <!-- Fondo de la splash -->
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
+
+        <!-- Icono centrado -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ani_wikidex_xmas</item>
+
+        <!-- Duración de la splash -->
+        <item name="windowSplashScreenAnimationDuration">200</item>
+
+        <!-- Tema que se aplica después de la splash -->
+        <item name="postSplashScreenTheme">@style/Theme.MyWikiDexApp</item>
+    </style>
+
 </resources>

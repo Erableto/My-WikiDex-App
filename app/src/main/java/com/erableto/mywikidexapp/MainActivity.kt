@@ -115,8 +115,9 @@ fun MyWikiDexAppApp() {
                             currentDestination = AppDestinations.WIKI
                         }
                     )
+                    // TODO
                     //AppDestinations.TEAMS -> TeamsScreen()
-                    AppDestinations.TEAMS -> PKMNEditScreen(
+                    /*AppDestinations.TEAMS -> PKMNEditScreen(
                         pkmn = PKMN(
                             pkmnName = "Infernape",
                             itemName = "Carbón",
@@ -132,7 +133,7 @@ fun MyWikiDexAppApp() {
                             mov3 = "A Bocajarro",
                             mov4 = "Excavar"
                         )
-                    )
+                    )*/
                     AppDestinations.ABOUT -> AboutScreen(
                         onNavigateToAR = {
                             currentDestination = AppDestinations.AR
@@ -170,11 +171,12 @@ enum class AppDestinations(
         R.drawable.rounded_history_24,
         R.drawable.rounded_filled_history_24
     ),
-    TEAMS(
+    // TODO
+    /*TEAMS(
         "Mis equipos",
         R.drawable.rounded_catching_pokemon_24,
         R.drawable.rounded_filled_catching_pokemon_24
-    ),
+    ),*/
     ABOUT(
         "Acerca de",
         R.drawable.rounded_info_24,
